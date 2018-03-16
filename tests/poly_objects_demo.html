@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Century Gothic';
+      color : dimgray;
+    }
+  </style>
+</head>
+<body>
+  <h2>Verlet.js Predefined Poly Objects</h2>
+  <canvas id="c"></canvas>
+
+<script>
+
+  // Hover Over Point And Press "SPACE"
+  // To Pin Points
+  // And Press "ALT" To UnPin 
+
+  window.onload = function() {
+
+    const verlet = new Verlet();
+
+    verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+    let dots = [];
+    let cons = [];
+
+    //verlet.Poly.box({x,y,width,height}, cons[], dots[])
+    verlet.Poly.box({
+      x : 450,
+      y : 100,
+      width : 150, 
+      height : 100,
+    },dots, cons);
+
+    //verlet.Poly.triangle({x,y,width,height}, cons[], dots[])
+    verlet.Poly.triangle({
+      x : 250,
+      y : 0,
+      width : 125,
+      height : 125
+    },dots, cons);
+
+    //verlet.Poly.hexagon({x,y,radius,sides,slice1,slice2,center}, cons[], dots[])
+    verlet.Poly.hexagon({
+      x : 100,
+      y : 50,
+      radius : 50,
+      sides : 18,
+      slice1 : 1,
+      slice2 : 12,
+      center : true
+    },dots, cons);
+
+    //verlet.Poly.beam({x,y,width,height,segs}, cons[], dots[])
+    verlet.Poly.beam({
+      x : 900,
+      y : 0,
+      width : 50,
+      height : 50,
+      segs : 6,
+    },dots, cons);
+
+    //verlet.Poly.rope({x,y,segs,gap}, cons[], dots[])
+    verlet.Poly.rope({
+      x : 200,
+      y : 50,
+      segs : 25,
+      gap : 15 
+    },dots, cons);
+
+    //verlet.Poly.cloth({x,y,segs,gap,pinRatio}, cons[], dots[])
+    verlet.Poly.cloth({
+      x : 400,
+      y : 50,
+      segs : 20,
+      gap : 15,
+      pinRatio : 10
+    },dots, cons);
+
+    verlet.Interact.move(dots)
+    function animate() {
+      verlet.clear();
+      
+      verlet.superUpdate(dots,cons,25);
+      verlet.superRender(dots,cons,{preset : 'shadowRed'});
+
+      requestAnimationFrame(animate)
+    }
+    animate();
+  }
+</script>
+</body>
+</html>
