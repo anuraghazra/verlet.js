@@ -23,18 +23,16 @@
   // And Press "ALT" To UnPin 
 
   //The Green Lines Are Hidden Lines
-  
+
   window.onload = function() {
-
     const verlet = new Verlet();
-
     verlet.init(window.innerWidth-10,500,'#c',1,1,1);
 
     let dots = [];
     let cons = [];
     
     // custom points
-    // [[x,y,vx,vy,pinned]]
+    // [[x,y,velocityX,velocityY,pinned]]
     // vx,vy,pinned is optional
     let myModel_dots = [
       [100,100],
@@ -45,7 +43,7 @@
     ];
 
     //custom constrains
-    //multidimensional array
+    // [[index,index]]
     let myModel_cons = [
       [0,1],
       [1,2],
@@ -57,7 +55,11 @@
       [4,2,true], // set debug to false to get see effect 
     ];
 
+
+    //verlet.create(newDots[],oldDots[]);
     verlet.create(myModel_dots,dots);
+
+    //verlet.clamp(newCons[],cons[],dots[])
     verlet.clamp(myModel_cons,cons,dots);
 
 
@@ -72,7 +74,7 @@
         debug : true
       });
 
-      requestAnimationFrame(animate)
+      requestAnimationFrame(animate);
     }
     animate();
   }

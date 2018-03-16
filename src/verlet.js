@@ -1363,9 +1363,9 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	if(option === undefined) {option = {}}
 	let width = option.width || document.body.offsetWidth;
 	let height = option.height || window.innerHeight - 20;
-	let grav = option.gravity || 1;
-	let fri = option.friction || 1;
-	let stiff = option.stiffness || 1;
+	let grav = (option.gravity === undefined) ? 1 : option.gravity;
+	let fri = (option.friction === undefined) ? 1 : option.friction;
+	let stiff = (option.stiffness === undefined) ? 1 : option.stiffness;
 	let append = option.append || document.body;
 	let id = option.id;
 	if(id === undefined) id = 'verlet_quick_setup';

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+<script>
+
+  //quickSetup Settings Parameters Are Optional
+
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.cloth({},dots,cons);
+  },{
+    renderSettings : {
+      preset : 'shadowRed'
+    },
+    width : 500,
+    height : 500,
+    gravity : 0,
+    friction : 0.94,
+    stiffness : 0.99,
+    append : document.body
+  });
+
+</script>
+</body>
+</html>
