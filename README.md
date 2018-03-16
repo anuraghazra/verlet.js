@@ -10,5 +10,14 @@
   })
 ```
 
+## All Poly Objects
+* Verlet.Poly.box({},dots,cons)
+* Verlet.Poly.triangle({},dots,cons)
+* Verlet.Poly.beam({},dots,cons)
+* Verlet.Poly.hexagon({},dots,cons)
+* Verlet.Poly.rope({},dots,cons)
+* Verlet.Poly.cloth({},dots,cons)
+
+
 ### View ./test folder to get some basic API Usage Demo  
 
