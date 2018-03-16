@@ -307,7 +307,7 @@ Verlet().quickSetup(function(dots,cons) {
   });
 ```
 
-## Browse [./test](./test) Folder To See API Usage Demos  
+## Browse [./tests](./tests) Folder To See API Usage Demos  
 
 
 ### Contact Me
