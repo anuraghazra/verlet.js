@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Century Gothic';
+      color : dimgray;
+    }
+  </style>
+</head>
+<body>
+  <h2>Verlet.js Custom Models</h2>
+
+  <canvas id="c"></canvas>
+
+<script>
+
+  // Hover Over Point And Press "SPACE"pinned
+  // To Pin Points
+  // And Press "ALT" To UnPin 
+
+  //The Green Lines Are Hidden Lines
+  
+  window.onload = function() {
+
+    const verlet = new Verlet();
+
+    verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+
+    let dots = [];
+    let cons = [];
+    
+    // custom points
+    // [[x,y,vx,vy,pinned]]
+    // vx,vy,pinned is optional
+    let myModel_dots = [
+      [100,100],
+      [200,100],
+      [200,200],
+      [100,200,100,150], //vx,vy
+      [150,50,150,50,true], //vx,vy,pinned
+    ];
+
+    //custom constrains
+    //multidimensional array
+    let myModel_cons = [
+      [0,1],
+      [1,2],
+      [2,3],
+      [3,0],
+      [0,4],
+      [1,4],
+      [4,3,true], // true is for hiding constrains
+      [4,2,true], // set debug to false to get see effect 
+    ];
+
+    verlet.create(myModel_dots,dots);
+    verlet.clamp(myModel_cons,cons,dots);
+
+
+    verlet.Interact.move(dots)
+    function animate() {
+      verlet.clear();
+      
+      verlet.superUpdate(dots,cons,25);
+      verlet.superRender(dots,cons,{
+        preset : 'shadowRed',
+        //debug mode. set it to false to hide hidden constrains
+        debug : true
+      });
+
+      requestAnimationFrame(animate)
+    }
+    animate();
+  }
+</script>
+</body>
+</html>
