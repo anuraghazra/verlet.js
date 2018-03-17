@@ -1,10 +1,6 @@
 <!-- # Verlet.js -->
 
-<div align="center" style="background-color: #333">
-  <img src="./src/images/logo.png">
-</div>
-
-<!-- ![Verlet.js Logo](./src/images/logo.png) -->
+![Verlet.js Logo](./src/images/logo.png)
 
 *Verlet.js* is a javascript library for creating rapid and fast **verlet physics** based models and structures.. Its API Is Amazing....check this out..
 
