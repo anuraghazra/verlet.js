@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.0.2
+ *  @version 1.0.3
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasciHTMLPro © 2018
  *  @constructor Verlet()
@@ -687,19 +687,16 @@ function Verlet() {
 			const div = document.querySelector(id);
 			const newdiv = document.createElement('div');
 			newdiv.id = 'Verlet-Studio';
-			newdiv.innerHTML = `<div class="ui_panel" style="width : ${self.canvas.width}">
-      <h2>Verlet Studio</h2>
-      <hr>
-      <p>Physics Options</p>
-      <div class="ui_settings_labels">
-        <span>Physics Accuracy</span>
-        <span>Gravity</span>
-        <span>Friction</span>
+			newdiv.innerHTML = `<div class="ui_panel" style="width : ${self.canvas.width-20}px">
+			<h2>Verlet Studio</h2>
+			<hr><p>Physics Options</p>
+			<div class="ui_settings_labels">
+				<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span>
       </div>
       <div class="ui_settings">
-        <input placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
-        <input placeholder="Gravity" value="1" title="gravity" type="number" id="vls-gravity">
-        <input placeholder="Friction" value="1" title="friction" type="number" id="vls-friction">
+        <input step="1" placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
+        <input step="0.1" placeholder="Gravity" value="1" title="gravity" type="number" id="vls-gravity">
+        <input step="0.01" placeholder="Friction" value="1" title="friction" type="number" id="vls-friction">
       </div>
       <p>Render Options</p>
       <div class="ui_checkboxes">
