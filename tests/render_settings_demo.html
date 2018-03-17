@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Century Gothic';
+      color : dimgray;
+    }
+  </style>
+</head>
+<body>
+  <h2>Verlet.js Predefined Poly Objects</h2>
+  <canvas id="c"></canvas>
+
+<script>
+  window.onload = function() {
+
+    const verlet = new Verlet();
+
+    verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+    let dots = [];
+    let cons = [];
+
+    verlet.Poly.hexagon({},dots, cons);
+    verlet.Poly.box({},dots, cons);
+
+    verlet.Interact.move(dots)
+    function animate() {
+      verlet.clear();
+      
+      verlet.superUpdate(dots,cons,25);
+
+      // Tweak Render Settings
+      verlet.superRender(dots,cons,{
+        pointRadius : 10,
+        pointColor : 'yellowgreen',
+        lineWidth : 2,
+        lineColor : 'green',
+        renderHiddenLines : true,
+        hiddenLineColor : 'red',
+        hiddenLineWidth : 0.5,
+        // renderDotsAsBox : true
+        renderPointIndex : true,
+        font : '12px Arial',
+        fontColor : 'royalblue',
+        // debug : true
+      });
+
+      requestAnimationFrame(animate)
+    }
+    animate();
+  }
+</script>
+</body>
+</html>

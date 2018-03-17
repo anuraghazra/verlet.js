@@ -1,6 +1,10 @@
 <!-- # Verlet.js -->
 
-![Verlet.js Logo](./src/images/logo.png)
+<div align="center" style="background-color: #333">
+  <img src="./src/images/logo.png">
+</div>
+
+<!-- ![Verlet.js Logo](./src/images/logo.png) -->
 
 *Verlet.js* is a javascript library for creating rapid and fast **verlet physics** based models and structures.. Its API Is Amazing....check this out..
 
@@ -8,30 +12,24 @@
 
 > **``You can create a cloth in just 3 lines of javascript``**
 
-# Get Started
+# Lets Get Started
 
-### Create A Cloth In 3 Lines Of Code
+## Create A Cloth In Just ***3 Lines Of Code***
 ```javascript
   Verlet().quickSetup(function(dots,cons) {
     this.Poly.cloth({},dots,cons)
   })
 ```
 
-### All Poly Objects
-* Verlet.Poly.box({},dots,cons)
-* Verlet.Poly.triangle({},dots,cons)
-* Verlet.Poly.beam({},dots,cons)
-* Verlet.Poly.hexagon({},dots,cons)
-* Verlet.Poly.rope({},dots,cons)
-* Verlet.Poly.cloth({},dots,cons)
-
 <hr>
 
+quickSetup API is for getting started quickly. but its *recomended* to use **Main API** where you have more control over your app. so lets jump over to code.
+
 ## Main API Usage
+##### with tons of //comments
 check out the demo [here](./tests/main_api_usage.html)
 
 <hr>
-
 
 ### .html
 
@@ -40,16 +38,17 @@ check out the demo [here](./tests/main_api_usage.html)
 <html lang="en">
 <head>
   <title>Verlet.js API Usage</title>
+  <!-- Include our awesome verlet.js -->
   <script src="js/verlet.js"></script>
 </head>
 <body>
   
+  <!-- canvas element with id of "c" -->
   <canvas id="c"></canvas>
 
 </body>
 </html>
 ```
-<hr>
 
 ### .js
 ```javascript
@@ -59,6 +58,7 @@ window.onload = function() {
   //create a new instance
   const verlet = new Verlet();
 
+  //initialize
   // verlet.init(width, height, canvasid, gravity, friction, stiffness)
   verlet.init(500,500,'#c',1,1,1);
 
@@ -66,6 +66,7 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
+  //create a box
   //verlet.Poly.box({width,height,x,y}, cons[], dots[])
   verlet.Poly.box({
     width : 150, 
@@ -74,18 +75,23 @@ window.onload = function() {
   },dots, cons)
 
   //to interact with points in realtime
-  verlet.Interact.move(dots)
+  verlet.Interact.move(dots);
+
+  //main loop
   function animate() {
     //clears the canvas every time
+    // verlet.clear(bgcolor optional);
     verlet.clear();
     
+    //update and bake physics
     //verlet.superUpdate(dots[], cons[], physicsAccuracy)
     verlet.superUpdate(dots,cons,10);
 
+    //finally render scene objects
     //verlet.superRender(dots[], cons[], {})
     verlet.superRender(dots,cons,{});
 
-    //loop
+    //animationloop
     requestAnimationFrame(animate)
   }
   animate();
@@ -94,14 +100,23 @@ window.onload = function() {
 
 <hr>
 
-## Poly Objects Options
+## Verlet.Poly Objects
 
 ### Creating And Modifying Poly Models
 
 check out the demo [here](./tests/poly_objects_demo.html)
 
+### All Poly Objects
+* Verlet.Poly.box({},dots,cons)
+* Verlet.Poly.triangle({},dots,cons)
+* Verlet.Poly.beam({},dots,cons)
+* Verlet.Poly.hexagon({},dots,cons)
+* Verlet.Poly.rope({},dots,cons)
+* Verlet.Poly.cloth({},dots,cons)
 
 ```javascript
+...
+
 // If You Dont Specify Any Properties The Defaults Will Be Applied
 
 //verlet.Poly.box({x,y,width,height}, cons[], dots[])
@@ -157,18 +172,21 @@ verlet.Poly.cloth({
   pinRatio : 10
 },dots, cons);
 
+...
 ```
 
 <hr>
 
 ## Creating Your Own Models
 
+now hop over to creating our own models
+
 check out the demo [here](./tests/custom_models.html)
 
 ```javascript
 window.onload = function() {
   const verlet = new Verlet();
-  verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+  verlet.init(500,500,'#c',1,1,1);
 
   let dots = [];
   let cons = [];
@@ -193,13 +211,11 @@ window.onload = function() {
     [3,1],
   ];
 
-
   //verlet.create(newDots[],oldDots[]);
   verlet.create(myModel_dots,dots);
 
   //verlet.clamp(newCons[],cons[],dots[])
   verlet.clamp(myModel_cons,cons,dots);
-
 
   verlet.Interact.move(dots)
   function animate() {
@@ -220,23 +236,79 @@ window.onload = function() {
 
 ## Render Settings
 
-`You can also use some render presets`
+> You can modify the default ugly look of your verlet engine through some render settings or presets 
+
+>In last parameter of superRender() use the settings and presets like shown below
+
+check out the demo [here](./tests/render_settings_demo.html)
+
+```javascript
+...
+  function animate() {
+    ...
+    
+    ...
+
+    // Tweak Render Settings
+    verlet.superRender(dots,cons,{
+      pointRadius : 10,
+      pointColor : 'yellowgreen',
+      lineWidth : 2,
+      lineColor : 'green',
+      renderHiddenLines : true,
+      hiddenLineColor : 'red',
+      hiddenLineWidth : 0.5,
+      // renderDotsAsBox : true
+      renderPointIndex : true,
+      font : '12px Arial',
+      fontColor : 'royalblue',
+      // debug : true
+    });
+
+    ...
+  }
+  animate();
+...
+```
+
 
 ### Render Options You Can Tweak
-* pointRadius : 5
-* pointColor : 'crimson'
-* lineWidth : 1
-* lineColor : 'blue'
-* fontColor : 'green'
-* font : 'Arial 8px'
-* hiddenLineWidth : 1
-* hiddenLineColor : 'red'
-* renderDots : true
-* renderDotsAsBox : false
-* renderPointIndex : false
-* renderLines : true
-* renderPointHiddelLInes : false
-* debug : false
+
+just use 
+> ```javascript 
+> verlet.superRender(dots,cons,{
+>   propertyName : propertyValue
+> });
+>```
+properties              |  type     | like this
+------------------------|-----------|----------
+pointRadius             | *Number*  | 5
+pointColor              | *String*  | 'crimson'
+lineWidth               | *Number*  | 1
+lineColor               | *String*  | 'deepskyblue'
+fontColor               | *String*  | 'green'
+font                    | *String*  | '8px Arial'
+hiddenLineWidth         | *Number*  | 1
+hiddenLineColor         | *String*  | 'red'
+renderDots              | *Boolean* | true
+renderDotsAsBox         | *Boolean* | false
+renderPointIndex        | *Boolean* | false
+renderLines             | *Boolean* | true
+renderPointHiddelLInes  | *Boolean* | false
+debug                   | *Boolean* | false
+
+<hr>
+
+>### or if u r too lzy too typ (like me!)
+
+>Use Render Presets
+
+just use 
+> ```javascript 
+> verlet.superRender(dots,cons,{
+>   preset : 'presetName'
+> });
+>```
 
 ### Render Preset Names
 * default
@@ -245,51 +317,26 @@ window.onload = function() {
 * shadowBlue
 * shadowGreen
 
-```javascript
-window.onload = function() {
-  const verlet = new Verlet();
-  verlet.init(500,500,'#c',1,1,1);
-
-  let dots = [];
-  let cons = [];
-
-  verlet.Poly.box({
-    width : 150, 
-    height : 100,
-    x : 100, y : 100
-  },dots, cons)
-
-
-  verlet.Interact.move(dots)
-  function animate() {
-    verlet.clear();
-    
-    verlet.superUpdate(dots,cons,10);
-
-
-    /* ==== render Settings ====*/
-    verlet.superRender(dots,cons,{
-      pointRadius : 5
-      pointColor : 'crimson'
-      lineColor : 'deepskyblue'
-      preset : 'shadowRed'
-    });
-
-
-    requestAnimationFrame(animate)
-  }
-  animate();
-}
-
-```
 
 <hr>
 
 ## quickSetup Settings
+
+>quickSetup is amazingly fast and easy. we can also include some settings for our verlet engine like
+
+> width,height of canvas.
+
+> gravity, friction, stiffness of verlet engine.
+
+>and we can also pass all **superRender()** settings through **renderSettings** object
+
+> and where we want to append canvas default is body
+
+
+
 check out the demo [here](./tests/quickSetup_demo.html)
 
 ```javascript
-
 //quickSetup Settings Parameters Are Optional
 
 Verlet().quickSetup(function(dots,cons) {
@@ -310,10 +357,8 @@ Verlet().quickSetup(function(dots,cons) {
 ## Browse [./tests](./tests) Folder To See API Usage Demos  
 
 
-### Contact Me
->Email Me : hazru.anurag@gmail.com
-
->I Am A : Proud Indian
-
->And Citizen Of : Kolkata
+> ## Contact Me
+> Email Me : hazru.anurag@gmail.com
+> <p>I Am A : Proud Indian<p>
+> <p>And Citizen Of : Kolkata<p>
 
