@@ -687,50 +687,117 @@ function Verlet() {
 			const div = document.querySelector(id);
 			const newdiv = document.createElement('div');
 			newdiv.id = 'Verlet-Studio';
-			newdiv.innerHTML = `<div class="vls-div" style="width : ` + (self.canvas.width+2) + `px">
-							<p>Verlet Settings</p>
-								<hr noshade color="white">
-								<p>Physic Accuracy , Gravity , Friction</p>
-								<input type="number" id="vls-Iterrations" value="20">
-								<input type="number" id="vls-gravity" value="1">
-								<input type="number" id="vls-friction" value="1">
-								<p>Render Options</p>
-								<hr noshade color="white">
-								<div class="vls-check-container">
-									<div class="vls-check"><input type="checkbox" id="vls-dots" checked="true">Dots</div>
-									<div class="vls-check"><input type="checkbox" id="vls-lines" checked="true">Lines</div>
-									<div class="vls-check"><input type="checkbox" id="vls-hidden-lines" checked="true">Hidden</div>
-									<div class="vls-check"><input type="checkbox" id="vls-pointIndex">Index</div>
-									<div class="vls-check"><input type="checkbox" id="vls-shapes" checked>Shapes</div>
-								</div>
-							</div>`;
+			newdiv.innerHTML = `<div class="ui_panel" style="width : ${self.canvas.width}">
+      <h2>Verlet Studio</h2>
+      <hr>
+      <p>Physics Options</p>
+      <div class="ui_settings_labels">
+        <span>Physics Accuracy</span>
+        <span>Gravity</span>
+        <span>Friction</span>
+      </div>
+      <div class="ui_settings">
+        <input placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
+        <input placeholder="Gravity" value="1" title="gravity" type="number" id="vls-gravity">
+        <input placeholder="Friction" value="1" title="friction" type="number" id="vls-friction">
+      </div>
+      <p>Render Options</p>
+      <div class="ui_checkboxes">
+        <label>
+          <input type="checkbox" checked id="vls-dots">
+          <span>Dots</span>
+        </label>
+        <label>
+          <input type="checkbox" checked id="vls-lines">
+          <span>Lines</span>
+        </label>
+        <label>
+          <input type="checkbox" id="vls-pointIndex">
+          <span>Index</span>
+        </label>
+        <label>
+          <input type="checkbox" id="vls-hidden-lines">
+          <span>Hidden</span>
+        </label>
+        <label>
+          <input type="checkbox" id="vls-shapes">
+          <span>Shapes</span>
+        </label>
+			</div>
+			<hr>
+			<span>Preset</span>
+			<select id="vls-preset">
+				<option value="shadowRed">shadowRed</option>
+				<option value="shadowPink">shadowPink</option>
+				<option value="shadowBlue">shadowBlue</option>
+				<option value="shadowGreen">shadowGreen</option>
+			</select>
+    </div>`;
 
-			let style = `.vls-div {
-							font-family : 'Century Gothic';
-							box-sizing : border-box;
-							padding : 10px;
-							color : white;
-							background-color: rgba(45,45,45,1);
-							padding: 10px;
-							border-bottom: 4px solid lightskyblue;
-						}
-						.vls-div p {
-							margin-top: 12px;
-							margin-bottom: 12px;
-						}
-						.vls-check-container {
-							width : 100%;
-							overflow:auto;
-						}
-						.vls-check {
-							text-align:center;
-							margin-right: 10px;
-							float: left;
-						}
-						input {
-							padding : 2px;
-							width : 31%;
-						}`
+			let style = `.ui_panel {
+				font-family: 'Segoe UI';
+				color : #252525;
+				box-shadow: 0 0 5px #00000080;
+				border-radius: 5px;
+				padding: 10px;
+			}
+			.ui_panel * {
+				box-sizing : border-box;
+			}
+			.ui_panel p {
+				font-size: 18px;
+				margin: 5px;
+				margin-bottom: 10px;
+			}
+			.ui_panel > h2 {
+				padding: 0;
+				margin: 5px;
+				margin-bottom: 10px;
+			}
+			.ui_panel hr {
+				border: 1px solid lightgray;
+			}
+			.ui_panel .ui_settings_labels {
+				display: flex;
+				padding: 10px 10px 0;
+			}
+			.ui_panel .ui_settings {
+				display: flex;
+				padding: 10px;
+			}
+			.ui_panel .ui_settings_labels span { flex: 1; }
+			.ui_panel .ui_settings input {
+				flex: 1;
+				margin-top: 0px;
+				margin-right: 10px;
+				width: 100%;
+				outline: none;
+				border: 1px solid gray;
+				padding: 8px;
+				border-radius: 5px;
+			}
+			.ui_panel .ui_checkboxes {
+				display: flex;
+				flex-wrap: wrap;
+				box-shadow: 0 0 2px #00000080;
+				border-radius: 5px;
+				padding-bottom: 10px;
+				padding-top: 10px;
+			}
+			.ui_panel .ui_checkboxes label {
+				flex-grow: 1;
+				cursor: pointer;
+			}
+			.ui_panel .ui_checkboxes label input {
+				margin-left: 20px;
+				width: auto;
+				cursor: pointer;
+			}
+			.ui_panel select {
+				padding: 5px;
+				width: 100%;
+				margin-top: 5px;
+			}`
 			
 			let studioStyle,studioElt;
 			if(document.createStyleSheet) {
@@ -760,10 +827,10 @@ function Verlet() {
 		 */
 		update : function(opt) {
 			let option;
-			if(opt.option === undefined) {
+			if(opt.renderSettings === undefined) {
 				option = {};
 			} else {
-				option = opt.option;
+				option = opt.renderSettings;
 			}
 			const PhysicsAccuracy = document.getElementById('vls-Iterrations'),
 				dotOpt = document.getElementById('vls-dots'),
@@ -772,18 +839,19 @@ function Verlet() {
 				IndexOpt = document.getElementById('vls-pointIndex'),
 				shapeOpt = document.getElementById('vls-shapes'),
 				gravity = document.getElementById('vls-gravity'),
-				friction = document.getElementById('vls-friction');
+				friction = document.getElementById('vls-friction'),
+				vlsPreset = document.getElementById('vls-preset');
 			
-			let color = option.hoverColor || 'black';
-			let dotsRadius = option.pointRadius || 5,
-				dotsColor = option.pointColor || 'black',
-				lineWidth = option.lineWidth || 1,
-				lineColor = option.lineColor || 'black',
-				fontColor = option.fontColor || 'black',
-				hiddenLineWidth = option.hiddenLineWidth || 0.5,
-				hiddenLineColor = option.hiddenLineColor || 'red',
-				font = option.font || '10px Arial',
-				preset = option.preset || 'default';
+			let color = option.hoverColor;
+			let dotsRadius = option.pointRadius,
+				dotsColor = option.pointColor,
+				lineWidth = option.lineWidth,
+				lineColor = option.lineColor,
+				fontColor = option.fontColor,
+				hiddenLineWidth = option.hiddenLineWidth,
+				hiddenLineColor = option.hiddenLineColor,
+				font = option.font,
+				preset = option.preset || vlsPreset.value || 'default';
 						
 			let isRenderLines;
 			let isRenderDots;
@@ -802,7 +870,7 @@ function Verlet() {
 				(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
 			}
 
-			self.superRender(opt.dots,opt.cons,{
+			self.superRender(opt.dots,opt.cons,{			
 				renderDots : isRenderDots,
 				renderLines : isRenderLines,
 				renderPointIndex : option.renderPointIndex || isRenderIndex,
@@ -815,7 +883,7 @@ function Verlet() {
 				hiddenLineWidth : hiddenLineWidth,
 				font : font,
 				preset : preset
-			})
+			});
 			self.superUpdate(opt.dots,opt.cons,PhysicsAccuracy.value,{hoverColor : color});
 		}
 	};
