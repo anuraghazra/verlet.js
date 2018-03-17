@@ -350,6 +350,14 @@ Verlet().quickSetup(function(dots,cons) {
   });
 ```
 
+<hr>
+
+## Verlet.Studio
+
+> You can also set up studio control panel and update settings live  
+
+
+
 ## Browse [./tests](./tests) Folder To See API Usage Demos  
 
 

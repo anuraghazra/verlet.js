@@ -710,7 +710,7 @@ function Verlet() {
 							box-sizing : border-box;
 							padding : 10px;
 							color : white;
-							background-color: rgba(60,60,60,1);
+							background-color: rgba(45,45,45,1);
 							padding: 10px;
 							border-bottom: 4px solid lightskyblue;
 						}
@@ -782,7 +782,8 @@ function Verlet() {
 				fontColor = option.fontColor || 'black',
 				hiddenLineWidth = option.hiddenLineWidth || 0.5,
 				hiddenLineColor = option.hiddenLineColor || 'red',
-				font = option.font || '10px Arial';;
+				font = option.font || '10px Arial',
+				preset = option.preset || 'default';
 						
 			let isRenderLines;
 			let isRenderDots;
@@ -801,7 +802,7 @@ function Verlet() {
 				(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
 			}
 
-			self.superRender(opt.points,opt.cons,{
+			self.superRender(opt.dots,opt.cons,{
 				renderDots : isRenderDots,
 				renderLines : isRenderLines,
 				renderPointIndex : option.renderPointIndex || isRenderIndex,
@@ -813,8 +814,9 @@ function Verlet() {
 				hiddenLineColor : hiddenLineColor,
 				hiddenLineWidth : hiddenLineWidth,
 				font : font,
+				preset : preset
 			})
-			self.superUpdate(opt.points,opt.cons,PhysicsAccuracy.value,{hoverColor : color});
+			self.superUpdate(opt.dots,opt.cons,PhysicsAccuracy.value,{hoverColor : color});
 		}
 	};
 
@@ -1052,7 +1054,6 @@ Verlet.prototype.clamp = function(newJ,joints,dots) {
 			len : this._distance(dots[newJ[j][0]],dots[newJ[j][1]]),
 			hidden : newJ[j][2] || false,
 			id : [newJ[j][0],newJ[j][1]]
-			// tear : newJ[j][3]
 		});
 	}
 };
@@ -1074,10 +1075,9 @@ Verlet.prototype.shape = function(arr,forms,dots) {
 	}
 	for (let i = 0; i < arr.length; i++) {
 		tmpArr.push(dots[arr[i]]);
-		tmpId.push(arr[i]);
 	}
 	forms.push({
-		id : tmpId,
+		id : arr,
 		paths : tmpArr,
 		color : color
 	});
