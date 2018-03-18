@@ -16,28 +16,6 @@
     this.Poly.cloth({},dots,cons)
   })
 ```
-  
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title>Main Verlet.js API</title>
-  <script src="./src/verlet.js"></script>
-</head>
-<body>
-<script>
-  Verlet().quickSetup(function(dots,cons) {
-    this.Poly.cloth({y : 20},dots,cons);
-  },{
-    renderSettings : {
-      preset : 'shadowRed'
-    },
-    width : window.innerWidth,
-    height : 400,
-    physicsAccuracy : 5
-  });
-</script>
-</body>
-</html>
 
 ------------------------------------------------------------------------
 
