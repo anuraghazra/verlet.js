@@ -10,11 +10,11 @@
   <div id="ui"></div>
 <script>
   window.onload = function() {
-    const verlet = new Verlet();
+    var verlet = new Verlet();
     verlet.init(640,500,'#c',1,1,1);
 
-    let dots = [];
-    let cons = [];
+    var dots = [];
+    var cons = [];
     
     verlet.Poly.hexagon({},dots,cons);
 
@@ -27,10 +27,7 @@
       verlet.Studio.update({
         dots : dots,
         cons : cons,
-        renderSettings : {
-          // preset : 'shadowRed',
-          pointRadius : 5,
-        }
+        renderSettings : {}
       })
 
       requestAnimationFrame(animate);

@@ -19,15 +19,22 @@
 
 ------------------------------------------------------------------------
 
-quickSetup API is for getting started quickly. but its *recomended* to use **Main API** where you have more control over your app. so lets jump over to code.
+quickSetup API is for getting started quickly. but its *recomended* to use **MainAPI** where you have more control over your app. so lets jump over to code.
 
-## Main API Usage
+## MainAPI
 ##### with tons of //comments
 check out the demo [here](./tests/main_api_usage.html)
 
-------------------------------------------------------------------------
 
-### .html
+### `.html`
+
+lets add our markup first.
+
+> Just include verlet.js in head section of your markup.
+
+> Then add a canvas with an id. 
+
+>and we are good to go.
 
 ```html 
 <!DOCTYPE html>
@@ -46,7 +53,24 @@ check out the demo [here](./tests/main_api_usage.html)
 </html>
 ```
 
-### .js
+### `.js`
+
+Now for our javascript
+
+> Firstly add window onload function
+
+> Then create a new instance with **new Verlet();** and initialize with appropriate settings in **verlet.init();**
+
+> Then we need 2 arrays you can name whatever you want, and then create a model with **verlet.Poly.box({}, dots, cons);**
+
+> then the main loop with
+> * **verlet.clear()**
+> * **verlet.superUpdate(dots, cons, physicsAccuracy);**
+> * **verlet.superRender(dots,cons,{});** 
+> * **requestAnimationFrame(funcName);**
+
+> just call **animate();** and your first verlet.js model is good to go. now show off your friends
+
 ```javascript
 //on loaded
 window.onload = function() {
@@ -64,11 +88,7 @@ window.onload = function() {
 
   //create a box
   //verlet.Poly.box({width,height,x,y}, cons[], dots[])
-  verlet.Poly.box({
-    width : 150, 
-    height : 100,
-    x : 100, y : 100
-  },dots, cons)
+  verlet.Poly.box({},dots, cons)
 
   //to interact with points in realtime
   verlet.Interact.move(dots);
@@ -109,6 +129,7 @@ check out the demo [here](./tests/poly_objects_demo.html)
 * Verlet.Poly.hexagon({},dots,cons)
 * Verlet.Poly.rope({},dots,cons)
 * Verlet.Poly.cloth({},dots,cons)
+
 
 ```javascript
 ...
@@ -313,6 +334,55 @@ just use
 * shadowBlue
 * shadowGreen
 
+------------------------------------------------------------------------
+
+## StudioAPI
+
+The MainAPI is cool. but we have some more magic in our pocket.
+And its the `StudioAPI`
+
+> You can also set up studio control panel and update settings in *realtime*
+
+> The API is pretty simple its integrates with **MainAPI**
+
+> There are two simple methods **Verlet.Studio.init()** and **Verlet.Studio.update()**
+
+check out the demo [here](./tests/studio_demo.html)
+
+```javascript
+//StudioAPI
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(650,350,'#c',1,1);
+
+  const dots = [];
+  const cons = [];
+
+  verlet.Poly.hexagon({},dots,cons);
+
+  // Initialize Controls and append it to a element
+  verlet.Studio.init('#container');
+  
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.clear();
+    
+    //update the studio
+    //Verlet.Studio.update({dots[],cons[],renderSettings{}})
+    verlet.Studio.update({
+      dots : dots,
+      cons : cons,
+      renderSettings : {
+        // optional and overwrites control panel settings
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
+}
+```
+
 
 ------------------------------------------------------------------------
 
@@ -327,8 +397,6 @@ just use
 >and we can also pass all **superRender()** settings through **renderSettings** object
 
 > and where we want to append canvas default is body
-
-
 
 check out the demo [here](./tests/quickSetup_demo.html)
 
@@ -350,14 +418,7 @@ Verlet().quickSetup(function(dots,cons) {
   });
 ```
 
-------------------------------------------------------------------------
-
-## Verlet.Studio
-
-> You can also set up studio control panel and update settings live  
-
-
-
+----------------------------------------------------------
 ## Browse [./tests](./tests) Folder To See API Usage Demos  
 
 

@@ -9,35 +9,34 @@
   <div id="container"></div>
 <script>
 window.onload = function() {
-	const verlet = new Verlet();
-	verlet.init(650,350,'#c',1,1);
-	
-	const dots = [];
-	const cons = [];
-	
-	verlet.Poly.hexagon({},dots,cons);
+  const verlet = new Verlet();
+  verlet.init(650,350,'#c',1,1);
 
-	verlet.Studio.init('#container');
-	verlet.Interact.move(dots);
+  const dots = [];
+  const cons = [];
 
-	function animate() {
-		verlet.clear();
-		
-		verlet.Studio.update({
-			dots : dots,
-			cons : cons,
-			option : {
-				pointRadius : 2,
-				pointColor : 'blue',
-				lineColor : 'green',
-				lineWidth : 0.5
-			}
-		});
+  verlet.Poly.hexagon({},dots,cons);
 
-		requestAnimationFrame(animate);
-	}
-	animate();
+  // Initialize Controls and append it to a element
+  verlet.Studio.init('#container');
   
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.clear();
+    
+    //update the studio
+    //Verlet.Studio.update({dots[],cons[],renderSettings{}})
+    verlet.Studio.update({
+      dots : dots,
+      cons : cons,
+      renderSettings : {
+        // optional and overwrites control panel settings
+      }
+    });
+
+    requestAnimationFrame(animate);
+  }
+  animate();
 }
 </script>
 </body>

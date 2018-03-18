@@ -23,11 +23,7 @@
     let cons = [];
 
     //verlet.Poly.box({width,height,x,y}, cons[], dots[])
-    verlet.Poly.box({
-      width : 150, 
-      height : 100,
-      x : 100, y : 100
-    },dots, cons)
+    verlet.Poly.box({},dots, cons)
 
     //to interact with points in realtime
     verlet.Interact.move(dots)

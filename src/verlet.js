@@ -81,6 +81,7 @@ function Verlet() {
 			friction : this.friction,
 			stiffness : this.stiffness
 		}
+
 		return dataToReturn;
 	};
 
