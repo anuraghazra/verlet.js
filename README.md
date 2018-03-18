@@ -62,18 +62,15 @@ lets add our markup first.
 
 Now for our javascript
 
-> Firstly add window onload function
-
-> Then create a new instance with **new Verlet();** and initialize with appropriate settings in **verlet.init();**
+> create a new instance of Verlet with **new Verlet();** and initialize with appropriate settings in **verlet.init();**
 
 > Then we need 2 arrays you can name whatever you want, and then create a model with **verlet.Poly.box({}, dots, cons);**
 
 > then the main loop with
-> * **verlet.frame()**
+> * **verlet.frame(function,color:optional)**
 > * **verlet.superUpdate(dots, cons, physicsAccuracy);**
-> * **verlet.superRender(dots,cons,{});**
-
-> just call **animate();** and your first verlet.js model is good to go. now show off your friends
+> * **verlet.superRender(dots,cons,{});** <br>
+> just call **animate();** and your very first verlet.js model is good to go. now show off your friends
 
 ```javascript
 //on loaded
@@ -430,7 +427,6 @@ Verlet().quickSetup(function(dots,cons) {
 
 ----------------------------------------------------------
 ## Browse [./tests](./tests) Folder To See API Usage Demos  
-
 
 > ## Contact Me
 > Email Me : hazru.anurag@gmail.com
