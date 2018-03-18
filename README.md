@@ -17,7 +17,7 @@
   })
 ```
 
-<hr>
+------------------------------------------------------------------------
 
 quickSetup API is for getting started quickly. but its *recomended* to use **Main API** where you have more control over your app. so lets jump over to code.
 
@@ -25,7 +25,7 @@ quickSetup API is for getting started quickly. but its *recomended* to use **Mai
 ##### with tons of //comments
 check out the demo [here](./tests/main_api_usage.html)
 
-<hr>
+------------------------------------------------------------------------
 
 ### .html
 
@@ -94,7 +94,7 @@ window.onload = function() {
 }
 ```
 
-<hr>
+------------------------------------------------------------------------
 
 ## Verlet.Poly Objects
 
@@ -171,7 +171,7 @@ verlet.Poly.cloth({
 ...
 ```
 
-<hr>
+------------------------------------------------------------------------
 
 ## Creating Your Own Models
 
@@ -228,7 +228,7 @@ window.onload = function() {
 }
 ```
 
-<hr>
+------------------------------------------------------------------------
 
 ## Render Settings
 
@@ -293,7 +293,7 @@ renderLines             | *Boolean* | true
 renderPointHiddelLInes  | *Boolean* | false
 debug                   | *Boolean* | false
 
-<hr>
+------------------------------------------------------------------------
 
 >### or if u r too lzy too typ (like me!)
 
@@ -314,7 +314,7 @@ just use
 * shadowGreen
 
 
-<hr>
+------------------------------------------------------------------------
 
 ## quickSetup Settings
 
@@ -350,7 +350,7 @@ Verlet().quickSetup(function(dots,cons) {
   });
 ```
 
-<hr>
+------------------------------------------------------------------------
 
 ## Verlet.Studio
 
