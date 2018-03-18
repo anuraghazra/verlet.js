@@ -1450,5 +1450,18 @@ Verlet.prototype.quickSetup = function(callback,option) {
 		requestAnimationFrame(animate);
 	}
 	animate();
+}
 
+/**
+ * updated and clears the canvas
+ * @param {function} func 
+ * @param {string} color optional 
+ */
+Verlet.prototype.frame = function(func,color) {
+	this.clear(color);
+	let frame = window.requestAnimationFrame 
+							|| window.webkitRequestAnimationFrame 
+							|| window.msRequestAnimationFrame 
+							|| window.mozRequestAnimationFrame;
+	frame(func);
 }

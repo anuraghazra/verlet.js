@@ -64,10 +64,9 @@ Now for our javascript
 > Then we need 2 arrays you can name whatever you want, and then create a model with **verlet.Poly.box({}, dots, cons);**
 
 > then the main loop with
-> * **verlet.clear()**
+> * **verlet.frame()**
 > * **verlet.superUpdate(dots, cons, physicsAccuracy);**
 > * **verlet.superRender(dots,cons,{});**
-> * **requestAnimationFrame(funcName);**
 
 > just call **animate();** and your first verlet.js model is good to go. now show off your friends
 
@@ -95,9 +94,10 @@ window.onload = function() {
 
   //main loop
   function animate() {
-    //clears the canvas every time
-    // verlet.clear(bgcolor optional);
-    verlet.clear();
+
+    //clears and updates the canvas every time
+    // verlet.frame(function,bgcolor:optional);
+    verlet.frame(animate);
 
     //update and bake physics
     //verlet.superUpdate(dots[], cons[], physicsAccuracy)
@@ -107,8 +107,6 @@ window.onload = function() {
     //verlet.superRender(dots[], cons[], {})
     verlet.superRender(dots,cons,{});
 
-    //animationloop
-    requestAnimationFrame(animate)
   }
   animate();
 }
@@ -245,14 +243,13 @@ window.onload = function() {
 
   verlet.Interact.move(dots)
   function animate() {
-    verlet.clear();
+    verlet.frame(animate);
 
     verlet.superUpdate(dots,cons,25);
     verlet.superRender(dots,cons,{
       preset : 'shadowRed'
     });
 
-    requestAnimationFrame(animate);
   }
   animate();
 }
@@ -374,7 +371,7 @@ window.onload = function() {
 
   verlet.Interact.move(dots);
   function animate() {
-    verlet.clear();
+    verlet.frame(animate);
 
     //update the studio
     //Verlet.Studio.update({dots[],cons[],renderSettings{}})
@@ -386,7 +383,6 @@ window.onload = function() {
       }
     });
 
-    requestAnimationFrame(animate);
   }
   animate();
 }

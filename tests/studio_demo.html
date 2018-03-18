@@ -22,7 +22,7 @@ window.onload = function() {
   
   verlet.Interact.move(dots);
   function animate() {
-    verlet.clear();
+    verlet.frame(animate);
     
     //update the studio
     //Verlet.Studio.update({dots[],cons[],renderSettings{}})
@@ -33,8 +33,7 @@ window.onload = function() {
         // optional and overwrites control panel settings
       }
     });
-
-    requestAnimationFrame(animate);
+    
   }
   animate();
 }
