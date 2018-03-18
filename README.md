@@ -16,10 +16,32 @@
     this.Poly.cloth({},dots,cons)
   })
 ```
+  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="./src/verlet.js"></script>
+</head>
+<body>
+<script>
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.cloth({y : 20},dots,cons);
+  },{
+    renderSettings : {
+      preset : 'shadowRed'
+    },
+    width : window.innerWidth,
+    height : 400,
+    physicsAccuracy : 5
+  });
+</script>
+</body>
+</html>
 
 ------------------------------------------------------------------------
 
-quickSetup API is for getting started quickly. but its *recomended* to use **MainAPI** where you have more control over your app. so lets jump over to code.
+quickSetup API is for getting started quickly. but its *recomended* to use **MainAPI** where ***you have more control over your app***. so lets jump over to code.
 
 ## MainAPI
 ##### with tons of //comments
@@ -32,11 +54,11 @@ lets add our markup first.
 
 > Just include verlet.js in head section of your markup.
 
-> Then add a canvas with an id. 
+> Then add a canvas with an id.
 
 >and we are good to go.
 
-```html 
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -45,7 +67,7 @@ lets add our markup first.
   <script src="js/verlet.js"></script>
 </head>
 <body>
-  
+
   <!-- canvas element with id of "c" -->
   <canvas id="c"></canvas>
 
@@ -66,7 +88,7 @@ Now for our javascript
 > then the main loop with
 > * **verlet.clear()**
 > * **verlet.superUpdate(dots, cons, physicsAccuracy);**
-> * **verlet.superRender(dots,cons,{});** 
+> * **verlet.superRender(dots,cons,{});**
 > * **requestAnimationFrame(funcName);**
 
 > just call **animate();** and your first verlet.js model is good to go. now show off your friends
@@ -98,7 +120,7 @@ window.onload = function() {
     //clears the canvas every time
     // verlet.clear(bgcolor optional);
     verlet.clear();
-    
+
     //update and bake physics
     //verlet.superUpdate(dots[], cons[], physicsAccuracy)
     verlet.superUpdate(dots,cons,10);
@@ -130,6 +152,15 @@ check out the demo [here](./tests/poly_objects_demo.html)
 * Verlet.Poly.rope({},dots,cons)
 * Verlet.Poly.cloth({},dots,cons)
 
+<!-- 
+Poly           | Preview
+ ---------------|---------
+Verlet.Poly.box | ![img](./assets/images/box.png)
+Verlet.Poly.triangle | ![img](./assets/images/triangle.png)
+Verlet.Poly.beam | ![img](./assets/images/beam.png)
+Verlet.Poly.hexagon | ![img](./assets/images/hexagon.png)
+Verlet.Poly.rope | ![img](./assets/images/rope.png)
+Verlet.Poly.cloth | ![img](./assets/images/cloth.png) -->
 
 ```javascript
 ...
@@ -140,7 +171,7 @@ check out the demo [here](./tests/poly_objects_demo.html)
 verlet.Poly.box({
   x : 100,
   y : 100,
-  width : 100, 
+  width : 100,
   height : 100,
 },dots, cons);
 
@@ -177,7 +208,7 @@ verlet.Poly.rope({
   x : 100,
   y : 100,
   segs : 25,
-  gap : 15 
+  gap : 15
 },dots, cons);
 
 //verlet.Poly.cloth({x,y,segs,gap,pinRatio}, cons[], dots[])
@@ -207,7 +238,7 @@ window.onload = function() {
 
   let dots = [];
   let cons = [];
-  
+
   // custom points
   // [[x,y,velocityX,velocityY,pinned]]
   // vx,vy,pinned is optional
@@ -237,7 +268,7 @@ window.onload = function() {
   verlet.Interact.move(dots)
   function animate() {
     verlet.clear();
-    
+
     verlet.superUpdate(dots,cons,25);
     verlet.superRender(dots,cons,{
       preset : 'shadowRed'
@@ -253,7 +284,7 @@ window.onload = function() {
 
 ## Render Settings
 
-> You can modify the default ugly look of your verlet engine through some render settings or presets 
+> You can modify the default ugly look of your verlet engine through some render settings or presets
 
 >In last parameter of superRender() use the settings and presets like shown below
 
@@ -263,7 +294,7 @@ check out the demo [here](./tests/render_settings_demo.html)
 ...
   function animate() {
     ...
-    
+
     ...
 
     // Tweak Render Settings
@@ -291,8 +322,8 @@ check out the demo [here](./tests/render_settings_demo.html)
 
 ### Render Options You Can Tweak
 
-just use 
-> ```javascript 
+just use
+> ```javascript
 > verlet.superRender(dots,cons,{
 >   propertyName : propertyValue
 > });
@@ -320,8 +351,8 @@ debug                   | *Boolean* | false
 
 >Use Render Presets
 
-just use 
-> ```javascript 
+just use
+> ```javascript
 > verlet.superRender(dots,cons,{
 >   preset : 'presetName'
 > });
@@ -362,11 +393,11 @@ window.onload = function() {
 
   // Initialize Controls and append it to a element
   verlet.Studio.init('#container');
-  
+
   verlet.Interact.move(dots);
   function animate() {
     verlet.clear();
-    
+
     //update the studio
     //Verlet.Studio.update({dots[],cons[],renderSettings{}})
     verlet.Studio.update({
@@ -426,4 +457,3 @@ Verlet().quickSetup(function(dots,cons) {
 > Email Me : hazru.anurag@gmail.com
 > <p>I Am A : Proud Indian<p>
 > <p>And Citizen Of : Kolkata<p>
-
