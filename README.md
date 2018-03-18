@@ -11,6 +11,10 @@
 # Lets Get Started
 
 ## Create A Cloth In Just ***3 Lines Of Code***
+
+check out the demo [here](./tests/cloth_in_three_lines.html)
+
+
 ```javascript
   Verlet().quickSetup(function(dots,cons) {
     this.Poly.cloth({},dots,cons)
@@ -23,6 +27,7 @@ quickSetup API is for getting started quickly. but its *recomended* to use **Mai
 
 ## MainAPI
 ##### with tons of //comments
+
 check out the demo [here](./tests/main_api_usage.html)
 
 
