@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Document</title>
+  <script src="../src/verlet.js"></script>
+  <!-- <link rel="stylesheet" href="./verlet_studio.css"> -->
+</head>
+<body>
+  <canvas id="c" style="border: 1px solid black"></canvas>
+  <div id="ui"></div>
+<script>
+  window.onload = function() {
+    var verlet = new Verlet();
+    verlet.init(640,500,'#c',1,1,1);
+
+    var dots = [];
+    var cons = [];
+    
+    verlet.Poly.hexagon({},dots,cons);
+
+    verlet.Studio.init('#ui');
+
+    verlet.Interact.move(dots)
+    function animate() {
+      verlet.frame(animate);
+      
+      verlet.Studio.update({
+        dots : dots,
+        cons : cons,
+        renderSettings : {}
+      });
+      
+    }
+    animate();
+  }
+</script>  
+</body>
+</html>
