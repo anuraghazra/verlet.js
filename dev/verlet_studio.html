@@ -22,15 +22,14 @@
 
     verlet.Interact.move(dots)
     function animate() {
-      verlet.clear();
+      verlet.frame(animate);
       
       verlet.Studio.update({
         dots : dots,
         cons : cons,
         renderSettings : {}
-      })
-
-      requestAnimationFrame(animate);
+      });
+      
     }
     animate();
   }
