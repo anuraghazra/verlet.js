@@ -12,7 +12,7 @@
 
 ## Create A Cloth In Just ***3 Lines Of Code***
 
-check out the demo [here](./tests/cloth_in_three_lines.html)
+check out the demo [here](./demos/cloth_in_three_lines.html)
 
 
 ```javascript
@@ -28,7 +28,7 @@ quickSetup API is for getting started quickly. but its *recomended* to use **Mai
 ## MainAPI
 ##### with tons of //comments
 
-check out the demo [here](./tests/main_api_usage.html)
+check out the demo [here](./demos/main_api_usage.html)
 
 
 ### `.html`
@@ -120,7 +120,7 @@ window.onload = function() {
 
 ### Creating And Modifying Poly Models
 
-check out the demo [here](./tests/poly_objects_demo.html)
+check out the demo [here](./demos/poly_objects_demo.html)
 
 ### All Poly Objects
 * Verlet.Poly.box({},dots,cons)
@@ -207,7 +207,7 @@ verlet.Poly.cloth({
 
 now hop over to creating our own models
 
-check out the demo [here](./tests/custom_models.html)
+check out the demo [here](./demos/custom_models.html)
 
 ```javascript
 window.onload = function() {
@@ -265,7 +265,7 @@ window.onload = function() {
 
 >In last parameter of superRender() use the settings and presets like shown below
 
-check out the demo [here](./tests/render_settings_demo.html)
+check out the demo [here](./demos/render_settings_demo.html)
 
 ```javascript
 ...
@@ -355,7 +355,7 @@ And its the `StudioAPI`
 
 > There are two simple methods **Verlet.Studio.init()** and **Verlet.Studio.update()**
 
-check out the demo [here](./tests/studio_demo.html)
+check out the demo [here](./demos/studio_demo.html)
 
 ```javascript
 //StudioAPI
@@ -405,7 +405,7 @@ window.onload = function() {
 
 > and where we want to append canvas default is body
 
-check out the demo [here](./tests/quickSetup_demo.html)
+check out the demo [here](./demos/quickSetup_demo.html)
 
 ```javascript
 //quickSetup Settings Parameters Are Optional
@@ -426,7 +426,7 @@ Verlet().quickSetup(function(dots,cons) {
 ```
 
 ----------------------------------------------------------
-## Browse [./tests](./tests) Folder To See API Usage Demos  
+## Browse [./demos](./demos) Folder To See API Usage Demos  
 
 > ## Contact Me
 > Email Me : hazru.anurag@gmail.com
