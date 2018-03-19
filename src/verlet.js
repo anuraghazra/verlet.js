@@ -1465,3 +1465,56 @@ Verlet.prototype.frame = function(func,color) {
 							|| window.mozRequestAnimationFrame;
 	frame(func);
 }
+
+/**
+ * DEVELOPMENT IN PROGRESS
+ * STAGE : 3
+ */
+
+/**
+ * creates an array contains a verlet image data 
+ * @method throwImage
+ * @param {array} ids [1,2,3,4],
+ * @param {string} imgsrc image_path
+ * @param {array} imgArr empty array
+ * @param {array} dots dots
+ */
+Verlet.prototype.throwImage = function(ids,imgsrc,imgArr,dots) {
+	let paths = [];
+	for (let i = 0; i < ids.length; i++) {
+		const id = ids[i];
+		paths.push(dots[id]);
+	}
+	imgArr.push({
+		paths : paths,
+		img : loadImg(imgsrc)
+	});
+	
+	function loadImg(str) {
+		let img = new Image();
+		img.src = str;
+		return img;
+	}
+}
+
+/**
+ * Render verlet image data from given array
+ * @method renderImages
+ * @param {array} images image_array
+ */
+Verlet.prototype.renderImages = function (images) {
+	for (let i = 0; i < images.length; i++) {
+		const image = images[i];
+		let w = -this._distance(image.paths[0],image.paths[1]);
+		let h = this._distance(image.paths[0],image.paths[3]);
+		let dx = image.paths[0].x - image.paths[1].x;
+		let dy = image.paths[0].y - image.paths[1].y;
+		let angle = Math.atan2(dy,dx);
+		
+		this.ctx.save();
+		this.ctx.translate(image.paths[0].x,image.paths[0].y);
+		this.ctx.rotate(angle);
+		this.ctx.drawImage(image.img,0,0,w,h);
+		this.ctx.restore(angle);
+	}
+}
