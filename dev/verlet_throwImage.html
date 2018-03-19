@@ -7,7 +7,7 @@
 <body>
 
   <canvas id="c"></canvas>
-
+  
 <script>
 window.onload = function() {
   const verlet = new Verlet();
@@ -22,10 +22,6 @@ window.onload = function() {
     [100,100,Math.random()*150,Math.random()*150,false,'red'],
     [100,350],
     [250,350],
-    [250,100],
-    [100,100,Math.random()*150,Math.random()*150,false,'red'],
-    [100,350],
-    [250,350],
     [250,100]
   ];
   let box_cons = [
@@ -33,16 +29,10 @@ window.onload = function() {
     [1,2],
     [2,3],
     [3,0],
-    [2,0],
-    [0+4,1+4],
-    [1+4,2+4],
-    [2+4,3+4],
-    [3+4,0+4],
-    [2+4,0+4],
+    [2,0]
   ];
 
-  verlet.create(box_dots,dots);
-  verlet.clamp(box_cons,cons,dots);
+  verlet.bake(box_dots,box_cons,dots,cons);
 
   verlet.throwImage([0,1,2,3],'../assets/images/logo.png',images,dots)
 

@@ -1069,6 +1069,10 @@ Verlet.prototype.clear = function(color) {
 	}
 };
 
+
+
+/* ==== ARRAY HANDLING AND COMPIILING METHODS ==== */
+
 /** 	
  *	Push Values In VERLET POINTS
  *	@method create
@@ -1131,6 +1135,14 @@ Verlet.prototype.shape = function(arr,forms,dots) {
 		color : color
 	});
 };
+//Shortcut
+Verlet.prototype.bake = function(newd,newc,dots,cons) {
+	this.create(newd,dots);
+	this.clamp(newc,cons,dots);
+}
+
+
+
 
 /** 	
  *	Simulates And Updates Given Objects
