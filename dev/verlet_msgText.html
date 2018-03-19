@@ -7,7 +7,7 @@
 <body>
 
   <canvas id="c"></canvas>
-  
+
 <script>
 window.onload = function() {
   const verlet = new Verlet();
@@ -18,34 +18,26 @@ window.onload = function() {
   let cons = [];
   let images = [];
 
-  let box_dots = [
-    [100,100,Math.random()*150,Math.random()*150,false,'red'],
-    [100,350],
-    [250,350],
-    [250,100]
-  ];
-  let box_cons = [
-    [0,1],
-    [1,2],
-    [2,3],
-    [3,0],
-    [2,0]
-  ];
+  verlet.Poly.box({x : 0,width : 200, height : 200},dots,cons)
+  verlet.Poly.box({x : 0,width : 200, height : 200},dots,cons)
 
-  verlet.bake(box_dots,box_cons,dots,cons);
 
-  verlet.throwImage([0,1,2,3],'../assets/images/logo.png',images,dots)
-
-  verlet.Interact.move(dots)
+  verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
     
     verlet.superUpdate(dots,cons,10);
     verlet.superRender(dots,cons,{debug : false});
-    verlet.renderImages(images);
+    
+    verlet.placeholder([0,1],'Verlet.js is amazing',dots,{
+     x : -25,
+    });
+    verlet.placeholder([0+4,1+4],'Verlet.js is amazing 2',dots,{
+     x : -25,
+    });
+    
   }
   animate();
-  console.log(dots,cons);
 }
 </script>
 </body>
