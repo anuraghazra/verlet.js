@@ -1479,8 +1479,8 @@ Verlet.prototype.frame = function(func,color) {
 }
 
 /**
- * DEVELOPMENT IN PROGRESS
- * STAGE : 3
+ * DEVELOPMENT DONE
+ * STAGE : 4
  */
 
 /**
@@ -1533,11 +1533,11 @@ Verlet.prototype.renderImages = function (images) {
 
 /**
  * DEVELOPMENT IN PROGRESS
- * STAGE : 2
+ * STAGE : 3
  */
 
- //msgText
-Verlet.prototype.msgText = function(ids,text,dots,offset) {
+ //placeholder
+Verlet.prototype.placeholder = function(ids,text,dots,offset) {
 	let w = this._distance(dots[ids[0]],dots[ids[1]]);
 	let h = this._distance(dots[ids[0]],dots[ids[1]]);
 
@@ -1560,7 +1560,7 @@ Verlet.prototype.msgText = function(ids,text,dots,offset) {
 	let angle = Math.atan2(dy,dx);
 	
 	this.ctx.save();
-	this.ctx.translate(dots[0].x,dots[0].y);
+	this.ctx.translate(dots[ids[0]].x,dots[ids[0]].y);
 	this.ctx.rotate(angle);
 	this.ctx.font = offset.font || '25px Agency FB';
 	this.ctx.fillStyle = offset.color || 'black';

@@ -18,7 +18,8 @@ window.onload = function() {
   let cons = [];
   let images = [];
 
-  verlet.Poly.triangle({x : 0,width : 200, height : 200},dots,cons)
+  verlet.Poly.box({x : 0,width : 200, height : 200},dots,cons)
+  verlet.Poly.box({x : 0,width : 200, height : 200},dots,cons)
 
 
   verlet.Interact.move(dots);
@@ -28,7 +29,10 @@ window.onload = function() {
     verlet.superUpdate(dots,cons,10);
     verlet.superRender(dots,cons,{debug : false});
     
-    verlet.msgText([0,1,2,3],'Verlet.js is amazing',dots,{
+    verlet.placeholder([0,1],'Verlet.js is amazing',dots,{
+     x : -25,
+    });
+    verlet.placeholder([0+4,1+4],'Verlet.js is amazing 2',dots,{
      x : -25,
     });
     
