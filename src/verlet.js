@@ -1518,3 +1518,41 @@ Verlet.prototype.renderImages = function (images) {
 		this.ctx.restore(angle);
 	}
 }
+
+/**
+ * DEVELOPMENT IN PROGRESS
+ * STAGE : 2
+ */
+
+ //msgText
+Verlet.prototype.msgText = function(ids,text,dots,offset) {
+	let w = this._distance(dots[ids[0]],dots[ids[1]]);
+	let h = this._distance(dots[ids[0]],dots[ids[1]]);
+
+	if(!offset) {
+		offset = {x : 0, y : 0};
+	} else {
+		if (offset.x === undefined) {
+			offset.x = 0;
+		}
+		if (offset.y === undefined) {
+			offset.y = 0;
+		}
+	}
+	
+	let adjustX = w/2-50 + offset.x;
+	let adjustY = h/4 + offset.y;
+
+	let dx = dots[ids[1]].x - dots[ids[0]].x;
+	let dy = dots[ids[1]].y - dots[ids[0]].y;
+	let angle = Math.atan2(dy,dx);
+	
+	this.ctx.save();
+	this.ctx.translate(dots[0].x,dots[0].y);
+	this.ctx.rotate(angle);
+	this.ctx.font = offset.font || '25px Agency FB';
+	this.ctx.fillStyle = offset.color || 'black';
+	this.ctx.fillText(text,adjustX,adjustY);
+	this.ctx.fill();
+	this.ctx.restore(angle);
+}
