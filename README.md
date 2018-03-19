@@ -10,6 +10,79 @@
 
 # Lets Get Started
 
+## Table Of Content
+
+* quickSetupAPI
+* quickSetup Settings
+* Create A Cloth In 3 Lines
+* MainAPI Usage
+* Verlet.Poly Objects
+* Creating Your Own Models
+* Render Settings
+* Studio API
+
+---------------------------------------
+
+## quickSetupAPI
+
+Lets get startup quickly with quickSetupAPI. Its very easy to use.
+The code example below shows how you can use quickSetupAPI
+
+`quickSetupAPI automatically creates a canvas and appends it to body tag for you and initialize animation loop internally, so you dont have to worry about anything.`
+
+check out the demo [here](./demos/quickSetup_demo.html)
+
+```javascript
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.box({},dots,cons)
+  },{
+    renderSettings : {
+      preset : 'shadowRed'
+    },
+    width : 1366,
+    height : 768
+  })
+```
+
+
+
+## quickSetup Settings
+
+`quickSetup is amazingly fast and easy to use. we can also include some options for our verlet engine like width,height of canvas, gravity, friction, stiffness of verlet engine. and we can also pass all Render Options through renderSettings object and where we want to append the canvas.`
+
+### Options
+properties              |  type     | defaults
+------------------------|-----------|----------
+id                      | *String*  | 'verlet_quick_setup'
+width                   | *Number*  | bodyWidth
+height                  | *Number*  | bodyHeight
+append                  | *Element* | document.body
+gravity                 | *Float*   | 1
+friction                | *Float*   | 1
+stiffness               | *Float*   | 1
+renderSettings          | *Object*  | {}
+
+check out the demo [here](./demos/quickSetup_demo.html)
+
+```javascript
+//quickSetup Settings Parameters Are Optional
+
+Verlet().quickSetup(function(dots,cons) {
+    this.Poly.cloth({},dots,cons);
+  },{
+    renderSettings : {
+      preset : 'shadowRed'
+    },
+    width : 500,
+    height : 500,
+    gravity : 0,
+    friction : 0.94,
+    stiffness : 0.99,
+    append : document.body
+  });
+```
+
+
 ## Create A Cloth In Just ***3 Lines Of Code***
 
 check out the demo [here](./demos/cloth_in_three_lines.html)
@@ -391,41 +464,8 @@ window.onload = function() {
 ```
 
 
-------------------------------------------------------------------------
+--------------------------------------------------------
 
-## quickSetup Settings
-
->quickSetup is amazingly fast and easy. we can also include some settings for our verlet engine like
-
-> width,height of canvas.
-
-> gravity, friction, stiffness of verlet engine.
-
->and we can also pass all **superRender()** settings through **renderSettings** object
-
-> and where we want to append canvas default is body
-
-check out the demo [here](./demos/quickSetup_demo.html)
-
-```javascript
-//quickSetup Settings Parameters Are Optional
-
-Verlet().quickSetup(function(dots,cons) {
-    this.Poly.cloth({},dots,cons);
-  },{
-    renderSettings : {
-      preset : 'shadowRed'
-    },
-    width : 500,
-    height : 500,
-    gravity : 0,
-    friction : 0.94,
-    stiffness : 0.99,
-    append : document.body
-  });
-```
-
-----------------------------------------------------------
 ## Browse [./demos](./demos) Folder To See API Usage Demos  
 
 > ## Contact Me
