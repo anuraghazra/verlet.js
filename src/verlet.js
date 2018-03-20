@@ -477,7 +477,7 @@ function Verlet() {
 							gap = opt.gap,
 							segs = opt.segs;
 						let pls = dots.length;
-				
+
 						let oldx = x;
 						let tmpDots = [];
 						let tmpCons = [];
@@ -1448,23 +1448,23 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let verlet = new Verlet();
 	let dots = [];
 	let cons = [];
-	verlet.init(width,
-							height,
-							'#'+id,
-							grav,
-							fri,
-							stiff
-						 );
+	verlet.init(width,height,'#'+id,grav,fri,stiff);
 
-	callback.call(verlet,dots,cons);
+	let variables =	callback.call(verlet,dots,cons);
 
+	console.log(variables)
+	
 	verlet.Interact.move(dots);
 	function animate() {
 		verlet.clear(option.bg || null);
 		
 		verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
 		verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
-
+		
+		if(option.animateScope) {
+			option.animateScope.call(verlet,variables)
+		}
+		
 		requestAnimationFrame(animate);
 	}
 	animate();
