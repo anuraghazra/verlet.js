@@ -615,7 +615,7 @@ function Verlet() {
 						if(e.which === 18) { //ALT
 							e.preventDefault();
 							parent.hoverPoint.pinned = false;
-							parent.hoverPoint.color = color || 'black';
+							parent.hoverPoint.color = color || 'green';
 						}
 					}
 				};
