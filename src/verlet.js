@@ -615,7 +615,7 @@ function Verlet() {
 						if(e.which === 18) { //ALT
 							e.preventDefault();
 							parent.hoverPoint.pinned = false;
-							parent.hoverPoint.color = color || 'black';
+							parent.hoverPoint.color = color || 'red';
 						}
 					}
 				};
@@ -1135,7 +1135,14 @@ Verlet.prototype.shape = function(arr,forms,dots) {
 		color : color
 	});
 };
-//Shortcut
+
+/**
+ * shortcut for Verlet.create() and Verlet.clamp();
+ * @param {array} newd
+ * @param {array} newc
+ * @param {array} dots
+ * @param {array} cons
+ */
 Verlet.prototype.bake = function(newd,newc,dots,cons) {
 	this.create(newd,dots);
 	this.clamp(newc,cons,dots);

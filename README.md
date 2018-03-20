@@ -180,7 +180,7 @@ window.onload = function() {
 
     //finally render scene objects
     //verlet.superRender(dots[], cons[], {})
-    verlet.superRender(dots,cons,{});
+    verlet.superRender(dots,cons,renderSettings{});
 
   }
   animate();
@@ -291,8 +291,8 @@ window.onload = function() {
   let cons = [];
 
   // custom points
-  // [[x,y,velocityX,velocityY,pinned]]
-  // vx,vy,pinned is optional
+  // [[x,y,velocityX,velocityY,pinned,color]]
+  // vx,vy,pinned,color is optional
   let myModel_dots = [
     [100,100],
     [200,100],
@@ -301,7 +301,8 @@ window.onload = function() {
   ];
 
   //custom constrains
-  // [[index,index]]
+  // [[index,index,hidden:Boolean]]
+  // hidden is optional
   let myModel_cons = [
     [0,1],
     [1,2],
@@ -310,27 +311,23 @@ window.onload = function() {
     [3,1],
   ];
 
-  //verlet.create(newDots[],oldDots[]);
-  verlet.create(myModel_dots,dots);
-
-  //verlet.clamp(newCons[],cons[],dots[])
-  verlet.clamp(myModel_cons,cons,dots);
+  // and then bake the arrays 
+  // verlet.bake(newDots[],newCons[],dots[],cons[])
+  verlet.bake(myModel_dots,myModel_cons,dots,cons)
 
   verlet.Interact.move(dots)
   function animate() {
     verlet.frame(animate);
 
     verlet.superUpdate(dots,cons,25);
-    verlet.superRender(dots,cons,{
-      preset : 'shadowRed'
-    });
-
+    verlet.superRender(dots,cons,{preset : 'shadowRed'});
+    
   }
   animate();
 }
 ```
 
-------------------------------------------------------------------------
+------------------------------------------------------------------------ 
 
 ## Render Settings
 
@@ -356,11 +353,12 @@ check out the demo [here](./demos/render_settings_demo.html)
       renderHiddenLines : true,
       hiddenLineColor : 'red',
       hiddenLineWidth : 0.5,
-      // renderDotsAsBox : true
       renderPointIndex : true,
       font : '12px Arial',
       fontColor : 'royalblue',
-      // debug : true
+      // renderDotsAsBox : true
+      // debug : true,
+      // preset : 'shadowRed'
     });
 
     ...
@@ -401,19 +399,19 @@ debug                   | *Boolean* | false
 
 >Use Render Presets
 
-just use
-> ```javascript
-> verlet.superRender(dots,cons,{
->   preset : 'presetName'
-> });
->```
-
 ### Render Preset Names
 * default
 * shadowRed
 * shadowPink
 * shadowBlue
 * shadowGreen
+
+just use
+> ```javascript
+> verlet.superRender(dots,cons,{
+>   preset : 'presetName'
+> });
+>```
 
 ------------------------------------------------------------------------
 

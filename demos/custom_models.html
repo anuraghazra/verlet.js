@@ -31,18 +31,19 @@ window.onload = function() {
   let cons = [];
   
   // custom points
-  // [[x,y,velocityX,velocityY,pinned]]
-  // vx,vy,pinned is optional
+  // [[x,y,velocityX,velocityY,pinned,color]]
+  // vx,vy,pinned,color is optional
   let myModel_dots = [
     [100,100],
     [200,100],
     [200,200],
     [100,200,100,150], //vx,vy
-    [150,50,150,50,true], //vx,vy,pinned
+    [150,50,150,50,true,'crimson'], //vx,vy,pinned,color
   ];
 
   //custom constrains
-  // [[index,index]]
+  // [[index,index,hidden]]
+  // hidden is optional
   let myModel_cons = [
     [0,1],
     [1,2],
@@ -54,13 +55,20 @@ window.onload = function() {
     [4,2,true], // set debug to false to get see effect 
   ];
 
-
   //verlet.create(newDots[],oldDots[]);
-  verlet.create(myModel_dots,dots);
+  //>>>>> verlet.create(myModel_dots,dots);
 
   //verlet.clamp(newCons[],cons[],dots[])
-  verlet.clamp(myModel_cons,cons,dots);
+  //>>>>> verlet.clamp(myModel_cons,cons,dots);
 
+/**
+ * shortcut for Verlet.create() and Verlet.clamp();
+ * @param {array} newd
+ * @param {array} newc
+ * @param {array} dots
+ * @param {array} cons
+ */
+  verlet.bake(myModel_dots,myModel_cons,dots,cons);
 
   verlet.Interact.move(dots)
   function animate() {
