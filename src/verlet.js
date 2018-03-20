@@ -45,7 +45,6 @@ function Verlet() {
 	this.osCanvas = document.createElement('canvas');
 	this.osCanvas.id = "osCanvas";
 	
-
 	/** 
 	*	@method init
 	*	@param {number} cw canvasWidth
@@ -615,7 +614,7 @@ function Verlet() {
 						if(e.which === 18) { //ALT
 							e.preventDefault();
 							parent.hoverPoint.pinned = false;
-							parent.hoverPoint.color = color || 'red';
+							parent.hoverPoint.color = color;
 						}
 					}
 				};
