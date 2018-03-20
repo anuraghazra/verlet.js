@@ -203,7 +203,7 @@ check out the demo [here](./demos/poly_objects_demo.html)
 * Verlet.Poly.rope({},dots,cons)
 * Verlet.Poly.cloth({},dots,cons)
 
-<!-- 
+
 Poly           | Preview
  ---------------|---------
 Verlet.Poly.box | ![img](./assets/images/box.png)
@@ -211,7 +211,7 @@ Verlet.Poly.triangle | ![img](./assets/images/triangle.png)
 Verlet.Poly.beam | ![img](./assets/images/beam.png)
 Verlet.Poly.hexagon | ![img](./assets/images/hexagon.png)
 Verlet.Poly.rope | ![img](./assets/images/rope.png)
-Verlet.Poly.cloth | ![img](./assets/images/cloth.png) -->
+Verlet.Poly.cloth | ![img](./assets/images/cloth.png)
 
 ```javascript
 ...
