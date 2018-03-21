@@ -107,54 +107,54 @@ this.Poly = {
 	},
 	/** 	
 	 *	Create A Box
-		*	@method box
-		*	@param {object} opt
-		*	@param {array} dots
-		*	@param {array} cons
-	*/
+	 *	@method box
+	 *	@param {object} opt
+	 *	@param {array} dots
+	 *	@param {array} cons
+	 */
 	box : function createBox(opt,dot,con) {
-			let dots = dot || this.dots;
-			let cons = con || this.cons;
-			// (dots.length < 1) ? pls = 0 : pls = dots.length;
-			let clone = opt.clone || 1;
-			if(opt.x === undefined) {opt.x = 100};
-			if(opt.y === undefined) {opt.y = 100};
-			if(opt.width === undefined) {opt.width = 100};
-			if(opt.height === undefined) {opt.height = 100};
+		let dots = dot || this.dots;
+		let cons = con || this.cons;
+		// (dots.length < 1) ? pls = 0 : pls = dots.length;
+		let clone = opt.clone || 1;
+		if(opt.x === undefined) {opt.x = 100};
+		if(opt.y === undefined) {opt.y = 100};
+		if(opt.width === undefined) {opt.width = 100};
+		if(opt.height === undefined) {opt.height = 100};
 
-			if(clone !== undefined) {
-				for(let i = 0; i < clone; i++) {
-					let vx = opt.vx || 0;
-					let vy = opt.vy || 0;
-					let pls = dots.length;
-					let width = opt.x + (opt.width);
-					let height = opt.y + (opt.height);
-					let twoWidth = opt.x + (opt.width*2);
-					let twoHeight = opt.y + (opt.height*2);
-					self.create([
-						[width,height,width + vx,height + vy],
-						[twoWidth,height,twoWidth,height],
-						[twoWidth,twoHeight,twoWidth,twoHeight],
-						[width,twoHeight,width,twoHeight]
-					],dots);
-					self.clamp([
-						[0+pls,1+pls],
-						[1+pls,2+pls],
-						[2+pls,3+pls],
-						[3+pls,0+pls],
-						[0+pls,2+pls,true],
-						[1+pls,3+pls,true],
-					],cons,dots);
-				}
+		if(clone !== undefined) {
+			for(let i = 0; i < clone; i++) {
+				let vx = opt.vx || 0;
+				let vy = opt.vy || 0;
+				let pls = dots.length;
+				let width = opt.x + (opt.width);
+				let height = opt.y + (opt.height);
+				let twoWidth = opt.x + (opt.width*2);
+				let twoHeight = opt.y + (opt.height*2);
+				self.create([
+					[width,height,width + vx,height + vy],
+					[twoWidth,height,twoWidth,height],
+					[twoWidth,twoHeight,twoWidth,twoHeight],
+					[width,twoHeight,width,twoHeight]
+				],dots);
+				self.clamp([
+					[0+pls,1+pls],
+					[1+pls,2+pls],
+					[2+pls,3+pls],
+					[3+pls,0+pls],
+					[0+pls,2+pls,true],
+					[1+pls,3+pls,true],
+				],cons,dots);
 			}
-		},
+		}
+	},
 	/** 	
 	 *	Create A Triangle
-		*	@method box
-		*	@param {object} opt
-		*	@param {array} dots
-		*	@param {array} cons
-	*/
+	 *	@method box
+	 *	@param {object} opt
+	 *	@param {array} dots
+	 *	@param {array} cons
+	 */
 	triangle : function(opt,dot,con) {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
@@ -188,11 +188,11 @@ this.Poly = {
 	},
 	/** 	
 	 *	Create A Hexagon
-		*	@method hexagon
-		*	@param {object} opt
-		*	@param {array} dots
-		*	@param {array} cons
-	*/
+	 *	@method hexagon
+	 *	@param {object} opt
+	 *	@param {array} dots
+	 *	@param {array} cons
+	 */
 	hexagon : function(opt,dot,con) {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
@@ -253,11 +253,11 @@ this.Poly = {
 	},
 	/** 	
 	 *	Create A Charecter Map
-		*	@method map
-		*	@param {object} opt
-		*	@param {array} dots
-		*	@param {array} cons
-	*/
+	 *	@method map
+	 *	@param {object} opt
+	 *	@param {array} dots
+	 *	@param {array} cons
+	 */
 	map : function map(opt,dot) {
 		let dots = dot || this.dots;
 		let tmpDots = [];
@@ -281,11 +281,11 @@ this.Poly = {
 	},
 	/** 	
 	 *	Create A Bridge Beam
-		*	@method beam
-		*	@param {object} opt
-		*	@param {array} dots
-		*	@param {array} cons
-	*/
+	 *	@method beam
+	 *	@param {object} opt
+	 *	@param {array} dots
+	 *	@param {array} cons
+	 */
 	beam : function Beam(opt,dot,con) {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
@@ -342,208 +342,209 @@ this.Poly = {
 	/**
 	 *  Create A Rope
 	 *	@method rope
-		*  @param {object} opt
-		*	@param {number} opt_x
-		*	@param {number} opt_y
-		*	@param {number} opt_parts
-		*	@param {number} opt_len
-		*  @param {array} dot
-		*  @param {array} con
-		*	@return {object} 
-		*/	
+	 *  @param {object} opt
+	 *	@param {number} opt_x
+	 *	@param {number} opt_y
+	 *	@param {number} opt_parts
+	 *	@param {number} opt_len
+	 *  @param {array} dot
+	 *  @param {array} con
+	 *	@return {object} 
+	 */	
 	rope : function createRope(opt,dot,con) {
-			let dots = dot || this.dots;
-			let cons = con || this.cons;
-			let clone = opt.clone || 1;
-			if(opt.x === undefined) {opt.x = 100};
-			if(opt.y === undefined) {opt.y = 100};
-			if(opt.segs === undefined) {opt.segs = 15};
-			if(opt.gap === undefined) {opt.gap = 20};
+		let dots = dot || this.dots;
+		let cons = con || this.cons;
+		let clone = opt.clone || 1;
+		if(opt.x === undefined) {opt.x = 100};
+		if(opt.y === undefined) {opt.y = 100};
+		if(opt.segs === undefined) {opt.segs = 15};
+		if(opt.gap === undefined) {opt.gap = 20};
 
-			if(clone !== undefined) {
-				for(let i = 0; i < clone; i++) {	
-					let rope = [];
-					let ropeClamp = [];
-					let cIndex = 0;
-					let attr;
-					let y = opt.y,
-						x = opt.x,
-						vy = opt.vy || opt.y,
-						vx = opt.vx || opt.x;
-					for (let i = 0; i < opt.segs; i++) {
-						attr = (i === 0) ? [true,'crimson'] : [false,null] 
-						x += opt.gap;
-						vx += opt.gap;
-						rope.push([
-							x,y,vx,vy,attr[0],attr[1]
-						]);
-						cIndex = (cIndex + 1) % opt.segs;
-						ropeClamp.push([
-							(i + dots.length), (cIndex + dots.length),
-							false,
-							[(i + dots.length),(cIndex + dots.length)]
-						]);
-					}
-					ropeClamp.pop();
-					self.create(rope,dots);
-					self.clamp(ropeClamp,cons,dots);
-					rope = [];
-					ropeClamp = [];
+		if(clone !== undefined) {
+			for(let i = 0; i < clone; i++) {	
+				let rope = [];
+				let ropeClamp = [];
+				let cIndex = 0;
+				let attr;
+				let y = opt.y,
+					x = opt.x,
+					vy = opt.vy || opt.y,
+					vx = opt.vx || opt.x;
+				for (let i = 0; i < opt.segs; i++) {
+					attr = (i === 0) ? [true,'crimson'] : [false,null] 
+					x += opt.gap;
+					vx += opt.gap;
+					rope.push([
+						x,y,vx,vy,attr[0],attr[1]
+					]);
+					cIndex = (cIndex + 1) % opt.segs;
+					ropeClamp.push([
+						(i + dots.length), (cIndex + dots.length),
+						false,
+						[(i + dots.length),(cIndex + dots.length)]
+					]);
 				}
+				ropeClamp.pop();
+				self.create(rope,dots);
+				self.clamp(ropeClamp,cons,dots);
+				rope = [];
+				ropeClamp = [];
 			}
-		},
+		}
+	},
 		
 	/**
 	 *  Create A advanceCloth
 	 *	@method advanceCloth
-		*  @param {object} opt
-		*	@param {number} opt_x
-		*	@param {number} opt_y
-		*	@param {number} opt_gridX
-		*	@param {number} opt_gridY
-		*	@param {number} opt_gap
-		*	@param {number} opt_segs
-		*  @param {array} dot
-		*  @param {array} con
-		*/			
+	 *  @param {object} opt
+	 *	@param {number} opt_x
+	 *	@param {number} opt_y
+	 *	@param {number} opt_gridX
+	 *	@param {number} opt_gridY
+	 *	@param {number} opt_gap
+	 *	@param {number} opt_segs
+	 *  @param {array} dot
+	 *  @param {array} con
+	 */			
 	advanceCloth : function advanceCloth(opt,dot,con) {
-			let dots = dot || this.dots;
-			let cons = con || this.cons;
-			let delta = 1;
-			let pls = dots.length;
-			for (let i = 0; i < opt.segs; i++) {
-				let p = {
-					x : (opt.x - opt.gridX/opt.gap * delta + (i%opt.gridX) * delta * opt.gap),
-					y : (opt.y - opt.gridY/opt.gap * delta + (i/opt.gridY) * delta * opt.gap),
-					oldx : (opt.x - opt.gridX/opt.gap * delta + (i%opt.gridX) * delta * opt.gap),
-					oldy : (opt.y - opt.gridY/opt.gap * delta + (i/opt.gridY) * delta * opt.gap) + Math.random() * opt.gap
-				};
-				dots.push(p);
-			}
-			for (let i = 0; i < (dots.length-1); i++) {
-				if(((i+1)%opt.gridX) > 0){
-							let link = {
-								p0: dots[(i+pls)], 
-								p1: dots[(i+1)+pls],
-								len : self._distance(dots[i+pls],dots[(i+1)+pls]),
-								id : [i+pls,(i+1)+pls]
-							};
-							cons.push(link);
-					}
-			}
-			for (let i = 0; i < (dots.length-opt.gridX); i++) {
-					let link = {
-						p0: dots[i+pls], 
-						p1: dots[(i+opt.gridX)+pls],
-						len : self._distance(dots[i+pls],dots[(i+opt.gridX)+pls]),
-						id : [i+pls,(i+opt.gridX)+pls],
-					};
-					cons.push(link);
+		let dots = dot || this.dots;
+		let cons = con || this.cons;
+		let delta = 1;
+		let pls = dots.length;
+		for (let i = 0; i < opt.segs; i++) {
+			let p = {
+				x : (opt.x - opt.gridX/opt.gap * delta + (i%opt.gridX) * delta * opt.gap),
+				y : (opt.y - opt.gridY/opt.gap * delta + (i/opt.gridY) * delta * opt.gap),
+				oldx : (opt.x - opt.gridX/opt.gap * delta + (i%opt.gridX) * delta * opt.gap),
+				oldy : (opt.y - opt.gridY/opt.gap * delta + (i/opt.gridY) * delta * opt.gap) + Math.random() * opt.gap
+			};
+			dots.push(p);
+		}
+		for (let i = 0; i < (dots.length-1); i++) {
+			if(((i+1)%opt.gridX) > 0){
+						let link = {
+							p0: dots[(i+pls)], 
+							p1: dots[(i+1)+pls],
+							len : self._distance(dots[i+pls],dots[(i+1)+pls]),
+							id : [i+pls,(i+1)+pls]
+						};
+						cons.push(link);
 				}
-		},
+		}
+		for (let i = 0; i < (dots.length-opt.gridX); i++) {
+				let link = {
+					p0: dots[i+pls], 
+					p1: dots[(i+opt.gridX)+pls],
+					len : self._distance(dots[i+pls],dots[(i+opt.gridX)+pls]),
+					id : [i+pls,(i+opt.gridX)+pls],
+				};
+				cons.push(link);
+			}
+	},
 		
 	/**
 	 *  Create A Cloth
 	 *	@method cloth
-		*  @param {object} opt
-		*	@param {number} opt_x
-		*	@param {number} opt_y
-		*	@param {number} opt_gap
-		*	@param {number} opt_segs
-		*	@param {number} opt_pinRatio
-		*	@param {number} opt_clone
-		*  @param {array} dot
-		*  @param {array} con
-		*/	
+	 *  @param {object} opt
+	 *	@param {number} opt_x
+	 *	@param {number} opt_y
+	 *	@param {number} opt_gap
+	 *	@param {number} opt_segs
+	 *	@param {number} opt_pinRatio
+	 *	@param {number} opt_clone
+	 *  @param {array} dot
+	 *  @param {array} con
+	 */	
 	cloth : function cloth(opt,dot,con) {
-			let dots = dot || this.dots;
-			let cons = con || this.cons;
-			let clone = opt.clone || 1;
-			if(opt.x === undefined) {opt.x = 100};
-			if(opt.y === undefined) {opt.y = 100};
-			if(opt.segs === undefined) {opt.segs = 15};
-			if(opt.gap === undefined) {opt.gap = 20};
-			if(opt.pinRatio === undefined) {opt.pinRatio = 7};
-			// if(opt.tearable === undefined) {opt.tearable = false};
-			// let tear = 'tear';
-			// if(opt.tearable === false) {
-			// 	tear = undefined;
-			// }
+		let dots = dot || this.dots;
+		let cons = con || this.cons;
+		let clone = opt.clone || 1;
+		if(opt.x === undefined) {opt.x = 100};
+		if(opt.y === undefined) {opt.y = 100};
+		if(opt.segs === undefined) {opt.segs = 15};
+		if(opt.gap === undefined) {opt.gap = 20};
+		if(opt.pinRatio === undefined) {opt.pinRatio = 7};
+		// if(opt.tearable === undefined) {opt.tearable = false};
+		// let tear = 'tear';
+		// if(opt.tearable === false) {
+		// 	tear = undefined;
+		// }
 
-			if(clone !== undefined) {
-				for(let i = 0; i < clone; i++) {
-					let x = opt.x,
-						y = opt.y,
-						gap = opt.gap,
-						segs = opt.segs;
-					let pls = dots.length;
+		if(clone !== undefined) {
+			for(let i = 0; i < clone; i++) {
+				let x = opt.x,
+					y = opt.y,
+					gap = opt.gap,
+					segs = opt.segs;
+				let pls = dots.length;
 
-					let oldx = x;
-					let tmpDots = [];
-					let tmpCons = [];
-					for (let i = 0; i < segs; i++) {
-						for (let j = 0; j < segs; j++) {
-							tmpDots.push([
-								x,y,x,y
-							])
-							x += gap;
-						}
-						x = oldx;
-						y += gap;
+				let oldx = x;
+				let tmpDots = [];
+				let tmpCons = [];
+				for (let i = 0; i < segs; i++) {
+					for (let j = 0; j < segs; j++) {
+						tmpDots.push([
+							x,y,x,y
+						])
+						x += gap;
 					}
-					for (let j = 0; j < tmpDots.length-1; j++) {
-						if( (j+1)%segs > 0 ) {
-							tmpCons.push([
-								(j)+pls,(j+1)+pls
-							])
-						}
-					}
-					for (let j = 0; j < tmpDots.length-segs; j++) {
-						tmpCons.push([
-							(j)+pls,(j+segs)+pls
-						]);
-					}
-					let pinRatio = opt.pinRatio;
-					for (let l = 0; l < segs; l+=pinRatio) {
-						tmpDots[l][4] = true;
-					}
-					tmpDots[segs-1][4] = true;
-					
-					// WIP
-					//tearable cloth
-					// if(opt.tearable) {
-					// 	function tearCloth() {
-					// 		for (let i = 0; i < cons.length; i++) {
-					// 			if(cons[i].tear === 'tear') {
-					// 				if(cons[i].p1.x - cons[i].p0.x > 30 ||
-					// 					 cons[i].p1.y - cons[i].p0.y > 60) {
-					// 					cons.splice(i, 2);
-					// 				}
-					// 			}
-					// 		}
-					// 	}
-					// 	self.canvas.addEventListener('mousemove',tearCloth)
-					// }
-					
-					self.create(tmpDots,dots);
-					self.clamp(tmpCons,cons,dots);
-					tmpDots = [];
-					tmpCons = [];
+					x = oldx;
+					y += gap;
 				}
+				for (let j = 0; j < tmpDots.length-1; j++) {
+					if( (j+1)%segs > 0 ) {
+						tmpCons.push([
+							(j)+pls,(j+1)+pls
+						])
+					}
+				}
+				for (let j = 0; j < tmpDots.length-segs; j++) {
+					tmpCons.push([
+						(j)+pls,(j+segs)+pls
+					]);
+				}
+				let pinRatio = opt.pinRatio;
+				for (let l = 0; l < segs; l+=pinRatio) {
+					tmpDots[l][4] = true;
+				}
+				tmpDots[segs-1][4] = true;
+				
+				// WIP
+				//tearable cloth
+				// if(opt.tearable) {
+				// 	function tearCloth() {
+				// 		for (let i = 0; i < cons.length; i++) {
+				// 			if(cons[i].tear === 'tear') {
+				// 				if(cons[i].p1.x - cons[i].p0.x > 30 ||
+				// 					 cons[i].p1.y - cons[i].p0.y > 60) {
+				// 					cons.splice(i, 2);
+				// 				}
+				// 			}
+				// 		}
+				// 	}
+				// 	self.canvas.addEventListener('mousemove',tearCloth)
+				// }
+				
+				self.create(tmpDots,dots);
+				self.clamp(tmpCons,cons,dots);
+				tmpDots = [];
+				tmpCons = [];
 			}
+		}
 	}
 };
 
 /** 	
  *	Interact With Points In Real-Time
  *  @version v1.5
-	*	@method Interact
-	*	@param {array} dots
-	*	@param {array} cons
-	*	@param {number} detect
-*/
+ *	@method Interact
+ *	@param {array} dots
+ *	@param {array} cons
+ *	@param {number} detect
+ */
 this.Interact = {
-	hoverPoint : undefined,		
+	hoverPoint : undefined,
+	listnerIndex : 0,
 	draw : function(color) {
 		if(this.hoverPoint) {
 			self.ctx.beginPath();
@@ -557,11 +558,17 @@ this.Interact = {
 		let isDown = false;
 		let parent = this;
 		let pointOffsetX = null, 
-				pointOffsetY = null;
-	
+		pointOffsetY = null;
+		
 		/** Detect Nearby Points */
+		parent.listnerIndex++;
+		let once = true;
+		if(parent.listnerIndex > 1) {
+			once = false;
+		}
+
 		let ox,oy,index;
-		function moveListner(e){
+		function moveListner(e) {
 			if(isDown) return;
 			parent.hoverPoint = undefined;
 			index = null;
@@ -577,41 +584,46 @@ this.Interact = {
 			self.handle = parent.hoverPoint;
 			self.handleIndex = index;	
 		}
-		self.canvas.addEventListener('mousemove',	throttle(function(e) {
-			moveListner(e)
-		},100));
-		self.canvas.addEventListener('mousemove',function(e) {
-			if(!isDown) return;
-			mouseMove(e); // move selected point 
-		});
+ 
+		if(once) { //Add Event Listeners Once
+
+			self.canvas.addEventListener('mousemove',	throttle(function(e) {
+				moveListner(e)
+			},100));
+			self.canvas.addEventListener('mousemove',function(e) {
+				if(!isDown) return;
+				mouseMove(e); // move selected point 
+			});
+			
+			// is Mouse down
+			self.canvas.addEventListener('mousedown',function() {
+				if(self.handle) {
+					isDown = true;
+					pointOffsetX = ox - self.handle.x;
+					pointOffsetY = oy - self.handle.y;
+					self.handle.pinned = true;
+				}
+			});
+			//on mouseup and out reset
+			self.canvas.addEventListener('mouseup',mouseUp)
+			self.canvas.addEventListener('mouseout',mouseUp)
 		
-		// is Mouse down
-		self.canvas.addEventListener('mousedown',function() {
-			if(self.handle) {
-				isDown = true;
-				pointOffsetX = ox - self.handle.x;
-				pointOffsetY = oy - self.handle.y;
-				self.handle.pinned = true;
-			}
-		});
-		//on mouseup and out reset
-		self.canvas.addEventListener('mouseup',mouseUp)
-		self.canvas.addEventListener('mouseout',mouseUp)
-	
-		//pin and unpin
-		document.body.addEventListener('keydown',throttle(function(e) {
-			if(parent.hoverPoint) {
-				if(e.which === 32) { //Space
-					parent.hoverPoint.pinned = true;
-					parent.hoverPoint.color = 'crimson';
+			//pin and unpin
+			document.body.addEventListener('keydown',throttle(function(e) {
+				if(parent.hoverPoint) {
+					if(e.which === 32) { //Space
+						parent.hoverPoint.pinned = true;
+						parent.hoverPoint.color = 'crimson';
+					}
+					if(e.which === 18) { //ALT
+						e.preventDefault();
+						parent.hoverPoint.pinned = false;
+						parent.hoverPoint.color = color;
+					}
 				}
-				if(e.which === 18) { //ALT
-					e.preventDefault();
-					parent.hoverPoint.pinned = false;
-					parent.hoverPoint.color = color;
-				}
-			}
-		},150));
+			},150));
+
+		} //once
 
 		//listner functions
 		function mouseMove(e) {
@@ -645,7 +657,7 @@ this.Interact = {
 					wait = true;
 					setTimeout(function() {
 						wait = false;
-					},time)
+					},time);
 				}
 			}
 		}
@@ -656,18 +668,18 @@ this.Interact = {
 
 /** 	
  *	Functions For Drawing In Canvas
-	*	@method Draw
-*/
+ *	@method Draw
+ */
 this.Draw = {
 	/** 	
 	 *	Create A Circle Or Arc
-		*	@method arc
-		*	@param {number} x
-		*	@param {number} y
-		*	@param {number} radius,
-		*	@param {string} color,
-		*	@param {Boolean} bool,
-	*/
+	 *	@method arc
+	 *	@param {number} x
+	 *	@param {number} y
+	 *	@param {number} radius,
+	 *	@param {string} color,
+	 *	@param {Boolean} bool,
+	 */
 	arc : function(x,y,radius,color,line,bool) {
 		let col = color || 'deepskyblue';
 		self.ctx.save();
@@ -740,17 +752,17 @@ this.Studio = {
 		</select>
 	</div>`;
 
-		let style = `.ui_panel {
-font-family: 'Segoe UI';
-color : #252525;
-box-shadow: 0 0 5px #00000080;
-border-radius: 5px;
-padding: 10px;
+let style = `.ui_panel {
+	font-family: 'Segoe UI';
+	color : #252525;
+	box-shadow: 0 0 5px #00000080;
+	border-radius: 5px;
+	padding: 10px;
 }
 .ui_panel * {box-sizing : border-box;}
 .ui_panel p {
-font-size: 18px; margin: 5px;
-margin-bottom: 10px;
+	font-size: 18px; margin: 5px;
+	margin-bottom: 10px;
 }
 .ui_panel > h2 {
 padding: 0;margin: 5px;
@@ -761,30 +773,30 @@ margin-bottom: 10px;
 .ui_panel .ui_settings {display: flex;padding: 10px;}
 .ui_panel .ui_settings_labels span { flex: 1; }
 .ui_panel .ui_settings input {
-flex: 1;
-margin-top: 0px;
-margin-right: 10px;
-width: 100%;
-outline: none;
-border: 1px solid gray;
-padding: 8px;
-border-radius: 5px;
+	flex: 1;
+	margin-top: 0px;
+	margin-right: 10px;
+	width: 100%;
+	outline: none;
+	border: 1px solid gray;
+	padding: 8px;
+	border-radius: 5px;
 }
 .ui_panel .ui_checkboxes {
-display: flex;
-flex-wrap: wrap;
-box-shadow: 0 0 2px #00000080;
-border-radius: 5px;
-padding-bottom: 10px;
-padding-top: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	box-shadow: 0 0 2px #00000080;
+	border-radius: 5px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 .ui_panel .ui_checkboxes label {flex-grow: 1; cursor: pointer;}
 .ui_panel .ui_checkboxes label input {
-margin-left: 20px;
-width: auto; cursor: pointer;
+	margin-left: 20px;
+	width: auto; cursor: pointer;
 }
 .ui_panel select {
-padding: 5px; width: 100%; margin-top: 5px;
+	padding: 5px; width: 100%; margin-top: 5px;
 }`
 		
 		let studioStyle,studioElt;
@@ -885,11 +897,11 @@ padding: 5px; width: 100%; margin-top: 5px;
 this.Motion = {
 	/** 	
 	 *	Back And Forword In X Axis
-		*	@method occilateX
-		*	@param {number} o
-		*	@param {number} size
-		*	@param {array} dot
-	*/
+	 *	@method occilateX
+	 *	@param {number} o
+	 *	@param {number} size
+	 *	@param {array} dot
+	 */
 	occilateX : function(o,size,dot) {
 		dot.x = dot.x + Math.cos(o) * size;
 	},
@@ -899,11 +911,11 @@ this.Motion = {
 
 	/** 	
 	 *	Create A Circular In X Axis
-		*	@method Verlet.Motion.occilateX()
-		*	@param {number} o
-		*	@param {number} size
-		*	@param {array} dot
-	*/
+	 *	@method Verlet.Motion.occilateX()
+	 *	@param {number} o
+	 *	@param {number} size
+	 *	@param {array} dot
+	 */
 	circular : function(o,size,dot) {
 		dot.x = dot.x + Math.cos(o) * size;
 		dot.y = dot.y + Math.sin(o) * size;
@@ -918,15 +930,15 @@ this.Motion = {
 
 /** 	
  *	Simple Collision Detection
-	*	@method Collision
-*/
+ *	@method Collision
+ */
 this.Collision = {
 	/** 	
 	 *	Prevent The Verlet Points From Going Inside A Circle
-		*	@method pointToCircle
-		*	@param {array} dot
-		*	@param {object} c
-	*/
+	 *	@method pointToCircle
+	 *	@param {array} dot
+	 *	@param {object} c
+	 */
 	pointToCircle : function(dots,c) {
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
@@ -1008,8 +1020,8 @@ this.Engine = {
 	 *	====== Verlet Integration ======
 		*  @name <<<<<<---Algorithm--->>>>>>
 		* 
-		* 	@description Step1 : Compute distance between two points (Pythogoream Theorm)
-		* 			>>>>>>>>>>>>>>>>>>>>>
+	  *  @description Step1 : Compute distance between two points (Pythogoream Theorm)
+		* 		>>>>>>>>>>>>>>>>>>>>>
 		*			Step1 :	|| dx = p1.x - p2.x;
 		*					|| dy = p1.y - p2.y;
 		*					|| distance = Math.sqrt(dx*dx + dy*dy);
@@ -1062,19 +1074,19 @@ this.Engine = {
 
 /**
  * @method CORE_PROTOTYPES
-**/
+ */
 
 /** 	
  *	Clear The Canvas And Set A BackgroundColor
-*	@method clear
-*	@param {string} color
-*/
+ *	@method clear
+ *	@param {string} color
+ */
 Verlet.prototype.clear = function(color) {
-this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-if(color) {
-	this.ctx.fillStyle = color;
-	this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
-}
+	this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+	if(color) {
+		this.ctx.fillStyle = color;
+		this.ctx.fillRect(0,0,this.canvas.width,this.canvas.height);
+	}
 };
 
 
@@ -1083,65 +1095,65 @@ if(color) {
 
 /** 	
  *	Push Values In VERLET POINTS
-*	@method create
-*	@param {array} dots
-*	@param {array} newD
-*/
+ *	@method create
+ *	@param {array} dots
+ *	@param {array} newD
+ */
 Verlet.prototype.create = function (newD,dots) {
-for(let j = 0; j < newD.length; j++) {
-	dots.push({
-		x : newD[j][0],
-		y : newD[j][1],
-		oldx : newD[j][2] || newD[j][0],
-		oldy : newD[j][3] || newD[j][1],
-		pinned : newD[j][4] ? newD[j][4] : false,
-		color : newD[j][5] ? newD[j][5] : null
-	});
-}
+	for(let j = 0; j < newD.length; j++) {
+		dots.push({
+			x : newD[j][0],
+			y : newD[j][1],
+			oldx : newD[j][2] || newD[j][0],
+			oldy : newD[j][3] || newD[j][1],
+			pinned : newD[j][4] ? newD[j][4] : false,
+			color : newD[j][5] ? newD[j][5] : null
+		});
+	}
 };
 
 /** 	
  *	Push Values In VERLET CONSTRAINS
-*	@method clamp
-*	@param {array} newJ
-*	@param {array} joints
-*	@param {array} dots
-*/
+ *	@method clamp
+ *	@param {array} newJ
+ *	@param {array} joints
+ *	@param {array} dots
+ */
 Verlet.prototype.clamp = function(newJ,joints,dots) {
-for(let j = 0; j < newJ.length; j++) {
-	joints.push({
-		p0 : dots[newJ[j][0]],
-		p1 : dots[newJ[j][1]],
-		len : this._distance(dots[newJ[j][0]],dots[newJ[j][1]]),
-		hidden : newJ[j][2] || false,
-		id : [newJ[j][0],newJ[j][1]]
-	});
-}
+	for(let j = 0; j < newJ.length; j++) {
+		joints.push({
+			p0 : dots[newJ[j][0]],
+			p1 : dots[newJ[j][1]],
+			len : this._distance(dots[newJ[j][0]],dots[newJ[j][1]]),
+			hidden : newJ[j][2] || false,
+			id : [newJ[j][0],newJ[j][1]]
+		});
+	}
 };
 
 /** 	
  *	Push Paths In SHAPES ARRAY FOR CREATING FORMS
-*	@method shape
-*	@param {array} arr
-*	@param {array} forms
-*	@param {array} dots
-*	@param {string} color
-*/
+ *	@method shape
+ *	@param {array} arr
+ *	@param {array} forms
+ *	@param {array} dots
+ *	@param {string} color
+ */
 Verlet.prototype.shape = function(arr,forms,dots) {
-let tmpArr = [];
-let tmpId = [];
-let color = arr[arr.length-1];
-if(typeof color === 'string') {
-	arr.pop();
-}
-for (let i = 0; i < arr.length; i++) {
-	tmpArr.push(dots[arr[i]]);
-}
-forms.push({
-	id : arr,
-	paths : tmpArr,
-	color : color
-});
+	let tmpArr = [];
+	let tmpId = [];
+	let color = arr[arr.length-1];
+	if(typeof color === 'string') {
+		arr.pop();
+	}
+	for (let i = 0; i < arr.length; i++) {
+		tmpArr.push(dots[arr[i]]);
+	}
+	forms.push({
+		id : arr,
+		paths : tmpArr,
+		color : color
+	});
 };
 
 /**
@@ -1152,8 +1164,8 @@ forms.push({
  * @param {array} cons
  */
 Verlet.prototype.bake = function(newd,newc,dots,cons) {
-this.create(newd,dots);
-this.clamp(newc,cons,dots);
+	this.create(newd,dots);
+	this.clamp(newc,cons,dots);
 }
 
 
@@ -1161,25 +1173,25 @@ this.clamp(newc,cons,dots);
 
 /** 	
  *	Simulates And Updates Given Objects
-*	@method superUpdate
-*	@param {array} dots
-*	@param {array} cons
-*	@param {number} accu
-*/
+ *	@method superUpdate
+ *	@param {array} dots
+ *	@param {array} cons
+ *	@param {number} accu
+ */
 Verlet.prototype.superUpdate = function(dots,cons,accu,opt) {
-let option;
-if(opt === undefined) {
-	option = {};
-} else {
-	option = opt;
-}
-let hoverColor = option.hoverColor || 'black';
-this.Engine.update(dots);
-for (let i = 0; i < accu; i++) {
-	this.Engine.constrain(dots);
-	this.Engine.bakePhysics(cons);
-}
-this.Interact.draw(hoverColor);
+	let option;
+	if(opt === undefined) {
+		option = {};
+	} else {
+		option = opt;
+	}
+	let hoverColor = option.hoverColor || 'black';
+	this.Engine.update(dots);
+	for (let i = 0; i < accu; i++) {
+		this.Engine.constrain(dots);
+		this.Engine.bakePhysics(cons);
+	}
+	this.Interact.draw(hoverColor);
 };
 
 /*=======================================
@@ -1189,40 +1201,40 @@ this.Interact.draw(hoverColor);
 
 /** 	
  *	Render Circles At Points
-*	@method renderDots
-*	@param {array} dots
-*	@param {number} radius
-*	@param {string} color
-*/
+ *	@method renderDots
+ *	@param {array} dots
+ *	@param {number} radius
+ *	@param {string} color
+ */
 Verlet.prototype.renderDots = function(dots,radius,color) {
-let PI2 = Math.PI*2;
-let rad = radius || 5;
-for (let i = 0; i < dots.length; i++) {
-	let p = dots[i];
-	if(!p.hidden) {
-		this.ctx.beginPath();
-		this.ctx.fillStyle = p.color || color || 'black';
-		this.ctx.arc(p.x,p.y,rad,0,PI2);
-		this.ctx.fill();
-		this.ctx.closePath();
+	let PI2 = Math.PI*2;
+	let rad = radius || 5;
+	for (let i = 0; i < dots.length; i++) {
+		let p = dots[i];
+		if(!p.hidden) {
+			this.ctx.beginPath();
+			this.ctx.fillStyle = p.color || color || 'black';
+			this.ctx.arc(p.x,p.y,rad,0,PI2);
+			this.ctx.fill();
+			this.ctx.closePath();
+		}
 	}
-}
 };
 
 /**	Render Box At Points Insted Of Circles
  *	@method renderDotsAsBox
-*	@param {array} dots
-*	@param {number} radius
-*	@param {string} color
-*/
+ *	@param {array} dots
+ *	@param {number} radius
+ *	@param {string} color
+ */
 Verlet.prototype.renderDotsAsBox = function(dots,radius,color) {
-for (let i = 0; i < dots.length; i++) {
-	let p = dots[i];
-	if(!p.hidden) {
-		this.ctx.fillStyle = p.color || color || 'black';
-		this.ctx.fillRect(p.x-(radius/2),p.y-(radius/2),radius,radius);
+	for (let i = 0; i < dots.length; i++) {
+		let p = dots[i];
+		if(!p.hidden) {
+			this.ctx.fillStyle = p.color || color || 'black';
+			this.ctx.fillRect(p.x-(radius/2),p.y-(radius/2),radius,radius);
+		}
 	}
-}
 };
 
 /** 	
@@ -1233,16 +1245,16 @@ for (let i = 0; i < dots.length; i++) {
 *	@param {string} color
 */
 Verlet.prototype.renderPointIndex = function(dots,font,color) {
-let osctx = this.osCanvas.getContext('2d');
-osctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-osctx.font = font || '10px Arial';
-osctx.fillStyle = color || 'black';
-for (let i = 0; i < dots.length; i++) {
-	let p = dots[i];
-	osctx.fillText(i,p.x-10,p.y-10);
-}
-osctx.fill();
-this.ctx.drawImage(this.osCanvas,0,0);
+	let osctx = this.osCanvas.getContext('2d');
+	osctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+	osctx.font = font || '10px Arial';
+	osctx.fillStyle = color || 'black';
+	for (let i = 0; i < dots.length; i++) {
+		let p = dots[i];
+		osctx.fillText(i,p.x-10,p.y-10);
+	}
+	osctx.fill();
+	this.ctx.drawImage(this.osCanvas,0,0);
 };
 
 /** 	
@@ -1253,10 +1265,10 @@ this.ctx.drawImage(this.osCanvas,0,0);
 *	@param {array} cons
 */
 Verlet.prototype.superDebugRender = function(dots,cons) {
-this.renderDots(dots);
-this.renderLines(cons);
-this.renderHiddenLines(cons,0.7,'red');
-this.renderPointIndex(dots);
+	this.renderDots(dots);
+	this.renderLines(cons);
+	this.renderHiddenLines(cons,0.7,'red');
+	this.renderPointIndex(dots);
 }
 
 /** 	
@@ -1267,24 +1279,24 @@ this.renderPointIndex(dots);
 *	@param {string} color
 */
 Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
-this.ctx.beginPath();
-this.ctx.strokeStyle = (color || 'black')
-this.ctx.lineWidth = linewidth || 1;
-for(let i = 0; i < cons.length; i++) {
-	let p = cons[i];
-	if(!p.hidden) {
-		this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-		this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
-	}
-	if(showHidden === true) {
-		if(p.hidden) {
+	this.ctx.beginPath();
+	this.ctx.strokeStyle = (color || 'black')
+	this.ctx.lineWidth = linewidth || 1;
+	for(let i = 0; i < cons.length; i++) {
+		let p = cons[i];
+		if(!p.hidden) {
 			this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
 			this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
 		}
+		if(showHidden === true) {
+			if(p.hidden) {
+				this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
+				this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+			}
+		}
 	}
-}
-this.ctx.stroke();
-this.ctx.closePath();
+	this.ctx.stroke();
+	this.ctx.closePath();
 }
 
 /** 	
@@ -1295,18 +1307,18 @@ this.ctx.closePath();
 *	@param {string} color
 */
 Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
-this.ctx.beginPath();
-this.ctx.strokeStyle = (color || 'red');
-this.ctx.lineWidth = linewidth || 1;
-for(let i = 0; i < cons.length; i++) {
-	let p = cons[i];
-	if(p.hidden) {
-		this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-		this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+	this.ctx.beginPath();
+	this.ctx.strokeStyle = (color || 'red');
+	this.ctx.lineWidth = linewidth || 1;
+	for(let i = 0; i < cons.length; i++) {
+		let p = cons[i];
+		if(p.hidden) {
+			this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
+			this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+		}
 	}
-}
-this.ctx.stroke();
-this.ctx.closePath();
+	this.ctx.stroke();
+	this.ctx.closePath();
 };
 
 /** 	
@@ -1315,16 +1327,16 @@ this.ctx.closePath();
 *	@param {array} shape
 */
 Verlet.prototype.renderShapes = function(shape) {
-for (let i = 0; i < shape.length; i++) {
-	this.ctx.beginPath();
-	this.ctx.fillStyle = shape[i].color;
-	this.ctx.moveTo(shape[i].paths[0].x,shape[i].paths[0].y);
-	for(let j = 1; j < shape[i].paths.length; j++) {
-		this.ctx.lineTo(shape[i].paths[j].x,shape[i].paths[j].y);
+	for (let i = 0; i < shape.length; i++) {
+		this.ctx.beginPath();
+		this.ctx.fillStyle = shape[i].color;
+		this.ctx.moveTo(shape[i].paths[0].x,shape[i].paths[0].y);
+		for(let j = 1; j < shape[i].paths.length; j++) {
+			this.ctx.lineTo(shape[i].paths[j].x,shape[i].paths[j].y);
+		}
+		this.ctx.fill();
+		this.ctx.closePath();
 	}
-	this.ctx.fill();
-	this.ctx.closePath();
-}
 };
 
 /**
@@ -1350,82 +1362,82 @@ for (let i = 0; i < shape.length; i++) {
  * @param {boolean} opt_renderPointIndex = false
  */
 Verlet.prototype.superRender = function (dots,cons,opt) {
-// optional settings if undefined set to {}
-let option;
-option = (!opt) ? {} : opt; 
+	// optional settings if undefined set to {}
+	let option;
+	option = (!opt) ? {} : opt; 
 
-//variables
-let dotsRadius,dotsColor,
-	font,fontColor,
-	lineWidth,lineColor,
-	hiddenLineWidth,hiddenLineColor,
-	preset = option.preset;
+	//variables
+	let dotsRadius,dotsColor,
+		font,fontColor,
+		lineWidth,lineColor,
+		hiddenLineWidth,hiddenLineColor,
+		preset = option.preset;
 
-// conditional variables
-let renderDots = option.renderDots;
-let renderDotsAsBox = option.renderDotsAsBox || false;
-let renderLines = option.renderLines;
-let renderPointIndex = option.renderPointIndex || false;
-let renderHiddenLines = option.renderHiddenLines || false;
-let renderShapes = option.renderShapes || false;
+	// conditional variables
+	let renderDots = option.renderDots;
+	let renderDotsAsBox = option.renderDotsAsBox || false;
+	let renderLines = option.renderLines;
+	let renderPointIndex = option.renderPointIndex || false;
+	let renderHiddenLines = option.renderHiddenLines || false;
+	let renderShapes = option.renderShapes || false;
 
-if(renderDots === undefined) {renderDots = true};
-if(renderLines === undefined) {renderLines = true};
+	if(renderDots === undefined) {renderDots = true};
+	if(renderLines === undefined) {renderLines = true};
 
-function setPreset(pr,pcol,lw,lc,f,fc,hlw,hlc) {
-	dotsRadius = option.pointRadius || pr;
-	dotsColor = option.pointColor || pcol;
-	lineWidth = option.lineWidth || lw;
-	lineColor = option.lineColor || lc;
-	font = option.font || f;
-	fontColor = option.fontColor || fc;
-	hiddenLineWidth = option.hiddenLineWidth || hlw;
-	hiddenLineColor = option.hiddenLineColor || hlc;
-}
-//Setup and load presets
-const load = {
-	default : [5,'black',0.5,'black','10px Arial','black',0.5,'red'],
-	shadowBlue : [5,'white',0.5,'deepskyblue','10px Century Gothic','limegreen',0.5,'oragered'],
-	shadowRed : [5,'#ff5b5b',0.5,'#ff2e2e','10px Century Gothic','slategray', 0.5,'green'],
-	shadowPink : [5,'hotpink',0.5,'mediumpurple','10px Century Gothic','slategray',0.5,'green'],
-	shadowGreen : [5,'#8acf00',0.5,'green','10px Century Gothic','slategray',0.5,'green']
-}
-setPreset.apply(null,load[preset]);
-if(!preset) {
-	setPreset.apply(null,load['default']);
-}
+	function setPreset(pr,pcol,lw,lc,f,fc,hlw,hlc) {
+		dotsRadius = option.pointRadius || pr;
+		dotsColor = option.pointColor || pcol;
+		lineWidth = option.lineWidth || lw;
+		lineColor = option.lineColor || lc;
+		font = option.font || f;
+		fontColor = option.fontColor || fc;
+		hiddenLineWidth = option.hiddenLineWidth || hlw;
+		hiddenLineColor = option.hiddenLineColor || hlc;
+	}
+	//Setup and load presets
+	const load = {
+		default : [5,'black',0.5,'black','10px Arial','black',0.5,'red'],
+		shadowBlue : [5,'white',0.5,'deepskyblue','10px Century Gothic','limegreen',0.5,'oragered'],
+		shadowRed : [5,'#ff5b5b',0.5,'#ff2e2e','10px Century Gothic','slategray', 0.5,'green'],
+		shadowPink : [5,'hotpink',0.5,'mediumpurple','10px Century Gothic','slategray',0.5,'green'],
+		shadowGreen : [5,'#8acf00',0.5,'green','10px Century Gothic','slategray',0.5,'green']
+	}
+	setPreset.apply(null,load[preset]);
+	if(!preset) {
+		setPreset.apply(null,load['default']);
+	}
 
-// is {debug : true}
-if(option.debug) {
-	renderPointIndex = option.renderPointIndex || true;
-	renderHiddenLines = option.renderHiddenLines || true;
-}
+	// is {debug : true}
+	if(option.debug) {
+		renderPointIndex = option.renderPointIndex || true;
+		renderHiddenLines = option.renderHiddenLines || true;
+	}
 
-//render main
-if(renderDots) {
-	//if point length is greater than 2000 then render boxes
-	if(renderDotsAsBox) {
-		this.renderDotsAsBox(dots,dotsRadius,dotsColor);
-	} else {
-		if(dots.length > 2000) {
+	//render main
+	if(renderDots) {
+		//if point length is greater than 2000 then render boxes
+		if(renderDotsAsBox) {
 			this.renderDotsAsBox(dots,dotsRadius,dotsColor);
 		} else {
-			this.renderDots(dots,dotsRadius,dotsColor);
+			if(dots.length > 2000) {
+				this.renderDotsAsBox(dots,dotsRadius,dotsColor);
+			} else {
+				this.renderDots(dots,dotsRadius,dotsColor);
+			}
 		}
 	}
-}
-if(renderHiddenLines) {
-	this.renderHiddenLines(cons,hiddenLineWidth,hiddenLineColor);
-}
-if(renderLines){
-	this.renderLines(cons,lineWidth,lineColor);
-}
-if(renderPointIndex) {
-	this.renderPointIndex(dots,font,fontColor);
-}
-if(renderShapes) {
-	this.renderShapes(option.forms || []);
-}
+	if(renderHiddenLines) {
+		this.renderHiddenLines(cons,hiddenLineWidth,hiddenLineColor);
+	}
+	if(renderLines){
+		this.renderLines(cons,lineWidth,lineColor);
+	}
+	if(renderPointIndex) {
+		this.renderPointIndex(dots,font,fontColor);
+	}
+	if(renderShapes) {
+		this.renderShapes(option.forms || []);
+	}
 };
 
 /**
@@ -1436,47 +1448,47 @@ if(renderShapes) {
  * @param {function} callback returns as parameters => (dots[],cons[])
  */
 Verlet.prototype.quickSetup = function(callback,option) {
-if(option === undefined) {option = {}}
-let width = option.width || document.body.offsetWidth;
-let height = option.height || window.innerHeight - 20;
-let grav = (option.gravity === undefined) ? 1 : option.gravity;
-let fri = (option.friction === undefined) ? 1 : option.friction;
-let stiff = (option.stiffness === undefined) ? 1 : option.stiffness;
-let append = option.append || document.body;
-let id = option.id;
-if(id === undefined) id = 'verlet_quick_setup';
+	if(option === undefined) {option = {}}
+	let width = option.width || document.body.offsetWidth;
+	let height = option.height || window.innerHeight - 20;
+	let grav = (option.gravity === undefined) ? 1 : option.gravity;
+	let fri = (option.friction === undefined) ? 1 : option.friction;
+	let stiff = (option.stiffness === undefined) ? 1 : option.stiffness;
+	let append = option.append || document.body;
+	let id = option.id;
+	if(id === undefined) id = 'verlet_quick_setup';
 
-if(typeof append === 'string') {append = document.querySelector(append)}
+	if(typeof append === 'string') {append = document.querySelector(append)}
 
-let canvas = document.createElement('canvas');
-canvas.id = id;
-canvas.width = width;
-canvas.height = height;
-append.appendChild(canvas);
+	let canvas = document.createElement('canvas');
+	canvas.id = id;
+	canvas.width = width;
+	canvas.height = height;
+	append.appendChild(canvas);
 
-let verlet = new Verlet();
-let dots = [];
-let cons = [];
-verlet.init(width,height,'#'+id,grav,fri,stiff);
+	let verlet = new Verlet();
+	let dots = [];
+	let cons = [];
+	verlet.init(width,height,'#'+id,grav,fri,stiff);
 
-let variables =	callback.call(verlet,dots,cons);
+	let variables =	callback.call(verlet,dots,cons);
 
-console.log(variables)
+	console.log(variables)
 
-verlet.Interact.move(dots);
-function animate() {
-	verlet.clear(option.bg || null);
-	
-	verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
-	verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
-	
-	if(option.animateScope) {
-		option.animateScope.call(verlet,variables)
+	verlet.Interact.move(dots);
+	function animate() {
+		verlet.clear(option.bg || null);
+		
+		verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
+		verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
+		
+		if(option.animateScope) {
+			option.animateScope.call(verlet,variables)
+		}
+		
+		requestAnimationFrame(animate);
 	}
-	
-	requestAnimationFrame(animate);
-}
-animate();
+	animate();
 }
 
 /**
@@ -1485,12 +1497,12 @@ animate();
  * @param {string} color optional 
  */
 Verlet.prototype.frame = function(func,color) {
-this.clear(color);
-let frame = window.requestAnimationFrame 
-						|| window.webkitRequestAnimationFrame 
-						|| window.msRequestAnimationFrame 
-						|| window.mozRequestAnimationFrame;
-frame(func);
+	this.clear(color);
+	let frame = window.requestAnimationFrame 
+							|| window.webkitRequestAnimationFrame 
+							|| window.msRequestAnimationFrame 
+							|| window.mozRequestAnimationFrame;
+	frame(func);
 }
 
 /**
@@ -1507,21 +1519,21 @@ frame(func);
  * @param {array} dots dots
  */
 Verlet.prototype.throwImage = function(ids,imgsrc,imgArr,dots) {
-let paths = [];
-for (let i = 0; i < ids.length; i++) {
-	const id = ids[i];
-	paths.push(dots[id]);
-}
-imgArr.push({
-	paths : paths,
-	img : loadImg(imgsrc)
-});
+	let paths = [];
+	for (let i = 0; i < ids.length; i++) {
+		const id = ids[i];
+		paths.push(dots[id]);
+	}
+	imgArr.push({
+		paths : paths,
+		img : loadImg(imgsrc)
+	});
 
-function loadImg(str) {
-	let img = new Image();
-	img.src = str;
-	return img;
-}
+	function loadImg(str) {
+		let img = new Image();
+		img.src = str;
+		return img;
+	}
 }
 
 /**
@@ -1530,20 +1542,20 @@ function loadImg(str) {
  * @param {array} images image_array
  */
 Verlet.prototype.renderImages = function (images) {
-for (let i = 0; i < images.length; i++) {
-	const image = images[i];
-	let w = -this._distance(image.paths[0],image.paths[1]);
-	let h = this._distance(image.paths[0],image.paths[3]);
-	let dx = image.paths[0].x - image.paths[1].x;
-	let dy = image.paths[0].y - image.paths[1].y;
-	let angle = Math.atan2(dy,dx);
-	
-	this.ctx.save();
-	this.ctx.translate(image.paths[0].x,image.paths[0].y);
-	this.ctx.rotate(angle);
-	this.ctx.drawImage(image.img,0,0,w,h);
-	this.ctx.restore(angle);
-}
+	for (let i = 0; i < images.length; i++) {
+		const image = images[i];
+		let w = -this._distance(image.paths[0],image.paths[1]);
+		let h = this._distance(image.paths[0],image.paths[3]);
+		let dx = image.paths[0].x - image.paths[1].x;
+		let dy = image.paths[0].y - image.paths[1].y;
+		let angle = Math.atan2(dy,dx);
+		
+		this.ctx.save();
+		this.ctx.translate(image.paths[0].x,image.paths[0].y);
+		this.ctx.rotate(angle);
+		this.ctx.drawImage(image.img,0,0,w,h);
+		this.ctx.restore(angle);
+	}
 }
 
 /**
@@ -1553,33 +1565,33 @@ for (let i = 0; i < images.length; i++) {
 
 //placeholder
 Verlet.prototype.placeholder = function(ids,text,dots,offset) {
-let w = this._distance(dots[ids[0]],dots[ids[1]]);
-let h = this._distance(dots[ids[0]],dots[ids[1]]);
+	let w = this._distance(dots[ids[0]],dots[ids[1]]);
+	let h = this._distance(dots[ids[0]],dots[ids[1]]);
 
-if(!offset) {
-	offset = {x : 0, y : 0};
-} else {
-	if (offset.x === undefined) {
-		offset.x = 0;
+	if(!offset) {
+		offset = {x : 0, y : 0};
+	} else {
+		if (offset.x === undefined) {
+			offset.x = 0;
+		}
+		if (offset.y === undefined) {
+			offset.y = 0;
+		}
 	}
-	if (offset.y === undefined) {
-		offset.y = 0;
-	}
-}
 
-let adjustX = w/2-50 + offset.x;
-let adjustY = h/4 + offset.y;
+	let adjustX = w/2-50 + offset.x;
+	let adjustY = h/4 + offset.y;
 
-let dx = dots[ids[1]].x - dots[ids[0]].x;
-let dy = dots[ids[1]].y - dots[ids[0]].y;
-let angle = Math.atan2(dy,dx);
+	let dx = dots[ids[1]].x - dots[ids[0]].x;
+	let dy = dots[ids[1]].y - dots[ids[0]].y;
+	let angle = Math.atan2(dy,dx);
 
-this.ctx.save();
-this.ctx.translate(dots[ids[0]].x,dots[ids[0]].y);
-this.ctx.rotate(angle);
-this.ctx.font = offset.font || '25px Agency FB';
-this.ctx.fillStyle = offset.color || 'black';
-this.ctx.fillText(text,adjustX,adjustY);
-this.ctx.fill();
-this.ctx.restore(angle);
+	this.ctx.save();
+	this.ctx.translate(dots[ids[0]].x,dots[ids[0]].y);
+	this.ctx.rotate(angle);
+	this.ctx.font = offset.font || '25px Agency FB';
+	this.ctx.fillStyle = offset.color || 'black';
+	this.ctx.fillText(text,adjustX,adjustY);
+	this.ctx.fill();
+	this.ctx.restore(angle);
 }
