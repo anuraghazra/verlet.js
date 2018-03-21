@@ -557,7 +557,7 @@ this.Interact = {
 		let isDown = false;
 		let parent = this;
 		let pointOffsetX = null, 
-		pointOffsetY = null;
+				pointOffsetY = null;
 		
 		/** Detect Nearby Points */
 		let ox,oy,index;
@@ -579,14 +579,10 @@ this.Interact = {
 		}
 
 		self.canvas.onmousemove = function(e) {
-			throttle(function(e) {
-				moveListner(e);
-			},100);
-		}
-		self.canvas.onmousemove = function(e) {
+			throttle(moveListner(e),100);
 			if(!isDown) return;
 			mouseMove(e); // move selected point 
-		};
+		}
 		
 		// is Mouse down
 		self.canvas.onmousedown = function() {
@@ -598,25 +594,23 @@ this.Interact = {
 			}
 		};
 		//on mouseup and out reset
-		self.canvas.onmouseup = function(e) {mouseUp(e)};
-		self.canvas.onmouseout = function(e) {mouseUp(e)};
+		self.canvas.onmouseup = function(e) { mouseUp(e) };
+		self.canvas.onmouseout = function(e) { mouseUp(e) };
 		
 		//pin and unpin
-		document.body.onkeydown = function() {
-			throttle(function(e) {
-				if(parent.hoverPoint) {
-					if(e.which === 32) { //Space
-						parent.hoverPoint.pinned = true;
-						parent.hoverPoint.color = 'crimson';
-					}
-					if(e.which === 18) { //ALT
-						e.preventDefault();
-						parent.hoverPoint.pinned = false;
-						parent.hoverPoint.color = color;
-					}
+		document.body.onkeydown = throttle(function(e) {
+			if(parent.hoverPoint) {
+				if(e.which === 32) { //Space
+					parent.hoverPoint.pinned = true;
+					parent.hoverPoint.color = 'crimson';
 				}
-			},150);
-		}
+				if(e.which === 18) { //ALT
+					e.preventDefault();
+					parent.hoverPoint.pinned = false;
+					parent.hoverPoint.color = color;
+				}
+			}
+		},150);
 
 		//listner functions
 		function mouseMove(e) {
