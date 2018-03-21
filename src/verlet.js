@@ -576,8 +576,7 @@ this.Interact = {
 			}
 			self.handle = parent.hoverPoint;
 			self.handleIndex = index;	
-			console.log('log')
-		}		
+		}
 		self.canvas.addEventListener('mousemove',	throttle(function(e) {
 			moveListner(e)
 		},100));
@@ -588,10 +587,12 @@ this.Interact = {
 		
 		// is Mouse down
 		self.canvas.addEventListener('mousedown',function() {
-			isDown = true;
-			pointOffsetX = ox - self.handle.x;
-			pointOffsetY = oy - self.handle.y;
-			self.handle.pinned = true;
+			if(self.handle) {
+				isDown = true;
+				pointOffsetX = ox - self.handle.x;
+				pointOffsetY = oy - self.handle.y;
+				self.handle.pinned = true;
+			}
 		});
 		//on mouseup and out reset
 		self.canvas.addEventListener('mouseup',mouseUp)
