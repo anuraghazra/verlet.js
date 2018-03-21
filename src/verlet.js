@@ -544,7 +544,6 @@ this.Poly = {
  */
 this.Interact = {
 	hoverPoint : undefined,
-	listnerIndex : 0,
 	draw : function(color) {
 		if(this.hoverPoint) {
 			self.ctx.beginPath();
@@ -561,12 +560,6 @@ this.Interact = {
 		pointOffsetY = null;
 		
 		/** Detect Nearby Points */
-		parent.listnerIndex++;
-		let once = true;
-		if(parent.listnerIndex > 1) {
-			once = false;
-		}
-
 		let ox,oy,index;
 		function moveListner(e) {
 			if(isDown) return;
@@ -584,46 +577,42 @@ this.Interact = {
 			self.handle = parent.hoverPoint;
 			self.handleIndex = index;	
 		}
- 
-		if(once) { //Add Event Listeners Once
 
-			self.canvas.addEventListener('mousemove',	throttle(function(e) {
-				moveListner(e)
-			},100));
-			self.canvas.addEventListener('mousemove',function(e) {
-				if(!isDown) return;
-				mouseMove(e); // move selected point 
-			});
-			
-			// is Mouse down
-			self.canvas.addEventListener('mousedown',function() {
-				if(self.handle) {
-					isDown = true;
-					pointOffsetX = ox - self.handle.x;
-					pointOffsetY = oy - self.handle.y;
-					self.handle.pinned = true;
-				}
-			});
-			//on mouseup and out reset
-			self.canvas.addEventListener('mouseup',mouseUp)
-			self.canvas.addEventListener('mouseout',mouseUp)
+		self.canvas.onmousemove = throttle(function(e) {
+			moveListner(e)
+		},100);
+		self.canvas.onmousemove = function(e) {
+			if(!isDown) return;
+			mouseMove(e); // move selected point 
+		};
 		
-			//pin and unpin
-			document.body.addEventListener('keydown',throttle(function(e) {
-				if(parent.hoverPoint) {
-					if(e.which === 32) { //Space
-						parent.hoverPoint.pinned = true;
-						parent.hoverPoint.color = 'crimson';
-					}
-					if(e.which === 18) { //ALT
-						e.preventDefault();
-						parent.hoverPoint.pinned = false;
-						parent.hoverPoint.color = color;
-					}
+		// is Mouse down
+		self.canvas.onmousedown = function() {
+			if(self.handle) {
+				isDown = true;
+				pointOffsetX = ox - self.handle.x;
+				pointOffsetY = oy - self.handle.y;
+				self.handle.pinned = true;
+			}
+		};
+		//on mouseup and out reset
+		self.canvas.onmouseup = mouseUp;
+		self.canvas.onmouseout = mouseUp;
+		
+		//pin and unpin
+		document.onkeydown = throttle(function(e) {
+			if(parent.hoverPoint) {
+				if(e.which === 32) { //Space
+					parent.hoverPoint.pinned = true;
+					parent.hoverPoint.color = 'crimson';
 				}
-			},150));
-
-		} //once
+				if(e.which === 18) { //ALT
+					e.preventDefault();
+					parent.hoverPoint.pinned = false;
+					parent.hoverPoint.color = color;
+				}
+			}
+		},150);
 
 		//listner functions
 		function mouseMove(e) {
