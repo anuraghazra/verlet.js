@@ -20,6 +20,7 @@
 * Creating Your Own Models
 * Render Settings
 * Studio API
+* Browser Support
 
 ---------------------------------------
 
@@ -461,6 +462,14 @@ window.onload = function() {
 }
 ```
 
+## Browser Support
+
+### Modern HTML5 Enabled Browsers Are Ok Like.
+* Mozila FireFox
+* Google Chrome
+* IE11 (I think? Not Tested)
+
+### **Dont Event Think About Trying It On Old-IE**
 
 --------------------------------------------------------
 
