@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.0.4
+ *  @version 1.1.4
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasciHTMLPro © 2018
  *  @constructor Verlet()
@@ -1054,7 +1054,7 @@ this.Engine = {
 		}
 	}
 }
-};//Verlet
+
 
 
 /* prototypes starts here */
@@ -1068,7 +1068,7 @@ this.Engine = {
  *	@method clear
  *	@param {string} color
  */
-Verlet.prototype.clear = function(color) {
+this.clear = function(color) {
 	this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
 	if(color) {
 		this.ctx.fillStyle = color;
@@ -1086,7 +1086,7 @@ Verlet.prototype.clear = function(color) {
  *	@param {array} dots
  *	@param {array} newD
  */
-Verlet.prototype.create = function (newD,dots) {
+this.create = function (newD,dots) {
 	for(let j = 0; j < newD.length; j++) {
 		dots.push({
 			x : newD[j][0],
@@ -1106,7 +1106,7 @@ Verlet.prototype.create = function (newD,dots) {
  *	@param {array} joints
  *	@param {array} dots
  */
-Verlet.prototype.clamp = function(newJ,joints,dots) {
+this.clamp = function(newJ,joints,dots) {
 	for(let j = 0; j < newJ.length; j++) {
 		joints.push({
 			p0 : dots[newJ[j][0]],
@@ -1126,7 +1126,7 @@ Verlet.prototype.clamp = function(newJ,joints,dots) {
  *	@param {array} dots
  *	@param {string} color
  */
-Verlet.prototype.shape = function(arr,forms,dots) {
+this.shape = function(arr,forms,dots) {
 	let tmpArr = [];
 	let tmpId = [];
 	let color = arr[arr.length-1];
@@ -1150,7 +1150,7 @@ Verlet.prototype.shape = function(arr,forms,dots) {
  * @param {array} dots
  * @param {array} cons
  */
-Verlet.prototype.bake = function(newd,newc,dots,cons) {
+this.bake = function(newd,newc,dots,cons) {
 	this.create(newd,dots);
 	this.clamp(newc,cons,dots);
 }
@@ -1165,7 +1165,7 @@ Verlet.prototype.bake = function(newd,newc,dots,cons) {
  *	@param {array} cons
  *	@param {number} accu
  */
-Verlet.prototype.superUpdate = function(dots,cons,accu,opt) {
+this.superUpdate = function(dots,cons,accu,opt) {
 	let option;
 	if(opt === undefined) {
 		option = {};
@@ -1193,7 +1193,7 @@ Verlet.prototype.superUpdate = function(dots,cons,accu,opt) {
  *	@param {number} radius
  *	@param {string} color
  */
-Verlet.prototype.renderDots = function(dots,radius,color) {
+this.renderDots = function(dots,radius,color) {
 	let PI2 = Math.PI*2;
 	let rad = radius || 5;
 	for (let i = 0; i < dots.length; i++) {
@@ -1214,7 +1214,7 @@ Verlet.prototype.renderDots = function(dots,radius,color) {
  *	@param {number} radius
  *	@param {string} color
  */
-Verlet.prototype.renderDotsAsBox = function(dots,radius,color) {
+this.renderDotsAsBox = function(dots,radius,color) {
 	for (let i = 0; i < dots.length; i++) {
 		let p = dots[i];
 		if(!p.hidden) {
@@ -1231,7 +1231,7 @@ Verlet.prototype.renderDotsAsBox = function(dots,radius,color) {
 *	@param {string} fonts
 *	@param {string} color
 */
-Verlet.prototype.renderPointIndex = function(dots,font,color) {
+this.renderPointIndex = function(dots,font,color) {
 	let osctx = this.osCanvas.getContext('2d');
 	osctx.clearRect(0,0,this.canvas.width,this.canvas.height);
 	osctx.font = font || '10px Arial';
@@ -1251,7 +1251,7 @@ Verlet.prototype.renderPointIndex = function(dots,font,color) {
 *	@param {array} dots
 *	@param {array} cons
 */
-Verlet.prototype.superDebugRender = function(dots,cons) {
+this.superDebugRender = function(dots,cons) {
 	this.renderDots(dots);
 	this.renderLines(cons);
 	this.renderHiddenLines(cons,0.7,'red');
@@ -1265,7 +1265,7 @@ Verlet.prototype.superDebugRender = function(dots,cons) {
 *	@param {number} lineWidth
 *	@param {string} color
 */
-Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
+this.renderLines = function(cons,linewidth,color,showHidden) {
 	this.ctx.beginPath();
 	this.ctx.strokeStyle = (color || 'black')
 	this.ctx.lineWidth = linewidth || 1;
@@ -1293,7 +1293,7 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 *	@param {number} lineWidth
 *	@param {string} color
 */
-Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
+this.renderHiddenLines = function(cons,linewidth,color) {
 	this.ctx.beginPath();
 	this.ctx.strokeStyle = (color || 'red');
 	this.ctx.lineWidth = linewidth || 1;
@@ -1313,7 +1313,7 @@ Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
 *	@method renderShapes
 *	@param {array} shape
 */
-Verlet.prototype.renderShapes = function(shape) {
+this.renderShapes = function(shape) {
 	for (let i = 0; i < shape.length; i++) {
 		this.ctx.beginPath();
 		this.ctx.fillStyle = shape[i].color;
@@ -1348,7 +1348,7 @@ Verlet.prototype.renderShapes = function(shape) {
  * @param {boolean} opt_renderLines = true
  * @param {boolean} opt_renderPointIndex = false
  */
-Verlet.prototype.superRender = function (dots,cons,opt) {
+this.superRender = function (dots,cons,opt) {
 	// optional settings if undefined set to {}
 	let option;
 	option = (!opt) ? {} : opt; 
@@ -1434,7 +1434,7 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
  * @param {object} option {width,height,gravity,friction,stiffness,append}
  * @param {function} callback returns as parameters => (dots[],cons[])
  */
-Verlet.prototype.quickSetup = function(callback,option) {
+this.quickSetup = function(callback,option) {
 	if(option === undefined) {option = {}}
 	let width = option.width || document.body.offsetWidth;
 	let height = option.height || window.innerHeight - 20;
@@ -1483,7 +1483,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
  * @param {function} func 
  * @param {string} color optional 
  */
-Verlet.prototype.frame = function(func,color) {
+this.frame = function(func,color) {
 	this.clear(color);
 	let frame = window.requestAnimationFrame 
 							|| window.webkitRequestAnimationFrame 
@@ -1505,7 +1505,7 @@ Verlet.prototype.frame = function(func,color) {
  * @param {array} imgArr empty array
  * @param {array} dots dots
  */
-Verlet.prototype.throwImage = function(ids,imgsrc,imgArr,dots) {
+this.throwImage = function(ids,imgsrc,imgArr,dots) {
 	let paths = [];
 	for (let i = 0; i < ids.length; i++) {
 		const id = ids[i];
@@ -1528,7 +1528,7 @@ Verlet.prototype.throwImage = function(ids,imgsrc,imgArr,dots) {
  * @method renderImages
  * @param {array} images image_array
  */
-Verlet.prototype.renderImages = function (images) {
+this.renderImages = function (images) {
 	for (let i = 0; i < images.length; i++) {
 		const image = images[i];
 		let w = -this._distance(image.paths[0],image.paths[1]);
@@ -1551,7 +1551,7 @@ Verlet.prototype.renderImages = function (images) {
  */
 
 //placeholder
-Verlet.prototype.placeholder = function(ids,text,dots,offset) {
+this.placeholder = function(ids,text,dots,offset) {
 	let w = this._distance(dots[ids[0]],dots[ids[1]]);
 	let h = this._distance(dots[ids[0]],dots[ids[1]]);
 
@@ -1582,3 +1582,5 @@ Verlet.prototype.placeholder = function(ids,text,dots,offset) {
 	this.ctx.fill();
 	this.ctx.restore(angle);
 }
+
+};//Verlet
