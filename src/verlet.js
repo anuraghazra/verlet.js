@@ -552,18 +552,21 @@ this.Poly = {
       ]
     }
 
-    self.create(opt.data,dots);
+		self.create(opt.data,dots);
     let joinArr = [];
     let i;
     if(opt.joinEnd === true) {
       i = 0;
     } else {
       i = 1;
-    }
+		}
     for (i; i < opt.data.length; i++) {
-      joinArr.push([i,(i+1)%opt.data.length]);
-    }
-
+			joinArr.push([
+				(i)%opt.data.length+dots.length-opt.data.length,
+				((i+1))%opt.data.length+dots.length-opt.data.length
+			]);
+		}
+		
     self.clamp(joinArr,cons,dots);
     joinArr = null;
     i = null;

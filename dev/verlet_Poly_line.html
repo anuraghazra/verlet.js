@@ -16,50 +16,26 @@
 <script>
 window.onload = function() {
   const verlet = new Verlet();
-  verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+  verlet.init(window.innerWidth-10,500,'#c',0,1,1);
 
   let dots = [];
   let cons = [];
 
-
-  // function line(opt,dots,cons) {
-  //   if(!opt.data) {
-  //     opt.data = [
-  //       [100,100],
-  //       [200,100],
-  //     ]
-  //   }
-
-  //   verlet.create(opt.data,dots);
-  //   let joinArr = [];
-  //   let i;
-  //   if(opt.joinEnd === true) {
-  //     i = 0;
-  //   } else {
-  //     i = 1;
-  //   }
-  //   for (i; i < opt.data.length; i++) {
-  //     joinArr.push([i,(i+1)%opt.data.length]);
-  //   }
-
-  //   verlet.clamp(joinArr,cons,dots);
-  //   joinArr = null;
-  //   i = null;
-  // }
-
+  verlet.Poly.box({x:200},dots,cons)
+  // verlet.Poly.triangle({},dots,cons)
+  
   verlet.Poly.line({
     data : [
       [100,100],
       [200,100],
       [200,200],
-      [100,200]
+      // [100,200]
     ],
-    // joinEnd : true
+    joinEnd : false
   },dots,cons);
-
-  verlet.clamp([
-    [0,2]
-  ],cons,dots);
+  // verlet.clamp([
+  //   [0,2]
+  // ],cons,dots);
 
   verlet.Interact.move(dots)
   function animate() {
