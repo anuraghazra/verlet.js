@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Century Gothic';
+      color : dimgray;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="c"></canvas>
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(window.innerWidth-10,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+
+  // function line(opt,dots,cons) {
+  //   if(!opt.data) {
+  //     opt.data = [
+  //       [100,100],
+  //       [200,100],
+  //     ]
+  //   }
+
+  //   verlet.create(opt.data,dots);
+  //   let joinArr = [];
+  //   let i;
+  //   if(opt.joinEnd === true) {
+  //     i = 0;
+  //   } else {
+  //     i = 1;
+  //   }
+  //   for (i; i < opt.data.length; i++) {
+  //     joinArr.push([i,(i+1)%opt.data.length]);
+  //   }
+
+  //   verlet.clamp(joinArr,cons,dots);
+  //   joinArr = null;
+  //   i = null;
+  // }
+
+  verlet.Poly.line({
+    data : [
+      [100,100],
+      [200,100],
+      [200,200],
+      [100,200]
+    ],
+    // joinEnd : true
+  },dots,cons);
+
+  verlet.clamp([
+    [0,2]
+  ],cons,dots);
+
+  verlet.Interact.move(dots)
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,25);
+    verlet.superRender(dots,cons,{debug : true,preset : 'shadowRed'});
+    
+  }
+  animate();
+}
+</script>
+</body>
+</html>

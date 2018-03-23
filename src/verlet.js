@@ -531,7 +531,43 @@ this.Poly = {
 				tmpCons = [];
 			}
 		}
-	}
+	},
+
+	/**
+	 *  Creates a line from given data
+	 *	@method line
+	 *  @param {object} opt
+	 *	@param {array} opt_data
+	 *	@param {boolean} opt_joinEnd
+	 *  @param {array} dot
+	 *  @param {array} con
+	 */	
+	line : function(opt,dot,con) {
+		let dots = dot || this.dots;
+		let cons = con || this.cons;
+    if(!opt.data) {
+      opt.data = [
+        [100,100],
+        [200,100],
+      ]
+    }
+
+    self.create(opt.data,dots);
+    let joinArr = [];
+    let i;
+    if(opt.joinEnd === true) {
+      i = 0;
+    } else {
+      i = 1;
+    }
+    for (i; i < opt.data.length; i++) {
+      joinArr.push([i,(i+1)%opt.data.length]);
+    }
+
+    self.clamp(joinArr,cons,dots);
+    joinArr = null;
+    i = null;
+  }
 };
 
 /** 	
