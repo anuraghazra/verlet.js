@@ -554,13 +554,14 @@ this.Poly = {
 
 		self.create(opt.data,dots);
     let joinArr = [];
-    let i;
+		let i;
+		let optlength = opt.data.length;
     if(opt.joinEnd === true) {
-      i = 0;
+      optlength = optlength;
     } else {
-      i = 1;
+      optlength = optlength-1;
 		}
-    for (i; i < opt.data.length; i++) {
+    for (i = 0; i < optlength; i++) {
 			joinArr.push([
 				(i)%opt.data.length+dots.length-opt.data.length,
 				((i+1))%opt.data.length+dots.length-opt.data.length
