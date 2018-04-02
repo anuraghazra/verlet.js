@@ -576,7 +576,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.5
+ *  @version v1.6
  *	@method Interact
  *	@param {array} dots
  *	@param {array} cons
@@ -605,11 +605,12 @@ this.Interact = {
 			if(isDown) return;
 			parent.hoverPoint = undefined;
 			index = null;
-			ox = e.offsetX,
-			oy = e.offsetY;
+			ox = e.offsetX - 15,
+			oy = e.offsetY - 15;
 
 			for(let i = 0; i < dots.length; i++) {
-				if(colDetect(ox,oy,dots[i]) < 25) {
+				let dist = colDetect(ox,oy,dots[i]);
+				if(dist < 30) {
 					parent.hoverPoint = dots[i];
 					index = i;
 				}
@@ -619,13 +620,13 @@ this.Interact = {
 		}
 
 		self.canvas.onmousemove = function(e) {
-			throttle(moveListner(e),100);
+			moveListner(e);
 			if(!isDown) return;
-			mouseMove(e); // move selected point 
-		}
+			mouseMove(e); // move selected point 			
+		};
 		
 		// is Mouse down
-		self.canvas.onmousedown = function() {
+		self.canvas.onmousedown = function(e) {
 			if(self.handle) {
 				isDown = true;
 				pointOffsetX = ox - self.handle.x;
@@ -655,8 +656,8 @@ this.Interact = {
 		//listner functions
 		function mouseMove(e) {
 			if(self.handle) {
-				self.handle.x = e.offsetX - pointOffsetX;
-				self.handle.y =	e.offsetY - pointOffsetY;
+				self.handle.x = e.offsetX - 15 - pointOffsetX;
+				self.handle.y =	e.offsetY - 15 - pointOffsetY;
 				self.handle.oldx = self.handle.x;
 				self.handle.oldy = self.handle.y;
 			}
@@ -1019,8 +1020,8 @@ this.Engine = {
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
 			if(!p.pinned) {
-				let vx = (p.x - p.oldx) * 0.98,
-					vy = (p.y - p.oldy) * 0.98;
+				let vx = (p.x - p.oldx) * 0.99,
+					vy = (p.y - p.oldy) * 0.99;
 				//Boundry
 				let width = self.canvas.width,
 					height = self.canvas.height;
