@@ -758,6 +758,10 @@ this.Studio = {
 				<span>Lines</span>
 			</label>
 			<label>
+				<input type="checkbox" id="vls-stressOpt">
+				<span>Stress</span>
+			</label>
+			<label>
 				<input type="checkbox" id="vls-pointIndex">
 				<span>Index</span>
 			</label>
@@ -869,7 +873,8 @@ margin-bottom: 10px;
 			shapeOpt = document.getElementById('vls-shapes'),
 			gravity = document.getElementById('vls-gravity'),
 			friction = document.getElementById('vls-friction'),
-			vlsPreset = document.getElementById('vls-preset');
+			vlsPreset = document.getElementById('vls-preset'),
+			stressOpt = document.getElementById('vls-stressOpt');
 		
 		let color = option.hoverColor;
 		let dotsRadius = option.pointRadius,
@@ -886,6 +891,7 @@ margin-bottom: 10px;
 		let isRenderDots;
 		let isRenderIndex;
 		let isRenderHiddenLines;
+		let isRenderStress;
 
 		self.gravity = option.gravity || parseFloat(gravity.value) || 0;
 		self.friction = parseFloat(friction.value) || 1;
@@ -894,6 +900,7 @@ margin-bottom: 10px;
 		isRenderLines = (LineOpt.checked === true) ? true : false;
 		isRenderHiddenLines = (hiddenLineOpt.checked === true) ? true : false;
 		isRenderIndex = (IndexOpt.checked === true) ? true : false;
+		isRenderStress = (stressOpt.checked === true) ? true : false;
 		
 		if(opt.forms) {
 			(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
@@ -902,6 +909,7 @@ margin-bottom: 10px;
 		self.superRender(opt.dots,opt.cons,{			
 			renderDots : isRenderDots,
 			renderLines : isRenderLines,
+			renderStress : isRenderStress,
 			renderPointIndex : option.renderPointIndex || isRenderIndex,
 			renderHiddenLines : isRenderHiddenLines,
 			pointRadius : dotsRadius,
@@ -1328,6 +1336,32 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 }
 
 /** 	
+ *	Render Stress Between Constrains
+*	@method renderStress
+*	@param {array} cons
+*/
+Verlet.prototype.renderStress = function(cons) {
+	for(let i = 0; i < cons.length; i++) {
+		this.ctx.beginPath();
+		let p = cons[i];
+		let diff = p.len - this._distance(p.p1,p.p0);
+		let color_diff = Math.round( diff*diff*384 );
+
+		if(color_diff <= 1) {
+			this.ctx.strokeStyle = 'limegreen';
+		} else {
+			this.ctx.strokeStyle = 'rgba(' + (128+color_diff) + ', ' + (128-color_diff) + ', ' + (128-color_diff) + ', 1)';
+		}
+
+		this.ctx.lineWidth = 1;
+		this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
+		this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+		this.ctx.stroke();
+		this.ctx.closePath();
+	}
+}
+
+/** 	
  *	Render Hidden Lines Between Constrains
 *	@method renderHiddenLines
 *	@param {array} cons
@@ -1408,6 +1442,7 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	let renderPointIndex = option.renderPointIndex || false;
 	let renderHiddenLines = option.renderHiddenLines || false;
 	let renderShapes = option.renderShapes || false;
+	let renderStress = option.renderStress || false;
 
 	if(renderDots === undefined) {renderDots = true};
 	if(renderLines === undefined) {renderLines = true};
@@ -1465,6 +1500,9 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	}
 	if(renderShapes) {
 		this.renderShapes(option.forms || []);
+	}
+	if(renderStress) {
+		this.renderStress(cons);
 	}
 };
 
