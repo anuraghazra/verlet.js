@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',0.5,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.beam({segs : 8},dots, cons);
+  dots[0].pinned = true; //pin
+  dots[8].pinned = true; //pin
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    verlet.superUpdate(dots,cons,10);
+
+    // verlet.renderStress(cons[]);
+    // verlet.renderStress(cons);
+
+    //OR use in superRender
+    verlet.superRender(dots,cons,{
+      renderLines : false,
+      renderStress : true
+    });
+  }
+  animate();
+}
+</script>
+</body>
+</html>

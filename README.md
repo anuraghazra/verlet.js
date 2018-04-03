@@ -339,7 +339,6 @@ window.onload = function() {
 check out the demo [here](./demos/render_settings_demo.html)
 
 ```javascript
-...
   function animate() {
     ...
 
@@ -357,7 +356,8 @@ check out the demo [here](./demos/render_settings_demo.html)
       renderPointIndex : true,
       font : '12px Arial',
       fontColor : 'royalblue',
-      // renderDotsAsBox : true
+      // renderDotsAsBox : true,
+      // renderStress : false,
       // debug : true,
       // preset : 'shadowRed'
     });
@@ -388,6 +388,7 @@ font                    | *String*  | '8px Arial'
 hiddenLineWidth         | *Number*  | 1
 hiddenLineColor         | *String*  | 'red'
 renderDots              | *Boolean* | true
+renderStress            | *Boolean* | true
 renderDotsAsBox         | *Boolean* | false
 renderPointIndex        | *Boolean* | false
 renderLines             | *Boolean* | true
@@ -413,6 +414,33 @@ just use
 >   preset : 'presetName'
 > });
 >```
+
+### **Stress Rendering**
+
+Stress Rendering is pretty cool.
+it renders how much tension is applying on the constrains.
+
+check out the demo [here](./demos/renderStress.html)
+
+![stressRender](./assets/images/renderStress.png)
+
+just use
+> ```javascript
+> verlet.superRender(dots,cons,{
+>   renderStress : true
+> });
+>```
+### OR
+> ```javascript
+> function animte() {
+>  ...
+>
+>   verlet.stressRender(cons);
+>
+>  ...
+> }
+> animate();
+> ```
 
 ------------------------------------------------------------------------
 
@@ -465,8 +493,14 @@ window.onload = function() {
 ## Browser Support
 
 ### Modern HTML5 Enabled Browsers Are Ok Like.
-* Mozila FireFox
-* Google Chrome
+
+Cool Logos           | Name 
+--------------|-----------
+<img src="./assets/images/chrome.png" width="10%" /> | Google Chrome
+<img src="./assets/images/ff.png" width="10%" /> | Mozila FireFox
+<img src="./assets/images/opera.png" width="10%" /> | Opera Desktop
+
+
 * IE11 (I think? Not Tested)
 
 ### **Dont Event Think About Trying It On Old-IE**
