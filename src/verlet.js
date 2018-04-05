@@ -117,10 +117,10 @@ this.Poly = {
 		let cons = con || this.cons;
 		// (dots.length < 1) ? pls = 0 : pls = dots.length;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.width === undefined) {opt.width = 100};
-		if(opt.height === undefined) {opt.height = 100};
+		if ( opt.x 			=== undefined ) { opt.x	 			= 100 };
+		if ( opt.y 			=== undefined ) { opt.y 			= 100 };
+		if ( opt.width 	=== undefined ) { opt.width 	= 100 };
+		if ( opt.height === undefined ) { opt.height 	= 100 };
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -160,10 +160,10 @@ this.Poly = {
 		let cons = con || this.cons;
 		let pls = dots.length;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.width === undefined) {opt.width = 100};
-		if(opt.height === undefined) {opt.height = 150};
+		if ( opt.x 			=== undefined ) { opt.x 			= 100 };
+		if ( opt.y 			=== undefined ) { opt.y 			= 100 };
+		if ( opt.width 	=== undefined ) { opt.width 	= 100 };
+		if ( opt.height === undefined ) { opt.height 	= 150 };
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -197,12 +197,12 @@ this.Poly = {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.radius === undefined) {opt.radius = 50};
-		if(opt.slice1 === undefined) {opt.slice1 = 1};
-		if(opt.slice2 === undefined) {opt.slice2 = 6};
-		if(opt.sides === undefined) {opt.sides = 8};
+		if ( opt.x 			=== undefined ) { opt.x 			= 100 };
+		if ( opt.y 			=== undefined ) { opt.y 			= 100 };
+		if ( opt.radius === undefined ) { opt.radius 	= 50 	};
+		if ( opt.slice1 === undefined ) { opt.slice1 	= 1 	};
+		if ( opt.slice2 === undefined ) { opt.slice2 	= 6 	};
+		if ( opt.sides 	=== undefined ) { opt.sides 	= 8 	};
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -290,11 +290,11 @@ this.Poly = {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.width === undefined) {opt.width = 50};
-		if(opt.height === undefined) {opt.height = 50};
-		if(opt.segs === undefined) {opt.segs = 6};
+		if ( opt.x 			=== undefined ) { opt.x 			= 100 };
+		if ( opt.y 		 	=== undefined ) { opt.y 			= 100 };
+		if ( opt.width 	=== undefined ) { opt.width 	= 50 	};
+		if ( opt.height === undefined ) { opt.height 	= 50 	};
+		if ( opt.segs 	=== undefined ) { opt.segs 		= 6 	};
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -355,10 +355,10 @@ this.Poly = {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.segs === undefined) {opt.segs = 15};
-		if(opt.gap === undefined) {opt.gap = 20};
+		if ( opt.x 			=== undefined ) {opt.x 		= 100	};
+		if ( opt.y 			=== undefined ) {opt.y 		= 100 };
+		if ( opt.segs 	=== undefined ) {opt.segs = 15  };
+		if ( opt.gap 		=== undefined ) {opt.gap 	= 20  };
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {	
@@ -459,11 +459,11 @@ this.Poly = {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
 		let clone = opt.clone || 1;
-		if(opt.x === undefined) {opt.x = 100};
-		if(opt.y === undefined) {opt.y = 100};
-		if(opt.segs === undefined) {opt.segs = 15};
-		if(opt.gap === undefined) {opt.gap = 20};
-		if(opt.pinRatio === undefined) {opt.pinRatio = 7};
+		if ( opt.x 				=== undefined ) { opt.x 				= 100	};
+		if ( opt.y 				=== undefined ) { opt.y					= 100	};
+		if ( opt.segs 		=== undefined ) { opt.segs 			= 15	};
+		if ( opt.gap 			=== undefined ) { opt.gap 			= 20	};
+		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 7		};
 		// if(opt.tearable === undefined) {opt.tearable = false};
 		// let tear = 'tear';
 		// if(opt.tearable === false) {
@@ -865,27 +865,32 @@ margin-bottom: 10px;
 		} else {
 			option = opt.renderSettings;
 		}
-		const PhysicsAccuracy = document.getElementById('vls-Iterrations'),
-			dotOpt = document.getElementById('vls-dots'),
-			LineOpt = document.getElementById('vls-lines'),
-			hiddenLineOpt = document.getElementById('vls-hidden-lines'),
-			IndexOpt = document.getElementById('vls-pointIndex'),
-			shapeOpt = document.getElementById('vls-shapes'),
-			gravity = document.getElementById('vls-gravity'),
-			friction = document.getElementById('vls-friction'),
-			vlsPreset = document.getElementById('vls-preset'),
-			stressOpt = document.getElementById('vls-stressOpt');
+
+		function id (id) {
+			return document.getElementById(id)
+		}
+
+		const PhysicsAccuracy 	= id('vls-Iterrations'),
+			dotOpt 								= id('vls-dots'),
+			LineOpt 							= id('vls-lines'),
+			hiddenLineOpt 				= id('vls-hidden-lines'),
+			IndexOpt 							= id('vls-pointIndex'),
+			shapeOpt 							= id('vls-shapes'),
+			gravity 							= id('vls-gravity'),
+			friction 							= id('vls-friction'),
+			vlsPreset 						= id('vls-preset'),
+			stressOpt 						= id('vls-stressOpt');
 		
-		let color = option.hoverColor;
-		let dotsRadius = option.pointRadius,
-			dotsColor = option.pointColor,
-			lineWidth = option.lineWidth,
-			lineColor = option.lineColor,
-			fontColor = option.fontColor,
+		let color 				= option.hoverColor;
+		let dotsRadius 		= option.pointRadius,
+			dotsColor 			= option.pointColor,
+			lineWidth 			= option.lineWidth,
+			lineColor 			= option.lineColor,
+			fontColor 			= option.fontColor,
 			hiddenLineWidth = option.hiddenLineWidth,
 			hiddenLineColor = option.hiddenLineColor,
-			font = option.font,
-			preset = option.preset || vlsPreset.value || 'default';
+			font 						= option.font,
+			preset 					= option.preset || vlsPreset.value || 'default';
 					
 		let isRenderLines;
 		let isRenderDots;
@@ -896,30 +901,30 @@ margin-bottom: 10px;
 		self.gravity = option.gravity || parseFloat(gravity.value) || 0;
 		self.friction = parseFloat(friction.value) || 1;
 
-		isRenderDots = (dotOpt.checked === true) ? true : false;
-		isRenderLines = (LineOpt.checked === true) ? true : false;
-		isRenderHiddenLines = (hiddenLineOpt.checked === true) ? true : false;
-		isRenderIndex = (IndexOpt.checked === true) ? true : false;
-		isRenderStress = (stressOpt.checked === true) ? true : false;
+		isRenderDots 				= (dotOpt.checked === true) 				? true : false;
+		isRenderLines 			= (LineOpt.checked === true) 				? true : false;
+		isRenderHiddenLines = (hiddenLineOpt.checked === true) 	? true : false;
+		isRenderIndex 			= (IndexOpt.checked === true) 			? true : false;
+		isRenderStress 			= (stressOpt.checked === true) 			? true : false;
 		
 		if(opt.forms) {
 			(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
 		}
 
 		self.superRender(opt.dots,opt.cons,{			
-			renderDots : isRenderDots,
-			renderLines : isRenderLines,
-			renderStress : isRenderStress,
-			renderPointIndex : option.renderPointIndex || isRenderIndex,
+			renderDots 				: isRenderDots,
+			renderLines 			: isRenderLines,
+			renderStress 			: isRenderStress,
+			renderPointIndex 	: option.renderPointIndex || isRenderIndex,
 			renderHiddenLines : isRenderHiddenLines,
-			pointRadius : dotsRadius,
-			pointColor : dotsColor,
-			lineWidth : lineWidth,
-			lineColor : lineColor,
-			hiddenLineColor : hiddenLineColor,
-			hiddenLineWidth : hiddenLineWidth,
-			font : font,
-			preset : preset
+			pointRadius 			: dotsRadius,
+			pointColor				: dotsColor,
+			lineWidth 				: lineWidth,
+			lineColor 				: lineColor,
+			hiddenLineColor 	: hiddenLineColor,
+			hiddenLineWidth 	: hiddenLineWidth,
+			font 							: font,
+			preset 						: preset
 		});
 		self.superUpdate(opt.dots,opt.cons,PhysicsAccuracy.value,{hoverColor : color});
 	}
@@ -1430,20 +1435,20 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 
 	//variables
 	let dotsRadius,dotsColor,
-		font,fontColor,
-		lineWidth,lineColor,
-		hiddenLineWidth,hiddenLineColor,
-		preset = option.preset;
+			font,fontColor,
+			lineWidth,lineColor,
+			hiddenLineWidth,hiddenLineColor,
+			preset = option.preset;
 
 	// conditional variables
-	let renderDots = option.renderDots;
-	let renderDotsAsBox = option.renderDotsAsBox || false;
-	let renderLines = option.renderLines;
-	let renderPointIndex = option.renderPointIndex || false;
-	let renderHiddenLines = option.renderHiddenLines || false;
-	let renderShapes = option.renderShapes || false;
-	let renderStress = option.renderStress || false;
-	let renderImages = option.renderImages || false;
+	let renderDots 				= option.renderDots;
+	let renderDotsAsBox 	= option.renderDotsAsBox 		|| false;
+	let renderLines 			= option.renderLines;
+	let renderPointIndex 	= option.renderPointIndex 	|| false;
+	let renderHiddenLines = option.renderHiddenLines 	|| false;
+	let renderShapes 			= option.renderShapes 			|| false;
+	let renderStress 			= option.renderStress 			|| false;
+	let renderImages 			= option.renderImages 			|| false;
 
 	if(renderDots === undefined) {renderDots = true};
 	if(renderLines === undefined) {renderLines = true};
@@ -1460,10 +1465,10 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	}
 	//Setup and load presets
 	const load = {
-		default : [5,'black',0.5,'black','10px Arial','black',0.5,'red'],
-		shadowBlue : [5,'white',0.5,'deepskyblue','10px Century Gothic','limegreen',0.5,'oragered'],
-		shadowRed : [5,'#ff5b5b',0.5,'#ff2e2e','10px Century Gothic','slategray', 0.5,'green'],
-		shadowPink : [5,'hotpink',0.5,'mediumpurple','10px Century Gothic','slategray',0.5,'green'],
+		default 		:	[5,'black',0.5,'black','10px Arial','black',0.5,'red'],
+		shadowBlue 	:	[5,'white',0.5,'deepskyblue','10px Century Gothic','limegreen',0.5,'oragered'],
+		shadowRed 	: [5,'#ff5b5b',0.5,'#ff2e2e','10px Century Gothic','slategray', 0.5,'green'],
+		shadowPink 	: [5,'hotpink',0.5,'mediumpurple','10px Century Gothic','slategray',0.5,'green'],
 		shadowGreen : [5,'#8acf00',0.5,'green','10px Century Gothic','slategray',0.5,'green']
 	}
 	setPreset.apply(null,load[preset]);
@@ -1477,7 +1482,7 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 		renderHiddenLines = option.renderHiddenLines || true;
 	}
 
-	//render main
+	//renderDots
 	if(renderDots) {
 		//if point length is greater than 2000 then render boxes
 		if(renderDotsAsBox) {
@@ -1490,25 +1495,27 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 			}
 		}
 	}
-	if(renderHiddenLines) {
-		this.renderHiddenLines(cons,hiddenLineWidth,hiddenLineColor);
+
+	//renderHiddenLines
+	if(renderHiddenLines) { this.renderHiddenLines(cons,hiddenLineWidth,hiddenLineColor); }
+
+	//renderLines
+	if(renderLines){ this.renderLines(cons,lineWidth,lineColor); }
+
+	//renderPointIndex
+	if(renderPointIndex) { this.renderPointIndex(dots,font,fontColor); }
+
+	//renderStress
+	if(renderStress) { this.renderStress(cons); }
+
+	//renderShapes
+	if(option.forms) {
+		if(renderShapes) { this.renderShapes(option.forms || []); }
 	}
-	if(renderLines){
-		this.renderLines(cons,lineWidth,lineColor);
-	}
-	if(renderPointIndex) {
-		this.renderPointIndex(dots,font,fontColor);
-	}
-	if(renderShapes) {
-		this.renderShapes(option.forms || []);
-	}
-	if(renderStress) {
-		this.renderStress(cons);
-	}
+
+	//renderImages
 	if(option.images) { 
-		if(renderImages) {
-			this.renderImages(option.images);
-		}
+		if(renderImages) { this.renderImages(option.images); }
 	}	
 };
 
@@ -1521,13 +1528,14 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
  */
 Verlet.prototype.quickSetup = function(callback,option) {
 	if(option === undefined) {option = {}}
-	let width = option.width || document.body.offsetWidth;
-	let height = option.height || window.innerHeight - 20;
-	let grav = (option.gravity === undefined) ? 1 : option.gravity;
-	let fri = (option.friction === undefined) ? 1 : option.friction;
-	let stiff = (option.stiffness === undefined) ? 1 : option.stiffness;
-	let append = option.append || document.body;
-	let id = option.id;
+	let width 	= option.width || document.body.offsetWidth;
+	let height 	= option.height || window.innerHeight - 20;
+	let grav 		=	(option.gravity === undefined) ? 1 : option.gravity;
+	let fri 		=	(option.friction === undefined) ? 1 : option.friction;
+	let stiff   =	(option.stiffness === undefined) ? 1 : option.stiffness;
+	let append 	=	option.append || document.body;
+	let id 			=	option.id;
+	
 	if(id === undefined) id = 'verlet_quick_setup';
 
 	if(typeof append === 'string') {append = document.querySelector(append)}
@@ -1544,8 +1552,6 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	verlet.init(width,height,'#'+id,grav,fri,stiff);
 
 	let variables =	callback.call(verlet,dots,cons);
-
-	console.log(variables)
 
 	verlet.Interact.move(dots);
 	function animate() {
@@ -1596,10 +1602,7 @@ Verlet.prototype.throwImage = function(ids,imgsrc,imgArr,dots) {
 		const id = ids[i];
 		paths.push(dots[id]);
 	}
-	imgArr.push({
-		paths : paths,
-		img : loadImg(imgsrc)
-	});
+	imgArr.push({ paths : paths, img : loadImg(imgsrc) });
 
 	function loadImg(str) {
 		let img = new Image();
