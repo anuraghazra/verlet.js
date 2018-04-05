@@ -12,7 +12,7 @@
   window.onload = function() {
     var verlet = new Verlet();
     verlet.init(640,500,'#c',1,1,1);
-
+    
     var dots = [];
     var cons = [];
     
@@ -23,7 +23,7 @@
     verlet.Interact.move(dots)
     function animate() {
       verlet.frame(animate);
-      
+
       verlet.Studio.update({
         dots : dots,
         cons : cons,

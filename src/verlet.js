@@ -653,7 +653,7 @@ this.Interact = {
 			}
 		},150);
 
-		//listner functions
+		//listener functions
 		function mouseMove(e) {
 			if(self.handle) {
 				self.handle.x = e.offsetX - 15 - pointOffsetX;
@@ -1443,6 +1443,7 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	let renderHiddenLines = option.renderHiddenLines || false;
 	let renderShapes = option.renderShapes || false;
 	let renderStress = option.renderStress || false;
+	let renderImages = option.renderImages || false;
 
 	if(renderDots === undefined) {renderDots = true};
 	if(renderLines === undefined) {renderLines = true};
@@ -1504,6 +1505,11 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	if(renderStress) {
 		this.renderStress(cons);
 	}
+	if(option.images) { 
+		if(renderImages) {
+			this.renderImages(option.images);
+		}
+	}	
 };
 
 /**
