@@ -461,8 +461,9 @@ this.Poly = {
 		let clone = opt.clone || 1;
 		if ( opt.x 				=== undefined ) { opt.x 				= 100	};
 		if ( opt.y 				=== undefined ) { opt.y					= 100	};
-		if ( opt.segs 		=== undefined ) { opt.segs 			= 15	};
-		if ( opt.gap 			=== undefined ) { opt.gap 			= 20	};
+		if ( opt.segs 		=== undefined ) { opt.segs 			= 20	};
+		if ( opt.gapX 		=== undefined ) { opt.gapX 			= 15	};
+		if ( opt.gapY 		=== undefined ) { opt.gapY 			= 15	};
 		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 7		};
 		// if(opt.tearable === undefined) {opt.tearable = false};
 		// let tear = 'tear';
@@ -474,7 +475,8 @@ this.Poly = {
 			for(let i = 0; i < clone; i++) {
 				let x = opt.x,
 					y = opt.y,
-					gap = opt.gap,
+					gapx = opt.gapX,
+					gapy = opt.gapY,
 					segs = opt.segs;
 				let pls = dots.length;
 
@@ -486,10 +488,10 @@ this.Poly = {
 						tmpDots.push([
 							x,y,x,y
 						])
-						x += gap;
+						x += gapx;
 					}
 					x = oldx;
-					y += gap;
+					y += gapy;
 				}
 				for (let j = 0; j < tmpDots.length-1; j++) {
 					if( (j+1)%segs > 0 ) {
@@ -1528,13 +1530,13 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
  */
 Verlet.prototype.quickSetup = function(callback,option) {
 	if(option === undefined) {option = {}}
-	let width 	= option.width || document.body.offsetWidth;
-	let height 	= option.height || window.innerHeight - 20;
-	let grav 		=	(option.gravity === undefined) ? 1 : option.gravity;
-	let fri 		=	(option.friction === undefined) ? 1 : option.friction;
+	let width 	=  option.width 	|| document.body.offsetWidth;
+	let height 	=  option.height || window.innerHeight - 20;
+	let grav 		=	(option.gravity 	=== undefined) ? 1 : option.gravity;
+	let fri 		=	(option.friction 	=== undefined) ? 1 : option.friction;
 	let stiff   =	(option.stiffness === undefined) ? 1 : option.stiffness;
-	let append 	=	option.append || document.body;
-	let id 			=	option.id;
+	let append 	=	 option.append || document.body;
+	let id 			=	 option.id;
 	
 	if(id === undefined) id = 'verlet_quick_setup';
 

@@ -5,11 +5,11 @@
   <script src="../../src/verlet.js"></script>
   <style>
   
-  canvas {
+  /* canvas {
     position: absolute;
     left: 0%;
     top: 0;
-  }
+  } */
 
   </style>
 </head>
@@ -21,9 +21,9 @@ window.onload = function() {
   const verlet = new Verlet();
   verlet.init(500,500,'#c',1,1,0);
 
-  let dots = [];
-  let cons = [];
-  let images = [];
+  let dots    = [];
+  let cons    = [];
+  let images  = [];
 
   verlet.Poly.box({height : 150},dots,cons);
   
@@ -46,7 +46,11 @@ window.onload = function() {
 }
 
 let images = [];
+let vt = null;
+let dts = null
 Verlet().quickSetup(function(dots,cons) {
+  vt = this;
+  dts = dots;
   this.Poly.box({width : 150},dots,cons);
   this.throwImage([3,2,1,0],'../../assets/images/logo.png',images,dots)
 },{
@@ -54,6 +58,9 @@ Verlet().quickSetup(function(dots,cons) {
   renderSettings : {
     images : images,
     renderImages : true
+  },
+  animateScope : function() {
+    vt.placeholder([1,2,3,0],'Hello World',dts,{x:0,y:0});   
   }
 })
 

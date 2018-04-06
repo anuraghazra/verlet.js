@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(window.innerWidth,window.innerHeight,'#c',1,1,1);
+  let canvas = verlet.canvas;
+
+  let dots = [];
+  let cons = [];
+
+  /* ======== */
+  /**
+   * gapX and gapY will do the trick
+   */
+
+  // function cloth(option,dots,cons) {
+  //   let x = option.x;
+  //   let y = option.y;
+  //   let width = option.segs;
+  //   let height = option.segs;
+  //   let gapx = option.gapX;
+  //   let gapy = option.gapY;
+  //   let delta = Math.min((canvas.width-20)/width, (canvas.height-20)/height);
+  //   let dx = delta;
+  //   let dy = delta;
+  //   let tmpDots = [];
+  //   let tmpCons = [];
+  //   let area = width*height;
+
+  //   for (let i = 0; i < area; i++) {
+  //     tmpDots.push([
+  //       x + width/gapx * gapx + Math.floor(i%width) * gapx,
+  //       y +  height/gapy * gapy + Math.floor(i/height) * gapy,
+  //     ])
+  //   }
+
+  //   for (let i = 0; i < (tmpDots.length-1); i++) {
+  //     if(((i+1)%width) > 0){
+  //       tmpCons.push([i,i+1]);
+  //     }
+  //   }
+  //   for (let i = 0; i < (tmpDots.length-width); i++) {
+  //     tmpCons.push([i,i+width]);
+  //   }
+
+  //   verlet.create(tmpDots,dots);
+  //   verlet.clamp(tmpCons,cons,dots);
+  // }
+
+  // cloth({
+  //   x : 0, y : 35,
+  //   gapX : 10, gapY : 10,
+  //   segs : 50
+  // },dots,cons);
+  verlet.Poly.cloth({
+    x : 0,
+    segs : 50,
+    gapX : 5,
+    gapY : 25
+  },dots,cons);
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{renderDots : false});
+  }
+  animate();
+}
+</script>
+</body>
+</html>
