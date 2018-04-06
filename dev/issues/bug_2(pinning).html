@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="../../src/verlet.js"></script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+<script>
+/*
+  BUG : When pinning through programming interacting with them unpin them
+  FIXED
+  HOW : 
+  added a isAlreadyPinned flag and check that for true ,
+  if true dont unpin else unpin it
+*/
+window.onload = function() {
+
+  let verlet = new Verlet();
+  verlet.init(500,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = []
+
+  verlet.Poly.cloth({},dots,cons);
+  dots[0].pinned = false;
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{
+      // debug : true
+    });
+
+  }
+  animate();
+}
+
+</script>
+</body>
+</html>

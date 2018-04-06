@@ -578,7 +578,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.6
+ *  @version v1.7
  *	@method Interact
  *	@param {array} dots
  *	@param {array} cons
@@ -628,12 +628,18 @@ this.Interact = {
 		};
 		
 		// is Mouse down
+		let isAlreadyPinned = false;
 		self.canvas.onmousedown = function(e) {
 			if(self.handle) {
 				isDown = true;
 				pointOffsetX = ox - self.handle.x;
 				pointOffsetY = oy - self.handle.y;
-				self.handle.pinned = true;
+				if(self.handle.pinned === false) {
+					isAlreadyPinned = false;
+					self.handle.pinned = true;
+				} else {
+					isAlreadyPinned = true;
+				}
 			}
 		};
 		//on mouseup and out reset
@@ -665,9 +671,9 @@ this.Interact = {
 			}
 		}
 		function mouseUp() {
-			isDown = false;			
+			isDown = false;	
 			if(self.handle) {
-				if(self.handle.color !== 'crimson') {
+				if(isAlreadyPinned === false) {
 					self.handle.pinned = false;
 				}
 			}
@@ -691,6 +697,7 @@ this.Interact = {
 				}
 			}
 		}
+
 	}
 } 
 
