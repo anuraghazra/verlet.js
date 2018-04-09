@@ -578,7 +578,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.7
+ *  @version v1.7.1
  *	@method Interact
  *	@param {array} dots
  *	@param {array} cons
@@ -647,9 +647,11 @@ this.Interact = {
 		self.canvas.onmouseout = function(e) { mouseUp(e) };
 		
 		//pin and unpin
+		window.onkeydown = function(e) { if(e.which === 32) { e.preventDefault(); } } //prevent scoll on spacebar
 		document.body.onkeydown = throttle(function(e) {
 			if(parent.hoverPoint) {
 				if(e.which === 32) { //Space
+					isAlreadyPinned = true;
 					parent.hoverPoint.pinned = true;
 					parent.hoverPoint.color = 'crimson';
 				}
@@ -718,7 +720,7 @@ this.Draw = {
 	 *	@param {Boolean} bool,
 	 */
 	arc : function(x,y,radius,color,line,bool) {
-		let col = color || 'deepskyblue';
+		let col = color || 'black';
 		self.ctx.save();
 		self.ctx.beginPath();
 		self.ctx.lineWidth = line || 1;
@@ -743,9 +745,12 @@ this.Studio = {
 	 */
 	init : function(id) {
 		const div = document.querySelector(id);
+		div.style.display = 'flex';
+		div.style.flexWrap = 'wrap';
+
 		const newdiv = document.createElement('div');
 		newdiv.id = 'Verlet-Studio';
-		newdiv.innerHTML = `<div class="ui_panel" style="width : ${self.canvas.width-20}px">
+		newdiv.innerHTML = `<div class="ui_panel" style="width : ${self.canvas.width-20}px; margin: 5px 0 0 0">
 		<h2>Verlet Studio</h2>
 		<hr><p>Physics Options</p>
 		<div class="ui_settings_labels">
@@ -952,11 +957,15 @@ this.Motion = {
 	 *	@param {number} size
 	 *	@param {array} dot
 	 */
-	occilateX : function(o,size,dot) {
-		dot.x = dot.x + Math.cos(o) * size;
+	occilateX : function(dots,index,option) {
+		let speed  = option.speed || 500;
+		let size = option.size || 3;
+		dots[index].x = dots[index].x + Math.cos(Date.now()/speed) * size;
 	},
-	occilateY : function(o,size,dot) {
-		dot.y = dot.y + Math.sin(o) * size;
+	occilateY : function(dots,index,option) {
+		let speed  = option.speed || 500;
+		let size = option.size || 3;
+		dots[index].y = dots[index].y + Math.sin(Date.now()/speed) * size;
 	},
 
 	/** 	
@@ -966,14 +975,20 @@ this.Motion = {
 	 *	@param {number} size
 	 *	@param {array} dot
 	 */
-	circular : function(o,size,dot) {
-		dot.x = dot.x + Math.cos(o) * size;
-		dot.y = dot.y + Math.sin(o) * size;
-		dot.oldx = dot.x;
-		dot.oldy = dot.y;
-	},
-	Wave : function(o,size,dot) {
-		dot.x = dot.x + (o * Math.sin(Math.cos(o) / Math.PI*180)) * size;
+	circular : function circular(dots,index,option) {
+		let speed  = option.speed || 500;
+		let radius = option.size || 3;
+		let reverse = option.reverse || false;
+		let rev = null;
+		let moX = (dots[index].x + Math.cos(Date.now()/speed) * radius);
+		let moY = (dots[index].y + Math.sin(Date.now()/speed) * radius);
+		if(reverse) {
+			moX = (dots[index].x - Math.cos(Date.now()/speed) * radius);
+		}
+		dots[index].x = moX;
+		dots[index].y = moY;
+		dots[index].oldx = dots[index].x;
+		dots[index].oldy = dots[index].y;
 	}
 };
 
@@ -1245,7 +1260,7 @@ Verlet.prototype.superUpdate = function(dots,cons,accu,opt) {
 };
 
 /*=======================================
-*=========== RENDER PROTOTYPES =========  
+* =========== RENDER PROTOTYPES =========  
 /*======================================*/
 
 
@@ -1301,7 +1316,7 @@ Verlet.prototype.renderPointIndex = function(dots,font,color) {
 	osctx.fillStyle = color || 'black';
 	for (let i = 0; i < dots.length; i++) {
 		let p = dots[i];
-		osctx.fillText(i,p.x-10,p.y-10);
+		osctx.fillText(i,(p.x-10).toFixed(1),(p.y-10).toFixed(1));
 	}
 	osctx.fill();
 	this.ctx.drawImage(this.osCanvas,0,0);
@@ -1329,24 +1344,26 @@ Verlet.prototype.superDebugRender = function(dots,cons) {
 *	@param {string} color
 */
 Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
-	this.ctx.beginPath();
-	this.ctx.strokeStyle = (color || 'black')
-	this.ctx.lineWidth = linewidth || 1;
-	for(let i = 0; i < cons.length; i++) {
-		let p = cons[i];
-		if(!p.hidden) {
-			this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-			this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
-		}
-		if(showHidden === true) {
-			if(p.hidden) {
-				this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-				this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+	if(cons.length > 0) {
+		this.ctx.beginPath();
+		this.ctx.strokeStyle = (color || 'black')
+		this.ctx.lineWidth = linewidth || 1;
+		for(let i = 0; i < cons.length; i++) {
+			let c = cons[i];
+			if(!c.hidden) {
+				this.ctx.moveTo(Math.round(c.p0.x),Math.round(c.p0.y));
+				this.ctx.lineTo(Math.round(c.p1.x),Math.round(c.p1.y));
+			}
+			if(showHidden === true) {
+				if(c.hidden) {
+					this.ctx.moveTo(Math.round(c.p0.x),Math.round(c.p0.y));
+					this.ctx.lineTo(Math.round(c.p1.x),Math.round(c.p1.y));
+				}
 			}
 		}
+		this.ctx.stroke();
+		this.ctx.closePath();
 	}
-	this.ctx.stroke();
-	this.ctx.closePath();
 }
 
 /** 	
@@ -1356,20 +1373,22 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 */
 Verlet.prototype.renderStress = function(cons) {
 	for(let i = 0; i < cons.length; i++) {
-		this.ctx.beginPath();
 		let p = cons[i];
 		let diff = p.len - this._distance(p.p1,p.p0);
 		let color_diff = Math.round( diff*diff*384 );
+		let color = 'rgba(' + (128+color_diff) + ', ' + (128-color_diff) + ', ' + (128-color_diff) + ', 1)';
+		
+		this.ctx.beginPath();
+		this.ctx.lineWidth = 1;
 
 		if(color_diff <= 1) {
 			this.ctx.strokeStyle = 'limegreen';
 		} else {
-			this.ctx.strokeStyle = 'rgba(' + (128+color_diff) + ', ' + (128-color_diff) + ', ' + (128-color_diff) + ', 1)';
+			this.ctx.strokeStyle = color;
 		}
 
-		this.ctx.lineWidth = 1;
-		this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-		this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+		this.ctx.moveTo((cons[i].p0.x).toFixed(1),(cons[i].p0.y).toFixed(1));
+		this.ctx.lineTo((cons[i].p1.x).toFixed(1),(cons[i].p1.y).toFixed(1));
 		this.ctx.stroke();
 		this.ctx.closePath();
 	}
@@ -1389,8 +1408,8 @@ Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
 	for(let i = 0; i < cons.length; i++) {
 		let p = cons[i];
 		if(p.hidden) {
-			this.ctx.moveTo(cons[i].p0.x,cons[i].p0.y);
-			this.ctx.lineTo(cons[i].p1.x,cons[i].p1.y);
+			this.ctx.moveTo((cons[i].p0.x).toFixed(1),(cons[i].p0.y).toFixed(1));
+			this.ctx.lineTo((cons[i].p1.x).toFixed(1),(cons[i].p1.y).toFixed(1));
 		}
 	}
 	this.ctx.stroke();
@@ -1403,15 +1422,17 @@ Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
 *	@param {array} shape
 */
 Verlet.prototype.renderShapes = function(shape) {
-	for (let i = 0; i < shape.length; i++) {
-		this.ctx.beginPath();
-		this.ctx.fillStyle = shape[i].color;
-		this.ctx.moveTo(shape[i].paths[0].x,shape[i].paths[0].y);
-		for(let j = 1; j < shape[i].paths.length; j++) {
-			this.ctx.lineTo(shape[i].paths[j].x,shape[i].paths[j].y);
+	if(shape.length > 2) {
+		for (let i = 0; i < shape.length; i++) {
+			this.ctx.beginPath();
+			this.ctx.fillStyle = shape[i].color;
+			this.ctx.moveTo((shape[i].paths[0].x).toFixed(1),(shape[i].paths[0].y).toFixed(1));
+			for(let j = 1; j < shape[i].paths.length; j++) {
+				this.ctx.lineTo((shape[i].paths[j].x).toFixed(1),(shape[i].paths[j].y).toFixed(1));
+			}
+			this.ctx.fill();
+			this.ctx.closePath();
 		}
-		this.ctx.fill();
-		this.ctx.closePath();
 	}
 };
 
@@ -1474,11 +1495,11 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	}
 	//Setup and load presets
 	const load = {
-		default 		:	[5,'black',0.5,'black','10px Arial','black',0.5,'red'],
-		shadowBlue 	:	[5,'white',0.5,'deepskyblue','10px Century Gothic','limegreen',0.5,'oragered'],
-		shadowRed 	: [5,'#ff5b5b',0.5,'#ff2e2e','10px Century Gothic','slategray', 0.5,'green'],
-		shadowPink 	: [5,'hotpink',0.5,'mediumpurple','10px Century Gothic','slategray',0.5,'green'],
-		shadowGreen : [5,'#8acf00',0.5,'green','10px Century Gothic','slategray',0.5,'green']
+		default 		:	[5, 'black',		0.5, 'black',				 '10px Arial',					'black',			0.5, 'red'],
+		shadowBlue 	:	[5, 'white',		0.5, 'deepskyblue',	 '10px Century Gothic', 'limegreen',	0.5, 'oragered'],
+		shadowRed 	: [5, '#ff5b5b',	0.5, '#ff2e2e',			 '10px Century Gothic', 'slategray',	0.5, 'green'],
+		shadowPink 	: [5, 'hotpink',	0.5, 'mediumpurple', '10px Century Gothic', 'slategray',	0.5, 'green'],
+		shadowGreen : [5, '#8acf00',	0.5, 'green',				 '10px Century Gothic', 'slategray',	0.5, 'green']
 	}
 	setPreset.apply(null,load[preset]);
 	if(!preset) {
@@ -1536,7 +1557,8 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
  * @param {function} callback returns as parameters => (dots[],cons[])
  */
 Verlet.prototype.quickSetup = function(callback,option) {
-	if(option === undefined) {option = {}}
+	if(option === undefined) {option = {}};
+
 	let width 	=  option.width 	|| document.body.offsetWidth;
 	let height 	=  option.height || window.innerHeight - 20;
 	let grav 		=	(option.gravity 	=== undefined) ? 1 : option.gravity;
@@ -1545,7 +1567,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let append 	=	 option.append || document.body;
 	let id 			=	 option.id;
 	
-	if(id === undefined) id = 'verlet_quick_setup';
+	if(id === undefined) id = 'quicksetup';
 
 	if(typeof append === 'string') {append = document.querySelector(append)}
 
@@ -1570,7 +1592,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 		verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
 		
 		if(option.animateScope) {
-			option.animateScope.call(verlet,variables)
+			option.animateScope.call(verlet,dots,cons);
 		}
 		
 		requestAnimationFrame(animate);

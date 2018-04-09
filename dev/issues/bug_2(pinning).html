@@ -23,7 +23,7 @@ window.onload = function() {
   let cons = []
 
   verlet.Poly.cloth({},dots,cons);
-  dots[0].pinned = false;
+  dots[0].pinned = true;
 
   verlet.Interact.move(dots);
   function animate() {
