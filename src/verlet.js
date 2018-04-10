@@ -734,7 +734,7 @@ this.Draw = {
 
 
 /** 	
- *	Setup a studio with basic settings
+  *	Setup a studio with basic settings
 	*	@method Studio
 */
 this.Studio = {
@@ -940,28 +940,39 @@ margin-bottom: 10px;
 			font 							: font,
 			preset 						: preset
 		});
-		self.superUpdate(opt.dots,opt.cons,PhysicsAccuracy.value,{hoverColor : color});
+		self.superUpdate(	opt.dots,
+											opt.cons,
+											PhysicsAccuracy.value,
+											{hoverColor : color}
+										);
 	}
 };
 
 
 /** 	
  *	Simulate Some Basic Motions With Trigonometry
-	*	@method Motion
-*/
+ *	@method Motion
+ */
 this.Motion = {
 	/** 	
 	 *	Back And Forword In X Axis
 	 *	@method occilateX
-	 *	@param {number} o
-	 *	@param {number} size
-	 *	@param {array} dot
+	 *	@param {array} dots
+	 *	@param {number} index
+	 *	@param {object} option
 	 */
 	occilateX : function(dots,index,option) {
 		let speed  = option.speed || 500;
 		let size = option.size || 3;
 		dots[index].x = dots[index].x + Math.cos(Date.now()/speed) * size;
 	},
+	/** 	
+	 *	Up And Down In Y Axis
+	 *	@method occilateY
+	 *	@param {array} dots
+	 *	@param {number} index
+	 *	@param {object} option
+	 */
 	occilateY : function(dots,index,option) {
 		let speed  = option.speed || 500;
 		let size = option.size || 3;
@@ -969,21 +980,22 @@ this.Motion = {
 	},
 
 	/** 	
-	 *	Create A Circular In X Axis
-	 *	@method Verlet.Motion.occilateX()
-	 *	@param {number} o
-	 *	@param {number} size
-	 *	@param {array} dot
+	 *	circular Motion
+	 *	@method Verlet.Motion.circular()
+	 *	@param {array} dots
+	 *	@param {number} index
+	 *	@param {object} option
 	 */
 	circular : function circular(dots,index,option) {
 		let speed  = option.speed || 500;
 		let radius = option.size || 3;
 		let reverse = option.reverse || false;
 		let rev = null;
-		let moX = (dots[index].x + Math.cos(Date.now()/speed) * radius);
-		let moY = (dots[index].y + Math.sin(Date.now()/speed) * radius);
+		let dynamic = Date.now()/speed;
+		let moX = (dots[index].x + Math.cos(dynamic) * radius);
+		let moY = (dots[index].y + Math.sin(dynamic) * radius);
 		if(reverse) {
-			moX = (dots[index].x - Math.cos(Date.now()/speed) * radius);
+			moX = (dots[index].x - Math.cos(dynamic) * radius);
 		}
 		dots[index].x = moX;
 		dots[index].y = moY;
@@ -1442,26 +1454,25 @@ Verlet.prototype.renderShapes = function(shape) {
  * @param {object} dots []
  * @param {object} cons []
  * @param {object} opt {}
- * @hr ===============
- * @param {number} opt_pointRadius
- * @param {string} opt_pointColor
- * @param {number} opt_lineWidth
- * @param {string} opt_lineColor
- * @param {string} opt_fontColor
- * @param {string} opt_font
- * @param {number} opt_hiddenLineWidth
- * @param {string} opt_hiddenLineColor
- * @hr ===============
- * @param {boolean} opt_renderDots = true
- * @param {boolean} opt_renderDotsAsBox = false
- * @param {boolean} opt_renderPointHiddelLInes = false
- * @param {boolean} opt_renderLines = true
- * @param {boolean} opt_renderPointIndex = false
+ * 
+ * @param {number} opt.pointRadius
+ * @param {string} opt.pointColor
+ * @param {number} opt.lineWidth
+ * @param {string} opt.lineColor
+ * @param {string} opt.fontColor
+ * @param {string} opt.font
+ * @param {number} opt.hiddenLineWidth
+ * @param {string} opt.hiddenLineColor
+ * @param {boolean} opt.renderDots = true
+ * @param {boolean} opt.renderDotsAsBox = false
+ * @param {boolean} opt.renderPointHiddelLInes = false
+ * @param {boolean} opt.renderLines = true
+ * @param {boolean} opt.renderPointIndex = false
  */
 Verlet.prototype.superRender = function (dots,cons,opt) {
 	// optional settings if undefined set to {}
 	let option;
-	option = (!opt) ? {} : opt; 
+	option = (!opt) ? {} : opt;
 
 	//variables
 	let dotsRadius,dotsColor,
