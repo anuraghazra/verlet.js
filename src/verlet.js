@@ -957,34 +957,61 @@ this.Motion = {
 	/** 	
 	 *	Back And Forword In X Axis
 	 *	@method occilateX
+	 *	@param {array|number} index
 	 *	@param {array} dots
-	 *	@param {number} index
-	 *	@param {object} option
+	 *	@param {object} option optional
 	 */
-	occilateX : function(dots,index,option) {
+	occilate : function(index,dots,option) {
+		//defaults
+		option = (typeof option !== 'object') ? {} : option;
 		let speed  = option.speed || 500;
 		let size = option.size || 3;
-		dots[index].x = dots[index].x + Math.cos(Date.now()/speed) * size;
-	},
-	/** 	
-	 *	Up And Down In Y Axis
-	 *	@method occilateY
-	 *	@param {array} dots
-	 *	@param {number} index
-	 *	@param {object} option
-	 */
-	occilateY : function(dots,index,option) {
-		let speed  = option.speed || 500;
-		let size = option.size || 3;
-		dots[index].y = dots[index].y + Math.sin(Date.now()/speed) * size;
+		let axis = option.axis || 'x';
+		let tfunc = option.timingFunction.name || 'linear';
+		let tfuncAmount = option.timingFunction.amount || 10;
+		let tfuncdelay = option.timingFunction.delay || 2;
+
+		function timing(fraction, timing) {
+			if (timing === 'linear') {
+				return Math.pow(fraction, tfuncAmount) * ((1) * fraction)
+			} else if (timing === 'ease') {
+				return fraction/tfuncAmount;
+			} else if (timing === 'elastic') {
+				return Math.pow(tfuncdelay, 20 * (fraction - 1)) * Math.cos(20 * Math.PI * tfuncAmount / 3 * fraction)
+			}
+		}
+
+		//refactor the code
+		function doMove(ittr) {
+			if(axis === 'y') {
+				dots[ittr].y = dots[ittr].y + Math.sin(Date.now()/speed) * size;
+			} else if(axis === 'xy') {
+				dots[ittr].x = dots[ittr].x + Math.sin(Date.now()/speed) * size;
+				dots[ittr].y = dots[ittr].y + Math.sin(Date.now()/speed) * size;
+			} else if(axis === 'yx') {
+				dots[ittr].y = dots[ittr].y - Math.sin(Date.now()/speed) * size;
+				dots[ittr].x = dots[ittr].x + Math.sin(Date.now()/speed) * size;
+			} else {
+				dots[ittr].x = dots[ittr].x + timing(Math.sin(Date.now()/speed),tfunc) * size;
+			}
+		}
+
+		if (typeof index === 'number') {
+			doMove(index)			
+		} else {
+			for (let i = 0; i < index.length; i++) {
+				doMove(index[i])
+			}
+		}
+
 	},
 
 	/** 	
 	 *	circular Motion
 	 *	@method Verlet.Motion.circular()
+	 *	@param {array|number} index
 	 *	@param {array} dots
-	 *	@param {number} index
-	 *	@param {object} option
+	 *	@param {object} option optional
 	 */
 	circular : function circular(dots,index,option) {
 		let speed  = option.speed || 500;

@@ -16,25 +16,25 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
-  verlet.Poly.rope({x : 250, y : 200, segs : 2, gap : 150}, dots, cons);
-  verlet.Poly.hexagon({x : 500,y : 195, center : true}, dots, cons);
-  dots[0].pinned = true;
-  dots[10].pinned = true;
-
-  verlet.clamp([[1,5]],cons,dots);
+  verlet.Poly.cloth({x : 100,y : 100, center : true}, dots, cons);
 
   verlet.Studio.init('#container');
-
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
     
     verlet.Studio.update({ dots : dots, cons : cons});
 
-    verlet.Motion.occilateX(dots, 0, { size  : 5, speed : 500 });
-
-    // verlet.Motion.circular(dots, 0, { size  : 5, speed : 70 });
-    // verlet.Motion.circular(dots, 0, { size  : 5, speed : 500, reverse : true });
+    verlet.Motion.occilate([0,7,14,19], dots, {
+      speed : 250,
+      size : 15,
+      axis : 'x',
+      timingFunction : {
+        name : 'linear',
+        amount : 100,
+        // delay : 1.2
+      },
+    });
   }
   animate();
 }
