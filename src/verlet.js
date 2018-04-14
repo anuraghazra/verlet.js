@@ -651,10 +651,11 @@ this.Interact = {
 		}
 		//on mouseup and out reset
 		self.canvas.onmousedown = mouseDown;
-		self.canvas.ontouchstart = mouseDown;
-		self.canvas.ontouchend = function(e) { mouseUp(e) };
 		self.canvas.onmouseup = function(e) { mouseUp(e) };
 		self.canvas.onmouseout = function(e) { mouseUp(e) };
+
+		self.canvas.ontouchstart = mouseDown;
+		self.canvas.ontouchend = function(e) { mouseUp(e) };
 		
 		//pin and unpin
 		window.onkeydown = function(e) { if(e.which === 32) { e.preventDefault(); } } //prevent scoll on spacebar
@@ -674,7 +675,8 @@ this.Interact = {
 		},150);
 
 		let canvasDims = self.canvas.getBoundingClientRect();
-		//listener functions
+
+		//move and drag the dot
 		function mouseMove(e) {
 			if(self.handle) {
 				//use canvasDims to justify the clientX,Y for touch devices
@@ -684,6 +686,8 @@ this.Interact = {
 				self.handle.oldy = self.handle.y;
 			}
 		}
+
+		//remove pinning and stop dragging
 		function mouseUp() {
 			isDown = false;	
 			if(self.handle) {
@@ -983,8 +987,8 @@ this.Motion = {
 		if (!option.timingFunction) {
 			option.timingFunction = {};
 		}
-		let tfuncName = option.timingFunction.name || 'linear';
-		let tfuncAmount = option.timingFunction.amount || 10;
+		let tfuncName = option.timingFunction.name || 'ease';
+		let tfuncAmount = option.timingFunction.amount || 1.5;
 		let tfuncDelay = option.timingFunction.delay || 1.5;
 		let tfuncStep = option.timingFunction.step || 1;
 
@@ -1652,36 +1656,49 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let stiff   =	(option.stiffness === undefined) ? 1 : option.stiffness;
 	let append 	=	 option.append || document.body;
 	let id 			=	 option.id;
+	let studio 	=	 option.initStudio || false;
 	
 	if(id === undefined) id = 'quicksetup';
-
 	if(typeof append === 'string') {append = document.querySelector(append)}
 
 	let canvas = document.createElement('canvas');
 	canvas.id = id;
 	canvas.width = width;
 	canvas.height = height;
+	console.log(append)
 	append.appendChild(canvas);
 
 	let verlet = new Verlet();
 	let dots = [];
 	let cons = [];
+	//init
 	verlet.init(width,height,'#'+id,grav,fri,stiff);
-
-	let variables =	callback.call(verlet,dots,cons);
-
+	
+	//main callback
+	callback.call(verlet,dots,cons);
+	
+	//studio
+	if(studio) { verlet.Studio.init('#ui'); };
 	verlet.Interact.move(dots);
 	function animate() {
-		verlet.clear(option.bg || null);
+		verlet.frame(animate,option.bg || null);
 		
-		verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
-		verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
+		//isStudio
+		if(studio) {
+			verlet.Studio.update({
+				dots : dots,
+				cons : cons,
+				renderSettings : option.renderSettings
+			});
+		} else {
+			verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
+			verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
+		}
+
 		
 		if(option.animateScope) {
 			option.animateScope.call(verlet,dots,cons);
 		}
-		
-		requestAnimationFrame(animate);
 	}
 	animate();
 }

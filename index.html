@@ -3,15 +3,36 @@
 <head>
   <title>Verlet.js</title>
   <script src="./src/verlet.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI';
+      color : #424242;
+    }
+  </style>
 </head>
 <body>
+  <h2>Verlet.js</h2>
+  <div id="ui"></div>
 <script>
-  
   // Lets Get Started
 
   // QuickSetup With Verlet.js
   Verlet().quickSetup(function(dots,cons) {
-    this.Poly.box({},dots,cons);
+    this.Poly.cloth({},dots,cons);
+  }, {
+    height : 500,
+    append : '#ui',
+    initStudio : true,
+    renderSettings : {
+      // preset : 'shadowRed',
+      // pointRadius : 10
+    },
+    animateScope : function(dots,cons) {
+      this.Motion.occilate([0,7,14,19],dots,{ speed : 100, size : 10 });
+    }
   });
 
 
