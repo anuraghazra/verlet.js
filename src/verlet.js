@@ -961,38 +961,61 @@ this.Motion = {
 	 *	@param {array} dots
 	 *	@param {object} option optional
 	 */
-	occilate : function(index,dots,option) {
+	occilate : function(index, dots, option) {
 		//defaults
 		option = (typeof option !== 'object') ? {} : option;
 		let speed  = option.speed || 500;
-		let size = option.size || 3;
+		let size = option.size || 4;
 		let axis = option.axis || 'x';
-		let tfunc = option.timingFunction.name || 'linear';
+
+		if (!option.timingFunction) {
+			option.timingFunction = {};
+		}
+		let tfuncName = option.timingFunction.name || 'linear';
 		let tfuncAmount = option.timingFunction.amount || 10;
-		let tfuncdelay = option.timingFunction.delay || 2;
+		let tfuncDelay = option.timingFunction.delay || 1.5;
+		let tfuncStep = option.timingFunction.step || 1;
 
 		function timing(fraction, timing) {
 			if (timing === 'linear') {
-				return Math.pow(fraction, tfuncAmount) * ((1) * fraction)
+			
+				return Math.pow(fraction, tfuncAmount) * ((tfuncStep) * fraction)
+			
 			} else if (timing === 'ease') {
+
 				return fraction/tfuncAmount;
+			
 			} else if (timing === 'elastic') {
-				return Math.pow(tfuncdelay, 20 * (fraction - 1)) * Math.cos(20 * Math.PI * tfuncAmount / 3 * fraction)
+			
+				return Math.pow(tfuncDelay, 10 * (fraction - 1)) * Math.cos(20 * Math.PI * tfuncAmount / 3 * fraction);
+			
 			}
 		}
 
 		//refactor the code
 		function doMove(ittr) {
+			let x = dots[ittr].x;
+			let y = dots[ittr].y;
+			let loop = Date.now()/speed;
+
 			if(axis === 'y') {
-				dots[ittr].y = dots[ittr].y + Math.sin(Date.now()/speed) * size;
+			
+				dots[ittr].y = y + timing( Math.sin(loop),tfuncName ) * size;
+			
 			} else if(axis === 'xy') {
-				dots[ittr].x = dots[ittr].x + Math.sin(Date.now()/speed) * size;
-				dots[ittr].y = dots[ittr].y + Math.sin(Date.now()/speed) * size;
+			
+				dots[ittr].x = x + timing( Math.sin(loop),tfuncName ) * size;
+				dots[ittr].y = y + timing( Math.sin(loop),tfuncName ) * size;
+			
 			} else if(axis === 'yx') {
-				dots[ittr].y = dots[ittr].y - Math.sin(Date.now()/speed) * size;
-				dots[ittr].x = dots[ittr].x + Math.sin(Date.now()/speed) * size;
+			
+				dots[ittr].y = y - timing( Math.sin(loop),tfuncName ) * size;
+				dots[ittr].x = x + timing( Math.sin(loop),tfuncName ) * size;
+			
 			} else {
-				dots[ittr].x = dots[ittr].x + timing(Math.sin(Date.now()/speed),tfunc) * size;
+			
+				dots[ittr].x = x + timing( Math.sin(loop),tfuncName ) * size;
+			
 			}
 		}
 
@@ -1013,21 +1036,34 @@ this.Motion = {
 	 *	@param {array} dots
 	 *	@param {object} option optional
 	 */
-	circular : function circular(dots,index,option) {
+	circular : function circular(index, dots, option) {
+		option = (typeof option !== 'object') ? {} : option;		
 		let speed  = option.speed || 500;
 		let radius = option.size || 3;
 		let reverse = option.reverse || false;
-		let rev = null;
-		let dynamic = Date.now()/speed;
-		let moX = (dots[index].x + Math.cos(dynamic) * radius);
-		let moY = (dots[index].y + Math.sin(dynamic) * radius);
-		if(reverse) {
-			moX = (dots[index].x - Math.cos(dynamic) * radius);
+		//refactor the code
+		function doMove(ittr) {
+			let rev = null;
+			let dynamic = Date.now()/speed;
+			let moX = (dots[ittr].x + Math.cos(dynamic) * radius);
+			let moY = (dots[ittr].y + Math.sin(dynamic) * radius);
+			if(reverse) {
+				moX = (dots[ittr].x - Math.cos(dynamic) * radius);
+			}
+			dots[ittr].x = moX;
+			dots[ittr].y = moY;
+			dots[ittr].oldx = dots[ittr].x;
+			dots[ittr].oldy = dots[ittr].y;
 		}
-		dots[index].x = moX;
-		dots[index].y = moY;
-		dots[index].oldx = dots[index].x;
-		dots[index].oldy = dots[index].y;
+
+		if (typeof index === 'number') {
+			doMove(index)			
+		} else {
+			for (let i = 0; i < index.length; i++) {
+				doMove(index[i])
+			}
+		}
+
 	}
 };
 

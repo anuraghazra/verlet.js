@@ -16,7 +16,7 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
-  verlet.Poly.cloth({x : 100,y : 100, center : true}, dots, cons);
+  verlet.Poly.cloth({x : 140,y : 100, center : true}, dots, cons);
 
   verlet.Studio.init('#container');
   verlet.Interact.move(dots);
@@ -26,15 +26,17 @@ window.onload = function() {
     verlet.Studio.update({ dots : dots, cons : cons});
 
     verlet.Motion.occilate([0,7,14,19], dots, {
-      speed : 250,
-      size : 15,
+      speed : 500,
+      size : 10,
       axis : 'x',
       timingFunction : {
         name : 'linear',
-        amount : 100,
-        // delay : 1.2
-      },
+        amount : 50,
+      }
     });
+    // verlet.Motion.circular([0,7,14,19], dots, {
+    //   speed : 50
+    // });
   }
   animate();
 }
