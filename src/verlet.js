@@ -578,7 +578,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.7.2
+ *  @version v1.7.3
  *	@method Interact
  *	@param {array} dots
  *	@param {array} cons
@@ -621,16 +621,18 @@ this.Interact = {
 			self.handleIndex = index;	
 		}
 
-		//refactor
-		function initMove(e) {
+		self.canvas.onmousemove = function(e) {
+			moveListner(e);
+			if(!isDown) return;
+			mouseMove(e); // move selected point 			
+		};
+		//touch devices
+		self.canvas.ontouchmove = function(e) {
 			e.preventDefault();
 			moveListner(e.touches[0]);
 			if(!isDown) return;
 			mouseMove(e.touches[0]); // move selected point 	
 		}
-		self.canvas.onmousemove = initMove;
-		//touch devices
-		self.canvas.ontouchmove = initMove;
 		
 		// is Mouse down
 		let isAlreadyPinned = false;
