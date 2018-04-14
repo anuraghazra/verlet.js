@@ -1009,11 +1009,11 @@ this.Motion = {
 		}
 
 		//refactor the code
+		let date = new Date();
 		function doMove(ittr) {
 			let x = dots[ittr].x;
 			let y = dots[ittr].y;
-			let loop = Date.now()/speed;
-
+			let loop = date.valueOf()/speed;
 			if(axis === 'y') {
 			
 				dots[ittr].y = y + timing( Math.sin(loop),tfuncName ) * size;
@@ -1058,9 +1058,10 @@ this.Motion = {
 		let radius = option.size || 3;
 		let reverse = option.reverse || false;
 		//refactor the code
+		let date = new Date();		
 		function doMove(ittr) {
 			let rev = null;
-			let dynamic = Date.now()/speed;
+			let dynamic = date.valueOf()/speed;
 			let moX = (dots[ittr].x + Math.cos(dynamic) * radius);
 			let moY = (dots[ittr].y + Math.sin(dynamic) * radius);
 			if(reverse) {
