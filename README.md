@@ -490,6 +490,14 @@ window.onload = function() {
 }
 ```
 
+------------------------------------------------------------------------
+
+## StudioAPI + quickSetupAPI (Thats Awesome)
+
+Yes!. Another Magic!
+You Can Now Implement StudioPI In QuickSetupAPI
+
+
 ## Browser Support
 
 ### Modern HTML5 Enabled Browsers Are Ok Like.
