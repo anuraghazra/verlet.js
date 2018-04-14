@@ -491,11 +491,97 @@ window.onload = function() {
 ```
 
 ------------------------------------------------------------------------
-
+### v1.2.0 Update
 ## StudioAPI + quickSetupAPI (Thats Awesome)
 
 Yes!. Another Magic!
-You Can Now Implement StudioPI In QuickSetupAPI
+You Can Now Implement StudioPI In QuickSetupAPI.
+It Makes Life More Easy..
+
+check out the demo [here](./demos/quick_plus_studio.html)
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="./src/verlet.js"></script>
+</head>
+<body>
+  <h2>Awesome</h2>
+  <div id="ui"></div>
+<script>
+  
+  // StudioAPI + quickSetupAPI
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.cloth({},dots,cons);
+  }, {
+    initStudio : true, //init
+    append : '#ui' //make sure you appends it to a separate div
+  });
+
+</script>
+</body>
+</html>
+```
+------------------------------------------------------------------------
+
+## Motion
+
+Well, So far so good, now jump over to automate some motion for our verlet objects.
+
+We can set up some occilation and circular motion to our verlet points, lets have a look
+
+check out the demo [here](./demos/verlet_motion.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,1,1);
+  
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.rope({ x : 250 , y : 150 }, dots, cons);
+  verlet.Poly.hexagon({ x : 550 , y : 160, center : true}, dots, cons);
+
+  verlet.clamp([[14,23]],cons,dots);
+
+  verlet.Studio.init('#container');
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.Studio.update({
+      dots : dots, cons : cons,
+      renderSettings : { pointRadius : 2 },
+    });
+
+    //Verlet.Motion.occilate(index,dots[],{})
+    verlet.Motion.occilate(0, dots, {
+      speed : 100, //in ms
+      size : 10,
+      axis : 'x', // x, y, xy, yx
+      timingFunction : {
+        name : 'ease', // linear, ease, elastic
+        amount : 1, //make it 50 for linear
+        // step : 5, //only in linear
+        // delay : 500 //only in elastic
+      }
+    });
+
+    //Verlet.Motion.circular(index,dots[],{})
+    verlet.Motion.circular(0, dots, {
+      speed : 150,
+      size : 5,
+      // reverse : true
+    });
+  }
+  animate();
+}
+```
+
+
 
 
 ## Browser Support

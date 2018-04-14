@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+  <div id="ui"></div>
+<script>
+  
+  // StudioAPI + quickSetupAPI
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.cloth({},dots,cons);
+  }, {
+    width : 650,
+    height : 450,
+    initStudio : true, //init
+    append : '#ui' //make sure you appends it to a separate div
+  });
+
+</script>
+</body>
+</html>

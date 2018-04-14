@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Verlet Motion</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+  <div id="container">
+    <canvas id="c" style="border: 1px solid black"></canvas>
+  </div>
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,1,1);
+  
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.rope({ x : 250 , y : 150 }, dots, cons);
+  verlet.Poly.hexagon({ x : 550 , y : 160, center : true}, dots, cons);
+
+  verlet.clamp([[14,23]],cons,dots);
+
+  verlet.Studio.init('#container');
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.Studio.update({
+      dots : dots, cons : cons,
+      renderSettings : { pointRadius : 2 },
+    });
+
+    //Verlet.Motion.occilate( pointIndex, dots[], {options} )
+    verlet.Motion.occilate(0, dots, {
+      speed : 100, //in ms
+      size : 10,
+      axis : 'x', // x, y, xy, yx
+      timingFunction : {
+        name : 'ease', // linear, ease, elastic
+        amount : 1, //make it 50 for linear
+        // step : 5, //only in linear (specify how much big should be the gap),
+        // delay : 500 //only in elastic (specify a delay in elastic),
+      }
+    });
+
+    //Verlet.Motion.circular( pointIndex, dots[], {options} )
+    verlet.Motion.circular(0, dots, {
+      speed : 150,
+      size : 5,
+      // reverse : true
+    });
+  }
+  animate();
+}
+</script>
+</body>
+</html>
