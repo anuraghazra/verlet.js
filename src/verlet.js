@@ -578,7 +578,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.7.1
+ *  @version v1.7.2
  *	@method Interact
  *	@param {array} dots
  *	@param {array} cons
@@ -621,15 +621,20 @@ this.Interact = {
 			self.handleIndex = index;	
 		}
 
-		self.canvas.onmousemove = function(e) {
-			moveListner(e);
+		//refactor
+		function initMove(e) {
+			e.preventDefault();
+			moveListner(e.touches[0]);
 			if(!isDown) return;
-			mouseMove(e); // move selected point 			
-		};
+			mouseMove(e.touches[0]); // move selected point 	
+		}
+		self.canvas.onmousemove = initMove;
+		//touch devices
+		self.canvas.ontouchmove = initMove;
 		
 		// is Mouse down
 		let isAlreadyPinned = false;
-		self.canvas.onmousedown = function(e) {
+		function mouseDown(e) {
 			if(self.handle) {
 				isDown = true;
 				pointOffsetX = ox - self.handle.x;
@@ -641,8 +646,11 @@ this.Interact = {
 					isAlreadyPinned = true;
 				}
 			}
-		};
+		}
 		//on mouseup and out reset
+		self.canvas.onmousedown = mouseDown;
+		self.canvas.ontouchstart = mouseDown;
+		self.canvas.ontouchend = function(e) { mouseUp(e) };
 		self.canvas.onmouseup = function(e) { mouseUp(e) };
 		self.canvas.onmouseout = function(e) { mouseUp(e) };
 		
@@ -663,11 +671,13 @@ this.Interact = {
 			}
 		},150);
 
+		let canvasDims = self.canvas.getBoundingClientRect();
 		//listener functions
 		function mouseMove(e) {
 			if(self.handle) {
-				self.handle.x = e.offsetX - 15 - pointOffsetX;
-				self.handle.y =	e.offsetY - 15 - pointOffsetY;
+				//use canvasDims to justify the clientX,Y for touch devices
+				self.handle.x = (e.offsetX || (e.clientX-canvasDims.x)) - 15 - pointOffsetX;
+				self.handle.y =	(e.offsetY || (e.clientY-canvasDims.y)) - 15 - pointOffsetY;
 				self.handle.oldx = self.handle.x;
 				self.handle.oldy = self.handle.y;
 			}
