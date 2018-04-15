@@ -15,9 +15,9 @@ if(!(this instanceof Verlet)) {
 
 /* _PRIVATE_FUNCTIONS */
 /** 	
- *  Compute Distance Between Two Object
- *	@private 
-	*  @method _distance
+ 	*  Compute Distance Between Two Object
+ 	*	@private 
+	* @method _distance
 	*	@param {object} p0
 	*	@param {object} p1
 	*	@return {number:distance} 
@@ -27,6 +27,25 @@ this._distance = function _distance(p0,p1) {
 	const dy = p0.y - p1.y;
 	return Math.sqrt(dx*dx + dy*dy);
 };
+/** 	
+ 	*  Throttles Events
+ 	*	@private 
+	* @method throttle
+	*	@param {callback} func
+	*	@param {number} time
+	*/	
+this.throttle = function throttle(func,time) {
+	let wait = false;
+	return function() {
+		if(!wait) {
+			func.apply(null,arguments);
+			wait = true;
+			setTimeout(function() {
+				wait = false;
+			},time);
+		}
+	}
+}
 
 /* Variables */
 const imageSmoothing = false;
@@ -199,6 +218,8 @@ this.Poly = {
 		let clone = opt.clone || 1;
 		if ( opt.x 			=== undefined ) { opt.x 			= 100 };
 		if ( opt.y 			=== undefined ) { opt.y 			= 100 };
+		if ( opt.vx 		=== undefined ) { opt.vx 			= opt.x };
+		if ( opt.vy 		=== undefined ) { opt.vy 			= opt.y };
 		if ( opt.radius === undefined ) { opt.radius 	= 50 	};
 		if ( opt.slice1 === undefined ) { opt.slice1 	= 1 	};
 		if ( opt.slice2 === undefined ) { opt.slice2 	= 6 	};
@@ -212,11 +233,13 @@ this.Poly = {
 					splice = 0,
 					angle = 0;
 				let n = opt.sides,
-					x = opt.x,
-					y = opt.y,
-					radius = opt.radius,
-					slice1 = opt.slice1,
-					slice2 = opt.slice2;
+						x = opt.x,
+						y = opt.y,
+						vx = opt.vx,
+						vy = opt.vy,
+						radius = opt.radius,
+						slice1 = opt.slice1,
+						slice2 = opt.slice2;
 				
 				for(let i = 0; i < n; i++) {
 					splice += Math.PI*2 / n;
@@ -224,7 +247,7 @@ this.Poly = {
 					let outer = (Math.cos((angle)) * radius);
 					let inner = (Math.sin((angle)) * radius);
 					tmpDots.push([
-						outer+x,inner+y,outer+x,inner+y
+						outer+x,inner+y,outer+vx,inner+vy
 					])
 					tmpCons.push([
 						(i + dots.length),((i + slice1) % n) + dots.length,
@@ -659,7 +682,7 @@ this.Interact = {
 		
 		//pin and unpin
 		window.onkeydown = function(e) { if(e.which === 32) { e.preventDefault(); } } //prevent scoll on spacebar
-		document.body.onkeydown = throttle(function(e) {
+		document.body.onkeydown = self.throttle(function(e) {
 			if(parent.hoverPoint) {
 				if(e.which === 32) { //Space
 					isAlreadyPinned = true;
@@ -703,23 +726,8 @@ this.Interact = {
 			const dy = y - circle.y;
 			return Math.sqrt(dx*dx + dy*dy);
 		}
-		function throttle(func,time) {
-			let wait = false;
-			return function() {
-				if(!wait) {
-					func.apply(null,arguments);
-					wait = true;
-					setTimeout(function() {
-						wait = false;
-					},time);
-				}
-			}
-		}
-
 	}
 } 
-
-
 
 /** 	
  *	Functions For Drawing In Canvas
@@ -1518,9 +1526,9 @@ Verlet.prototype.renderShapes = function(shape) {
 		for (let i = 0; i < shape.length; i++) {
 			this.ctx.beginPath();
 			this.ctx.fillStyle = shape[i].color;
-			this.ctx.moveTo((shape[i].paths[0].x).toFixed(1),(shape[i].paths[0].y).toFixed(1));
+			this.ctx.moveTo(shape[i].paths[0].x,shape[i].paths[0].y);
 			for(let j = 1; j < shape[i].paths.length; j++) {
-				this.ctx.lineTo((shape[i].paths[j].x).toFixed(1),(shape[i].paths[j].y).toFixed(1));
+				this.ctx.lineTo(shape[i].paths[j].x,shape[i].paths[j].y);
 			}
 			this.ctx.fill();
 			this.ctx.closePath();
@@ -1804,4 +1812,83 @@ Verlet.prototype.placeholder = function(ids,text,dots,offset) {
 	this.ctx.fillText(text,adjustX,adjustY);
 	this.ctx.fill();
 	this.ctx.restore(angle);
+}
+
+/**
+ * shows current framerate 
+ * @method showFps
+ * @param {object} option 
+ */
+Verlet.prototype.plus = 1;
+Verlet.prototype.fpsBars = [];
+Verlet.prototype.showFps = function(option) {
+	let x = (option.x !== undefined) ? option.x : 15 
+	let y = (option.y !== undefined) ? option.y : 15 
+	//this is painfull
+	this.plus++;
+	if(this.plus > 3) {
+		this.plus = 1
+	}
+	//
+
+	let date = new Date();
+	this.lastframe;
+	this.fps;
+	if(!this.lastframe) {
+		this.lastframe = date.valueOf();
+		this.fps = 0;
+		return;
+	}
+
+	let delta = (date.valueOf() - this.lastframe) / 1000;
+	let frametime = (date.valueOf() - this.lastframe);
+	this.lastframe = date.valueOf();
+	//painfull
+	if(this.plus === 1) {
+		this.fps = Math.round(1/delta);
+	}
+
+	//render
+	let color = 'green';
+	if (this.fps < 40) { color = 'orange' };
+	if (this.fps < 20) { color  = 'red'; };
+	this.fpsBars.push({x : x+(this.plus), y : this.fps/2, color : color});
+	
+	if (this.fpsBars.length > 87) { this.fpsBars.shift(); }
+
+	this.ctx.beginPath();
+
+	//bounds
+	this.ctx.fillStyle = '#eee';
+	this.ctx.strokeStyle = 'black';
+	this.ctx.fillRect(x-5,y-15,100,70);
+	this.ctx.strokeRect(x-5,y-15,100,70);
+	this.ctx.stroke();
+	this.ctx.fill();
+
+	//fps
+	this.ctx.fillStyle = 'dimgray';
+	this.ctx.font = option.font || '12px Arial';
+	this.ctx.fillText('FPS : ' + this.fps, x, y);
+
+	//bars
+	this.ctx.save();
+	this.ctx.scale(1,-1); //rotate
+	for (let i = 0; i < this.fpsBars.length; i++) {
+		this.ctx.fillStyle = this.fpsBars[i].color;
+		this.fpsBars[i].x += 1;
+		this.ctx.fillRect( this.fpsBars[i].x-2, -50-y, 0.5, this.fpsBars[i].y );
+	}
+	this.ctx.restore();
+	
+	//60fps line
+	this.ctx.strokeStyle = 'crimson';
+	this.ctx.moveTo(x,y+20);
+	this.ctx.lineTo(x+90,y+20);
+	this.ctx.lineWidth = 1;
+	this.ctx.stroke();
+
+	this.ctx.closePath();
+
+	return this.fps;
 }
