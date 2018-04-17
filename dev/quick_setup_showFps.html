@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+  <div id="ui"></div>
+<script>
+
+  Verlet().quickSetup(function(dots, cons) {
+    this.Poly.cloth({ segs : 25 }, dots,cons)
+  },{
+    renderSettings : {
+      renderDotsAsBox : true
+    },
+    initStudio : 'true',
+    append : '#ui',
+    showFps : {x : 15, y : 15}
+  })
+
+</script>
+</body>
+</html>

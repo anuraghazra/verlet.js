@@ -928,6 +928,7 @@ margin-bottom: 10px;
 			hiddenLineWidth = option.hiddenLineWidth,
 			hiddenLineColor = option.hiddenLineColor,
 			font 						= option.font,
+			renderBox				= option.renderDotsAsBox || false,
 			preset 					= option.preset || vlsPreset.value || 'default';
 					
 		let isRenderLines;
@@ -962,6 +963,7 @@ margin-bottom: 10px;
 			hiddenLineColor 	: hiddenLineColor,
 			hiddenLineWidth 	: hiddenLineWidth,
 			font 							: font,
+			renderDotsAsBox 	: renderBox,
 			preset 						: preset
 		});
 		self.superUpdate(	opt.dots,
@@ -1668,6 +1670,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let append 	=	 option.append || document.body;
 	let id 			=	 option.id;
 	let studio 	=	 option.initStudio || false;
+	let showFps 	=	 option.showFps || false;
 	
 	if(id === undefined) id = 'quicksetup';
 	if(typeof append === 'string') {append = document.querySelector(append)}
@@ -1704,6 +1707,10 @@ Verlet.prototype.quickSetup = function(callback,option) {
 		} else {
 			verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
 			verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
+		}
+
+		if(showFps) {
+			verlet.showFps(showFps);
 		}
 
 		
