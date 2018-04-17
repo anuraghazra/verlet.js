@@ -778,12 +778,12 @@ this.Studio = {
 		<h2>Verlet Studio</h2>
 		<hr><p>Physics Options</p>
 		<div class="ui_settings_labels">
-			<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span>
+			<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span> <span>Stiffness</span>
 		</div>
 		<div class="ui_settings">
 			<input step="1" placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
-			<input step="0.1" placeholder="Gravity" value="1" title="gravity" type="number" id="vls-gravity">
-			<input step="0.01" placeholder="Friction" value="1" title="friction" type="number" id="vls-friction">
+			<input step="0.1" placeholder="Gravity" value="${self.gravity}" title="gravity" type="number" id="vls-gravity">
+			<input step="0.01" placeholder="Friction" value="${self.friction}" title="friction" type="number" id="vls-friction">
 		</div>
 		<p>Render Options</p>
 		<div class="ui_checkboxes">
@@ -898,59 +898,54 @@ margin-bottom: 10px;
 	 */
 	update : function(opt) {
 		let option;
-		if(opt.renderSettings === undefined) {
+		
+		if( opt.renderSettings === undefined 
+				&& typeof opt.renderSettings !== 'object' ) {	
 			option = {};
 		} else {
 			option = opt.renderSettings;
 		}
-
-		function id (id) {
-			return document.getElementById(id)
-		}
-
-		const PhysicsAccuracy 	= id('vls-Iterrations'),
-			dotOpt 								= id('vls-dots'),
-			LineOpt 							= id('vls-lines'),
-			hiddenLineOpt 				= id('vls-hidden-lines'),
-			IndexOpt 							= id('vls-pointIndex'),
-			shapeOpt 							= id('vls-shapes'),
-			gravity 							= id('vls-gravity'),
-			friction 							= id('vls-friction'),
-			vlsPreset 						= id('vls-preset'),
-			stressOpt 						= id('vls-stressOpt');
 		
-		let color 				= option.hoverColor;
-		let dotsRadius 		= option.pointRadius,
-			dotsColor 			= option.pointColor,
-			lineWidth 			= option.lineWidth,
-			lineColor 			= option.lineColor,
-			fontColor 			= option.fontColor,
-			hiddenLineWidth = option.hiddenLineWidth,
-			hiddenLineColor = option.hiddenLineColor,
-			font 						= option.font,
-			renderBox				= option.renderDotsAsBox || false,
-			preset 					= option.preset || vlsPreset.value || 'default';
-					
-		let isRenderLines;
-		let isRenderDots;
-		let isRenderIndex;
-		let isRenderHiddenLines;
-		let isRenderStress;
+		function id (id) { return document.getElementById(id) }
 
-		self.gravity = option.gravity || parseFloat(gravity.value) || 0;
-		self.friction = parseFloat(friction.value) || 1;
 
-		isRenderDots 				= (dotOpt.checked === true) 				? true : false;
-		isRenderLines 			= (LineOpt.checked === true) 				? true : false;
-		isRenderHiddenLines = (hiddenLineOpt.checked === true) 	? true : false;
-		isRenderIndex 			= (IndexOpt.checked === true) 			? true : false;
-		isRenderStress 			= (stressOpt.checked === true) 			? true : false;
+		const PhysicsAccuracy = id('vls-Iterrations'),
+					dotOpt 					= id('vls-dots'),
+					LineOpt 				= id('vls-lines'),
+					hiddenLineOpt 	= id('vls-hidden-lines'),
+					IndexOpt 				= id('vls-pointIndex'),
+					shapeOpt 				= id('vls-shapes'),
+					gravity 				= id('vls-gravity'),
+					friction 				= id('vls-friction'),
+					vlsPreset 			= id('vls-preset'),
+					stressOpt 			= id('vls-stressOpt');
+		
+		let dotsRadius 			= option.pointRadius,
+				dotsColor 			= option.pointColor,
+				lineWidth 			= option.lineWidth,
+				lineColor 			= option.lineColor,
+				fontColor 			= option.fontColor,
+				hiddenLineWidth = option.hiddenLineWidth,
+				hiddenLineColor = option.hiddenLineColor,
+				font 						= option.font,
+				renderBox				= option.renderDotsAsBox,
+				preset 					= option.preset || vlsPreset.value || 'default';
+
+		self.gravity = parseInt(gravity.value);
+		self.friction = parseInt(friction.value);
+
+		
+		let isRenderDots 				= (dotOpt.checked === true) ? option.renderDots : false;
+		let isRenderLines 			= (LineOpt.checked === true) ? option.renderLines : false;
+		let isRenderHiddenLines = hiddenLineOpt.checked || option.renderHiddenLines;
+		let isRenderIndex 			= IndexOpt.checked 			|| option.renderPointIndex;
+		let isRenderStress 			= stressOpt.checked 		|| option.renderStress;
 		
 		if(opt.forms) {
 			(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
 		}
 
-		self.superRender(opt.dots,opt.cons,{			
+		let renderOptions = {			
 			renderDots 				: isRenderDots,
 			renderLines 			: isRenderLines,
 			renderStress 			: isRenderStress,
@@ -965,11 +960,13 @@ margin-bottom: 10px;
 			font 							: font,
 			renderDotsAsBox 	: renderBox,
 			preset 						: preset
-		});
+		}
+
+		self.superRender(opt.dots,opt.cons,renderOptions);
 		self.superUpdate(	opt.dots,
 											opt.cons,
 											PhysicsAccuracy.value,
-											{hoverColor : color}
+											{hoverColor : option.hoverColor}
 										);
 	}
 };
@@ -1450,7 +1447,7 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 	if(!showHidden) {showHidden = false;}
 	if(cons.length > 0) {
 		this.ctx.beginPath();
-		this.ctx.strokeStyle = (color || 'black')
+		this.ctx.strokeStyle = (color || 'black');
 		this.ctx.lineWidth = linewidth || 1;
 		for(let i = 0; i < cons.length; i++) {
 			let c = cons[i];

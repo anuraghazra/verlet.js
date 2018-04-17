@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="../../src/verlet.js"></script>
+</head>
+<body>
+  <div id="ui">
+    <canvas id="c"></canvas>  
+  </div>
+<script>
+/*
+  BUG : Render Settings is not modular in Verlet.Studio.update
+*/
+window.onload = function() {
+  let verlet = new Verlet();
+  verlet.init(640,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = []
+
+  verlet.Poly.cloth({},dots,cons);
+  // verlet.Poly.box({},dots,cons);
+  dots[0].pinned = true;
+
+  verlet.Studio.init('#ui');
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    verlet.Studio.update({
+      dots : dots,
+      cons : cons,
+      renderSettings : {
+        // lineWidth : 7,
+        // pointRadius : 5,
+        // lineColor : 'deepskyblue',
+        // pointColor : 'royalblue'
+        // renderDotsAsBox : false,
+        // renderDots : true,
+        // renderLines : false
+        // renderStress : true,
+        // renderHiddenLines : true
+        // renderPointIndex: true
+      }
+    })
+
+    verlet.showFps();
+
+  }
+  animate();
+}
+
+</script>
+</body>
+</html>
