@@ -1374,11 +1374,12 @@ Verlet.prototype.superUpdate = function(dots,cons,accu,opt) {
 Verlet.prototype.renderDots = function(dots,radius,color) {
 	let PI2 = Math.PI*2;
 	let rad = radius || 5;
-	for (let i = 0; i < dots.length; i++) {
+	for (let i = 0, j = dots.length; i < j; i++) {
 		let p = dots[i];
 		if(!p.hidden) {
+			let fill = (p.color || color || 'black');
 			this.ctx.beginPath();
-			this.ctx.fillStyle = p.color || color || 'black';
+			this.ctx.fillStyle = fill;
 			this.ctx.arc(p.x,p.y,rad,0,PI2);
 			this.ctx.fill();
 			this.ctx.closePath();
@@ -1444,6 +1445,7 @@ Verlet.prototype.superDebugRender = function(dots,cons) {
 *	@param {string} color
 */
 Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
+	if(!showHidden) {showHidden = false;}
 	if(cons.length > 0) {
 		this.ctx.beginPath();
 		this.ctx.strokeStyle = (color || 'black')
@@ -1451,13 +1453,13 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 		for(let i = 0; i < cons.length; i++) {
 			let c = cons[i];
 			if(!c.hidden) {
-				this.ctx.moveTo(Math.round(c.p0.x),Math.round(c.p0.y));
-				this.ctx.lineTo(Math.round(c.p1.x),Math.round(c.p1.y));
+				this.ctx.moveTo(c.p0.x,c.p0.y);
+				this.ctx.lineTo(c.p1.x,c.p1.y);
 			}
 			if(showHidden === true) {
 				if(c.hidden) {
-					this.ctx.moveTo(Math.round(c.p0.x),Math.round(c.p0.y));
-					this.ctx.lineTo(Math.round(c.p1.x),Math.round(c.p1.y));
+					this.ctx.moveTo(c.p0.x,c.p0.y);
+					this.ctx.lineTo(c.p1.x,c.p1.y);
 				}
 			}
 		}
@@ -1781,7 +1783,14 @@ Verlet.prototype.renderImages = function (images) {
  * STAGE : 3
  */
 
-//placeholder
+/**
+ * Renders a text from two points
+ * @method placeholder
+ * @param {array} ids id array
+ * @param {string} text image_array
+ * @param {array} dots dots array
+ * @param {object} offset x and y offsets {x,y}
+ */
 Verlet.prototype.placeholder = function(ids,text,dots,offset) {
 	let w = this._distance(dots[ids[0]],dots[ids[1]]);
 	let h = this._distance(dots[ids[0]],dots[ids[1]]);
@@ -1819,76 +1828,92 @@ Verlet.prototype.placeholder = function(ids,text,dots,offset) {
  * @method showFps
  * @param {object} option 
  */
-Verlet.prototype.plus = 1;
-Verlet.prototype.fpsBars = [];
+Verlet.prototype.fpsScope = {
+	fps : null,
+	bar_vx : 0,
+	lastframe : null,
+	fpsBars : []
+};
 Verlet.prototype.showFps = function(option) {
-	let x = (option.x !== undefined) ? option.x : 15 
-	let y = (option.y !== undefined) ? option.y : 15 
-	//this is painfull
-	this.plus++;
-	if(this.plus > 3) {
-		this.plus = 1
-	}
-	//
+	option = (!option) ? {} : option;
+	
+	let x = (option.x !== undefined) ? option.x : 10;
+	let y = (option.y !== undefined) ? option.y : 10;
+	let updateSpeed = (option.updateSpeed !== undefined) ? option.updateSpeed : 3;
 
 	let date = new Date();
-	this.lastframe;
-	this.fps;
-	if(!this.lastframe) {
-		this.lastframe = date.valueOf();
-		this.fps = 0;
+	if(!this.fpsScope.lastframe) {
+		this.fpsScope.lastframe = date.valueOf();
+		this.fpsScope.fps = 0;
 		return;
 	}
 
-	let delta = (date.valueOf() - this.lastframe) / 1000;
-	let frametime = (date.valueOf() - this.lastframe);
-	this.lastframe = date.valueOf();
-	//painfull
-	if(this.plus === 1) {
-		this.fps = Math.round(1/delta);
+	let delta = (date.valueOf() - this.fpsScope.lastframe) / 1000;
+	let frametime = (date.valueOf() - this.fpsScope.lastframe);
+	this.fpsScope.lastframe = date.valueOf();
+
+	
+	//bar_vx variable for moving bars in x axis
+	this.fpsScope.bar_vx++;
+	if(this.fpsScope.bar_vx > updateSpeed) {
+		this.fpsScope.bar_vx = 0;
+	}
+	
+	//if bar_vx variable is equal to 1 then roundup the fps
+	if(this.fpsScope.bar_vx === 0) {
+		this.fpsScope.fps = (1/delta).toFixed(1);
 	}
 
 	//render
 	let color = 'green';
-	if (this.fps < 40) { color = 'orange' };
-	if (this.fps < 20) { color  = 'red'; };
-	this.fpsBars.push({x : x+(this.plus), y : this.fps/2, color : color});
+	if (this.fpsScope.fps < 40) { color = 'orange' };
+	if (this.fpsScope.fps < 20) { color  = 'red'; };
+
+	this.fpsScope.fpsBars.push({
+		x : x+(this.fpsScope.bar_vx),
+		y : this.fpsScope.fps/2,
+		color : color
+	});
 	
-	if (this.fpsBars.length > 87) { this.fpsBars.shift(); }
-
-	this.ctx.beginPath();
-
-	//bounds
-	this.ctx.fillStyle = '#eee';
-	this.ctx.strokeStyle = 'black';
-	this.ctx.fillRect(x-5,y-15,100,70);
-	this.ctx.strokeRect(x-5,y-15,100,70);
-	this.ctx.stroke();
-	this.ctx.fill();
-
-	//fps
-	this.ctx.fillStyle = 'dimgray';
-	this.ctx.font = option.font || '12px Arial';
-	this.ctx.fillText('FPS : ' + this.fps, x, y);
-
-	//bars
-	this.ctx.save();
-	this.ctx.scale(1,-1); //rotate
-	for (let i = 0; i < this.fpsBars.length; i++) {
-		this.ctx.fillStyle = this.fpsBars[i].color;
-		this.fpsBars[i].x += 1;
-		this.ctx.fillRect( this.fpsBars[i].x-2, -50-y, 0.5, this.fpsBars[i].y );
+	if (this.fpsScope.fpsBars.length > 87) { 
+		this.fpsScope.fpsBars.shift();
 	}
-	this.ctx.restore();
 	
-	//60fps line
-	this.ctx.strokeStyle = 'crimson';
-	this.ctx.moveTo(x,y+20);
-	this.ctx.lineTo(x+90,y+20);
-	this.ctx.lineWidth = 1;
-	this.ctx.stroke();
 
-	this.ctx.closePath();
+	let ctx = this.ctx;
+	function drawFpsMeter() {
+		ctx.beginPath();
 
-	return this.fps;
+		//bounds
+		ctx.strokeStyle = 'black';
+		ctx.strokeRect(x-5,y-5,100,60);
+		ctx.stroke();
+	
+		//fps
+		ctx.fillStyle = '#555';
+		ctx.font = option.font || '10px Arial';
+		ctx.fillText('FPS : ' + this.fpsScope.fps, x, y+10);
+	
+		//bars
+		ctx.save();
+		ctx.scale(1,-1); //rotate
+		for (let i = 0; i < this.fpsScope.fpsBars.length; i++) {
+			ctx.fillStyle = this.fpsScope.fpsBars[i].color;
+			this.fpsScope.fpsBars[i].x += 1;
+			ctx.fillRect( this.fpsScope.fpsBars[i].x-2, -50-y, 1.2, this.fpsScope.fpsBars[i].y );
+		}
+		ctx.restore();
+		
+		//60fps line
+		ctx.strokeStyle = 'crimson';
+		ctx.moveTo(x,y+20);
+		ctx.lineTo(x+90,y+20);
+		ctx.lineWidth = 1;
+		ctx.stroke();
+	
+		ctx.closePath();
+	}
+	drawFpsMeter.call(this, null);
+	
+	return this.fpsScope.fps;
 }
