@@ -867,7 +867,7 @@ margin-bottom: 10px;
 }
 .ui_panel select {
 	padding: 5px; width: 100%; margin-top: 5px;
-}`
+}`;
 		
 		let studioStyle,studioElt;
 		if(document.createStyleSheet) {
@@ -906,19 +906,16 @@ margin-bottom: 10px;
 			option = opt.renderSettings;
 		}
 		
-		function id (id) { return document.getElementById(id) }
-
-
-		const PhysicsAccuracy = id('vls-Iterrations'),
-					dotOpt 					= id('vls-dots'),
-					LineOpt 				= id('vls-lines'),
-					hiddenLineOpt 	= id('vls-hidden-lines'),
-					IndexOpt 				= id('vls-pointIndex'),
-					shapeOpt 				= id('vls-shapes'),
-					gravity 				= id('vls-gravity'),
-					friction 				= id('vls-friction'),
-					vlsPreset 			= id('vls-preset'),
-					stressOpt 			= id('vls-stressOpt');
+		const PhysicsAccuracy = document.getElementById('vls-Iterrations'),
+					dotOpt 					= document.getElementById('vls-dots'),
+					LineOpt 				= document.getElementById('vls-lines'),
+					hiddenLineOpt 	= document.getElementById('vls-hidden-lines'),
+					IndexOpt 				= document.getElementById('vls-pointIndex'),
+					shapeOpt 				= document.getElementById('vls-shapes'),
+					gravity 				= document.getElementById('vls-gravity'),
+					friction 				= document.getElementById('vls-friction'),
+					vlsPreset 			= document.getElementById('vls-preset'),
+					stressOpt 			= document.getElementById('vls-stressOpt');
 		
 		let dotsRadius 			= option.pointRadius,
 				dotsColor 			= option.pointColor,
@@ -966,7 +963,7 @@ margin-bottom: 10px;
 		self.superUpdate(	opt.dots,
 											opt.cons,
 											PhysicsAccuracy.value,
-											{hoverColor : option.hoverColor}
+											{ hoverColor : option.hoverColor }
 										);
 	}
 };

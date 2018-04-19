@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="../../src/verlet.js"></script>
+</head>
+<!-- 
+  BUG : Performence Cap in studioAPI
+ -->
+<body>
+  <div id="ui">
+    <canvas id="c"></canvas>
+  </div>
+<script>
+window.onload = function() {
+
+  let verlet = new Verlet();
+  verlet.init(500,window.innerHeight-20,'#c',1,1,1);
+
+  let dots = [];
+  let cons = []
+
+  verlet.Poly.cloth({segs : 50, gapX : 8},dots,cons);
+
+  verlet.Studio.init('#ui');
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    verlet.Studio.update({
+      dots : dots,
+      cons : cons
+    })
+
+    verlet.showFps();
+
+  }
+  animate();
+}
+
+</script>
+</body>
+</html>
