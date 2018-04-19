@@ -4,7 +4,7 @@
 
 *Verlet.js* is a javascript library for creating rapid and fast **verlet physics** based models and structures.. Its API Is Amazing....check this out..
 
-> **``The Awsome API``**
+> **``The Super Simple API``**
 
 > **``You can create a cloth in just 3 lines of javascript``**
 
@@ -12,15 +12,20 @@
 
 ## Table Of Content
 
-* quickSetupAPI
-* quickSetup Settings
-* Create A Cloth In 3 Lines
-* MainAPI Usage
-* Verlet.Poly Objects
-* Creating Your Own Models
-* Render Settings
-* Studio API
-* Browser Support
+- quickSetupAPI
+  - quickSetup Settings
+  - Create A Cloth In 3 Lines
+- MainAPI Usage
+  - Verlet.Poly Objects
+  - Creating Your Own Models
+  - Render Settings
+    - Stress Rendering
+- Studio API
+- v1.2.0 Update
+  - StudioAPI + quickSetupAPI (Thats Awesome)
+  - Motion
+  - showFps
+- Browser Support
 
 ---------------------------------------
 
@@ -581,23 +586,61 @@ window.onload = function() {
 }
 ```
 
+------------------------------------------------------------------------
 
+## showFps
 
+To debug your canvas app performance you can use Verlet.showFps() method to draw a FPS Meter in canvas
+
+### Usage With MainAPI
+```javascript
+
+function animate() {
+  ...
+
+  //Verlet.showFps({x,y,updateSpeed})
+  verlet.showFps({
+    x : 5, y : 5,
+    updateSpeed : 3
+  });
+
+  ...
+}
+
+```
+### Usage With quicksetupAPI
+```javascript
+  Verlet().quickSetup(function( dots, cons ) {
+    this.Poly.cloth({segs : 50}, dots, cons);
+  }, {
+    showFps : true // or {x,y,updateSpeed}
+  })
+```
+
+--------------------------------------------------------
 
 ## Browser Support
 
 ### Modern HTML5 Enabled Browsers Are Ok Like.
 
-Cool Logos           | Name 
+Cool Logos    |    Name 
 --------------|-----------
 <img src="./assets/images/chrome.png" width="10%" /> | Google Chrome
 <img src="./assets/images/ff.png" width="10%" /> | Mozila FireFox
 <img src="./assets/images/opera.png" width="10%" /> | Opera Desktop
 
 
+### **Dont Event Think About Trying It On Old-IE**
 * IE11 (I think? Not Tested)
 
-### **Dont Event Think About Trying It On Old-IE**
+
+## Mobile Support 
+
+  ### Tested In :
+  * **Latest Google Chrome ( *supported* )**
+  * UC Browser 10 ( *not supported* );
+
+
 
 --------------------------------------------------------
 
