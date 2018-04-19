@@ -12,19 +12,46 @@
 window.onload = function() {
   const verlet = new Verlet();
   verlet.init(500,500,'#c',1,1,1);
+  let ctx = verlet.ctx;
+  // console.log(ctx)
 
   let dots = [];
   let cons = [];
  
-  verlet.Poly.cloth({},dots,cons)
-	console.log(cons)
+  verlet.Poly.cloth({segs : 50, gapY : 2, gapX : 5},dots,cons);
+
+  function _distance(p0,p1) {
+    const dx = p0.x - p1.x;
+    const dy = p0.y - p1.y;
+    return Math.sqrt(dx*dx + dy*dy);
+  };
+  function colorify(dots) {
+    for(let i = 0; i < dots.length; i++) {
+      let p = dots[i];
+
+      ctx.beginPath();
+      ctx.fillStyle = 'red';
+      ctx.moveTo((dots[i].x),(dots[i].y));
+      ctx.lineTo((dots[(i+1)%dots.length].x),(dots[(i+1)%dots.length].y));
+      ctx.lineTo((dots[(i+2)%dots.length].x),(dots[(i+2)%dots.length].y));
+      ctx.lineTo((dots[(i+3)%dots.length].x),(dots[(i+3)%dots.length].y));
+      // ctx.lineTo((dots[i+2].x),(dots[i+2].y));
+      // ctx.lineTo((dots[i+3].x),(dots[i+3].y));
+      ctx.fill();
+
+      ctx.closePath();
+    }
+  }
 
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
     
     verlet.superUpdate(dots,cons,10);
-    verlet.superRender(dots,cons,{});
+    verlet.superRender(dots,cons,{renderStress : true, renderDots : false, renderLines : false});
+    
+    // colorify(dots);
+    // verlet.renderStress(cons);
   }
   animate();
 }

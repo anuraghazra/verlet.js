@@ -3,7 +3,7 @@
  *  @name Verlet.js
  *  @version 1.2.0
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
- *  @copyright BasciHTMLPro © 2018
+ *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
  *  @license MIT
  */
