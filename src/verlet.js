@@ -488,6 +488,7 @@ this.Poly = {
 		if ( opt.gapX 		=== undefined ) { opt.gapX 			= 15	};
 		if ( opt.gapY 		=== undefined ) { opt.gapY 			= 15	};
 		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 7		};
+		if ( opt.tear === undefined ) 		{ opt.tear 		  = false };
 		// if(opt.tearable === undefined) {opt.tearable = false};
 		// let tear = 'tear';
 		// if(opt.tearable === false) {
@@ -534,28 +535,40 @@ this.Poly = {
 				}
 				tmpDots[segs-1][4] = true;
 				
-				// WIP
-				//tearable cloth
-				// if(opt.tearable) {
-				// 	function tearCloth() {
-				// 		for (let i = 0; i < cons.length; i++) {
-				// 			if(cons[i].tear === 'tear') {
-				// 				if(cons[i].p1.x - cons[i].p0.x > 30 ||
-				// 					 cons[i].p1.y - cons[i].p0.y > 60) {
-				// 					cons.splice(i, 2);
-				// 				}
-				// 			}
-				// 		}
-				// 	}
-				// 	self.canvas.addEventListener('mousemove',tearCloth)
-				// }
 				
 				self.create(tmpDots,dots);
 				self.clamp(tmpCons,cons,dots);
+
+				let tearIndex = [
+					(dots.length-tmpDots.length)+2,
+					tmpDots.length-1 + (dots.length-tmpDots.length)
+				];
+
 				tmpDots = [];
 				tmpCons = [];
+
+				/* tearThe Cloth
+				 * IN DEVELOPMENT STAGE 1
+				 */
+				if(opt.tear === true) {
+					function tear() {
+						for (let i = tearIndex[0]; i < tearIndex[1]; i++) {
+							if(cons[i].p1.x - cons[i].p0.x > 30 ||
+								cons[i].p1.y - cons[i].p0.y > 60) {
+									cons.splice(i, 1);
+							}
+						}
+					}
+					self.canvas.addEventListener('mousemove',tear);
+				}
+
 			}
 		}
+	},
+
+	//tearCloth
+	tearCloth : function(arr, cons) {
+
 	},
 
 	/**
