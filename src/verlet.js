@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.2.0
+ *  @version 1.2.1
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -1141,9 +1141,9 @@ this.Motion = {
 this.Effect = {
 	/** 	
 	 *	Prevent The Verlet Points From Going Inside A Circle
-	 *	@method displace
-	 *	@param {array} dot
-	 *	@param {object} c
+	 *	@method hole
+	 *	@param {array} dots
+	 *	@param {object} option
 	 */
 	hole : function(dots,option) {
 		option = (typeof option !== 'object') ? {} : option;	
