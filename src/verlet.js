@@ -1135,28 +1135,42 @@ this.Motion = {
 
 
 /** 	
- *	Simple Collision Detection
- *	@method Collision
+ *	Simple Effects
+ *	@method Effect
  */
-this.Collision = {
+this.Effect = {
 	/** 	
 	 *	Prevent The Verlet Points From Going Inside A Circle
-	 *	@method pointToCircle
+	 *	@method displace
 	 *	@param {array} dot
 	 *	@param {object} c
 	 */
-	pointToCircle : function(dots,c) {
+	hole : function(dots,option) {
+		option = (typeof option !== 'object') ? {} : option;	
+		
+		let type = option.type || 'blow';
+		let x = option.x || 100;
+		let y = option.y || 100;
+		let radius = option.radius || 50;
+
+		
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
-			let cdx = p.x - c.x,
-				cdy = p.y - c.y;
+			let cdx = p.x - x,
+					cdy = p.y - y;
 			let Diff = cdx*cdx + cdy*cdy;
-			if(Diff < c.radius*c.radius) {
-				let depth = Math.sqrt(c.radius*c.radius / Diff);
-				cdx *= depth;
-				cdy *= depth;
-				p.x = cdx + c.x;
-				p.y = cdy + c.y;
+			if(Diff < radius*radius) {
+				let depth = Math.sqrt(radius*radius / Diff);
+				
+				if(type === 'suck') {
+					cdx /= depth;
+					cdy /= depth;
+				} else {
+					cdx *= depth;
+					cdy *= depth;
+				}
+				p.x = cdx + x;
+				p.y = cdy + y;
 			}
 		}
 	}
