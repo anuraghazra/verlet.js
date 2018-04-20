@@ -16,31 +16,27 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
-  verlet.Poly.box({},dots,cons);
-  
   verlet.Poly.cloth({
-    x : 0,
-    tear : true,
-    segs : 10
-  },dots, cons);
-  
-  verlet.Poly.hexagon({},dots,cons);
-
-  verlet.Poly.cloth({
-    x : 250,
-    tear : true,
-    segs : 10
+    segs : 20
   },dots, cons);
 
 
-  console.log({dots,cons});
-             
+  let motionIndex = [];
+  for (let i = 308; i < 399; i+=5) {
+    motionIndex.push(i);
+  }
+
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
     
     verlet.superUpdate(dots,cons,10);
-    verlet.superRender(dots,cons,{debug : true});
+    verlet.superRender(dots,cons,{renderDotsAsBox : true, debug : true});
+
+    verlet.Motion.wind(motionIndex,dots,{
+      speed : 100,
+      size : 5,
+    })
 
   }
   animate();

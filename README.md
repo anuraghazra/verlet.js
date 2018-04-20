@@ -317,7 +317,7 @@ window.onload = function() {
     [3,1],
   ];
 
-  // and then bake the arrays 
+  // and then bake the arrays
   // verlet.bake(newDots[],newCons[],dots[],cons[])
   verlet.bake(myModel_dots,myModel_cons,dots,cons)
 
@@ -327,13 +327,13 @@ window.onload = function() {
 
     verlet.superUpdate(dots,cons,25);
     verlet.superRender(dots,cons,{preset : 'shadowRed'});
-    
+
   }
   animate();
 }
 ```
 
------------------------------------------------------------------------- 
+------------------------------------------------------------------------
 
 ## Render Settings
 
@@ -516,7 +516,7 @@ check out the demo [here](./demos/quick_plus_studio.html)
   <h2>Awesome</h2>
   <div id="ui"></div>
 <script>
-  
+
   // StudioAPI + quickSetupAPI
   Verlet().quickSetup(function(dots,cons) {
     this.Poly.cloth({},dots,cons);
@@ -543,7 +543,7 @@ check out the demo [here](./demos/verlet_motion.html)
 window.onload = function() {
   const verlet = new Verlet();
   verlet.init(600,500,'#c',1,1,1);
-  
+
   let dots = [];
   let cons = [];
 
@@ -556,7 +556,7 @@ window.onload = function() {
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
-    
+
     verlet.Studio.update({
       dots : dots, cons : cons,
       renderSettings : { pointRadius : 2 },
@@ -623,7 +623,7 @@ function animate() {
 
 ### Modern HTML5 Enabled Browsers Are Ok Like.
 
-Cool Logos    |    Name 
+Cool Logos    |    Name
 --------------|-----------
 <img src="./assets/images/chrome.png" width="10%" /> | Google Chrome
 <img src="./assets/images/ff.png" width="10%" /> | Mozila FireFox
@@ -634,7 +634,7 @@ Cool Logos    |    Name
 * IE11 (I think? Not Tested)
 
 
-## Mobile Support 
+## Mobile Support
 
   ### Tested In :
   * **Latest Google Chrome ( *supported* )**

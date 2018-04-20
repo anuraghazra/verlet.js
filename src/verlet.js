@@ -488,12 +488,7 @@ this.Poly = {
 		if ( opt.gapX 		=== undefined ) { opt.gapX 			= 15	};
 		if ( opt.gapY 		=== undefined ) { opt.gapY 			= 15	};
 		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 7		};
-		if ( opt.tear === undefined ) 		{ opt.tear 		  = false };
-		// if(opt.tearable === undefined) {opt.tearable = false};
-		// let tear = 'tear';
-		// if(opt.tearable === false) {
-		// 	tear = undefined;
-		// }
+		if ( opt.tear		  === undefined ) { opt.tear 		  = false };
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -1086,6 +1081,43 @@ this.Motion = {
 			}
 			dots[ittr].x = moX;
 			dots[ittr].y = moY;
+			dots[ittr].oldx = dots[ittr].x;
+			dots[ittr].oldy = dots[ittr].y;
+		}
+
+		if (typeof index === 'number') {
+			doMove(index)			
+		} else {
+			for (let i = 0; i < index.length; i++) {
+				doMove(index[i])
+			}
+		}
+
+	},
+	/** 	
+	 *	Wind Motion
+	 *	@method Verlet.Motion.wind()
+	 *	@param {array|number} index
+	 *	@param {array} dots
+	 *	@param {object} option optional
+	 */
+	wind : function wind(index, dots, option) {
+		option = (typeof option !== 'object') ? {} : option;		
+		let speed  = option.speed || 500;
+		let radius = option.size || 3;
+		let axis = option.axis || 'x';
+
+		//refactor the code
+		let date = new Date();		
+		function doMove(ittr) {
+			let dynamic = date.valueOf()/speed;
+			let moX = 3+(dots[ittr].x + Math.sin(Math.asin(.3)*dynamic) * radius);
+
+			if(axis === 'y') {
+				dots[ittr].y = moX;
+			} else {
+				dots[ittr].x = moX;
+			}
 			dots[ittr].oldx = dots[ittr].x;
 			dots[ittr].oldy = dots[ittr].y;
 		}
