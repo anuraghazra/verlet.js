@@ -1613,6 +1613,42 @@ Verlet.prototype.renderShapes = function(shape) {
 	}
 };
 
+/** 	
+ *	Render Coordinates of points
+*	@method renderCoords
+*	@param {array} dots
+*	@param {array} cons
+*/
+Verlet.prototype.renderCoords = function(dots, specific) {
+	let osctx = this.osCanvas.getContext('2d');
+	osctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+	
+	osctx.font = '10px Arial';
+	osctx.fillStyle = 'black';
+
+	let len = dots.length;
+	let only = false;
+	if (specific) {
+		len = specific.length;
+		only = true;
+	}
+	
+	for (let i = 0; i < len; i++) {
+		let start = i;
+		if(only) {
+			start = specific[i];
+		}
+		let p = dots[start];
+		
+		let string = 'x'+(p.x).toFixed()+' , y'+(p.y).toFixed();
+
+		osctx.fillText(string,(p.x+10).toFixed(1),(p.y).toFixed(1));
+	}
+	osctx.fill();
+	this.ctx.drawImage(this.osCanvas,0,0);
+}
+
+
 /**
  * updates studio settings
  * @method superRender
