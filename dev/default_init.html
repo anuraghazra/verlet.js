@@ -3,15 +3,23 @@
 <head>
   <title>Main Verlet.js API</title>
   <script src="../src/verlet.js"></script>
+  <style>
+    .container {
+      width : 500px;
+      height : 350px;
+    }
+  </style>
 </head>
 <body>
 
-  <canvas id="c"></canvas>
+  <div class="container">
+    <canvas id="c"></canvas>
+  </div>
 
 <script>
 window.onload = function() {
   const verlet = new Verlet();
-  verlet.init(window.innerWidth,800,'#c',1,1,1);
+  verlet.init('#c');
 
   let dots = [];
   let cons = [];
@@ -22,21 +30,12 @@ window.onload = function() {
     x : 10
   },dots, cons);
 
-  let c = {
-    x : 10, y : 10,
-    radius : 35,
-    type : 'blow'
-  }
-  document.body.addEventListener('mousemove',function(e) {
-    c.x = e.offsetX;
-    c.y = e.offsetY;
-  })
-  document.body.addEventListener('mousedown',function(e) {
-    c.type = 'suck';
-  })
-  document.body.addEventListener('mouseup',function(e) {
-    c.type = 'blow';
-  })
+  // verlet.Poly.line({
+  //   data : [
+  //     [100,100],
+  //     [200,45]
+  //   ]
+  // },dots,cons)
 
   verlet.Interact.move(dots);
   function animate() {

@@ -75,12 +75,23 @@ this.osCanvas.id = "osCanvas";
 * @return {object}
 */ 
 this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
-	this.canvas = document.querySelector(canvas);
-	this.canvas.width = cw || 100;
-	this.canvas.height = ch || 100;
+	let appendStr = canvas;
+	if(typeof cw === 'string') { 
+		appendStr = cw;
+	};
+	this.canvas = document.querySelector(appendStr);
+
+	let width,height;
+	if(typeof cw === 'string') {
+		width = this.canvas.parentElement.getBoundingClientRect().width;
+		height = this.canvas.parentElement.getBoundingClientRect().height;
+	}
+
+	this.canvas.width = width || cw;
+	this.canvas.height = height || ch;
 	this.ctx = this.canvas.getContext('2d');
-	this.gravity = gravity;
-	this.friction = friction;
+	this.gravity = gravity || 1;
+	this.friction = friction || 1;
 	this.stiffness = stiffness || 1;
 	//obj.canvas.style.border = '1px solid gray';
 	this.osCanvas.width = this.canvas.width;
