@@ -16,7 +16,7 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
-  verlet.Poly.cloth({},dots,cons);
+  verlet.Poly.box({},dots,cons);
 
   verlet.Interact.move(dots);
   function animate() {
@@ -24,8 +24,10 @@ window.onload = function() {
     
     verlet.superUpdate(dots,cons,10);
     verlet.superRender(dots,cons,{ renderDotsAsBox : true });
-
-    verlet.renderCoords(dots,[0,1]);
+    
+    if(verlet.handleIndex) {
+      verlet.renderCoords(dots,[verlet.handleIndex]);
+    }
 
   }
   animate();
