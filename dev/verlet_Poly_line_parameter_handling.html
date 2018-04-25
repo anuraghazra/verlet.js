@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    .container {
+      width : 500px;
+      height : 350px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <canvas id="c"></canvas>
+  </div>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(500,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  let lineData = [
+    [100,100],
+    [200,100],
+    [200,200],
+    [100,200],
+  ]
+  verlet.Poly.line(lineData,dots,cons)
+
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{ renderDotsAsBox : true });
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

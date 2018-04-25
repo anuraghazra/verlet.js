@@ -90,8 +90,8 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 	this.canvas.width = width || cw;
 	this.canvas.height = height || ch;
 	this.ctx = this.canvas.getContext('2d');
-	this.gravity = gravity || 1;
-	this.friction = friction || 1;
+	this.gravity = gravity;
+	this.friction = friction;
 	this.stiffness = stiffness || 1;
 	//obj.canvas.style.border = '1px solid gray';
 	this.osCanvas.width = this.canvas.width;
@@ -589,6 +589,15 @@ this.Poly = {
 	line : function(opt,dot,con) {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
+
+		console.log(opt.constructor)
+		if (opt.constructor.toString().match('Array')) {
+			opt = {
+				data : opt
+			};
+		}
+		console.log(opt)
+
     if(!opt.data) {
       opt.data = [
         [100,100],
