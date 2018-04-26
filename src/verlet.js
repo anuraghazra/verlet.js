@@ -797,6 +797,8 @@ this.Studio = {
 	 * @param {string} id
 	 */
 	init : function(id) {
+		const canvId = self.canvas.id;
+
 		const div = document.querySelector(id);
 		div.style.display = 'flex';
 		div.style.flexWrap = 'wrap';
@@ -810,40 +812,40 @@ this.Studio = {
 			<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span>
 		</div>
 		<div class="ui_settings">
-			<input step="1" placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
-			<input step="0.1" placeholder="Gravity" value="${self.gravity}" title="gravity" type="number" id="vls-gravity">
-			<input step="0.01" placeholder="Friction" value="${self.friction}" title="friction" type="number" id="vls-friction">
+			<input step="1" placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="${canvId}-Iterrations">
+			<input step="0.1" placeholder="Gravity" value="${self.gravity}" title="gravity" type="number" id="${canvId}-gravity">
+			<input step="0.01" placeholder="Friction" value="${self.friction}" title="friction" type="number" id="${canvId}-friction">
 		</div>
 		<p>Render Options</p>
 		<div class="ui_checkboxes">
 			<label>
-				<input type="checkbox" checked id="vls-dots">
+				<input type="checkbox" checked id="${canvId}-dots">
 				<span>Dots</span>
 			</label>
 			<label>
-				<input type="checkbox" checked id="vls-lines">
+				<input type="checkbox" checked id="${canvId}-lines">
 				<span>Lines</span>
 			</label>
 			<label>
-				<input type="checkbox" id="vls-stressOpt">
+				<input type="checkbox" id="${canvId}-stressOpt">
 				<span>Stress</span>
 			</label>
 			<label>
-				<input type="checkbox" id="vls-pointIndex">
+				<input type="checkbox" id="${canvId}-pointIndex">
 				<span>Index</span>
 			</label>
 			<label>
-				<input type="checkbox" id="vls-hidden-lines">
+				<input type="checkbox" id="${canvId}-hidden-lines">
 				<span>Hidden</span>
 			</label>
 			<label>
-				<input type="checkbox" id="vls-shapes">
+				<input type="checkbox" id="${canvId}-shapes">
 				<span>Shapes</span>
 			</label>
 		</div>
 		<hr>
 		<span>Preset</span>
-		<select id="vls-preset">
+		<select id="${canvId}-preset">
 			<option value="shadowRed">shadowRed</option>
 			<option value="shadowPink">shadowPink</option>
 			<option value="shadowBlue">shadowBlue</option>
@@ -929,17 +931,18 @@ margin-bottom: 10px;
 		if(opt.renderSettings === undefined) {
 			opt.renderSettings = {};
 		}
+		let canvId = self.canvas.id;
 
-		const PhysicsAccuracy = document.getElementById('vls-Iterrations'),
-					dotOpt 					= document.getElementById('vls-dots'),
-					LineOpt 				= document.getElementById('vls-lines'),
-					hiddenLineOpt 	= document.getElementById('vls-hidden-lines'),
-					IndexOpt 				= document.getElementById('vls-pointIndex'),
-					shapeOpt 				= document.getElementById('vls-shapes'),
-					gravity 				= document.getElementById('vls-gravity'),
-					friction 				= document.getElementById('vls-friction'),
-					vlsPreset 			= document.getElementById('vls-preset'),
-					stressOpt 			= document.getElementById('vls-stressOpt');
+		const PhysicsAccuracy = document.getElementById(canvId+'-Iterrations'),
+					dotOpt 					= document.getElementById(canvId+'-dots'),
+					LineOpt 				= document.getElementById(canvId+'-lines'),
+					hiddenLineOpt 	= document.getElementById(canvId+'-hidden-lines'),
+					IndexOpt 				= document.getElementById(canvId+'-pointIndex'),
+					shapeOpt 				= document.getElementById(canvId+'-shapes'),
+					gravity 				= document.getElementById(canvId+'-gravity'),
+					friction 				= document.getElementById(canvId+'-friction'),
+					vlsPreset 			= document.getElementById(canvId+'-preset'),
+					stressOpt 			= document.getElementById(canvId+'-stressOpt');
 		
 
 		self.gravity = parseFloat(gravity.value || 0);
@@ -1774,7 +1777,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let id 			=	 option.id;
 	let studio 	=	 option.initStudio || false;
 	
-	if(id === undefined) id = 'quicksetup';
+	if(id === undefined) id = 'quicksetup-'+Math.floor(Math.random()*500);
 	if(typeof append === 'string') {append = document.querySelector(append)}
 
 	let canvas = document.createElement('canvas');
@@ -1794,7 +1797,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	callback.call(verlet,dots,cons);
 	
 	//studio
-	if(studio) { verlet.Studio.init(option.append); };
+	if(studio) { verlet.Studio.init(option.append || 'body'); };
 	verlet.Interact.move(dots);
 	function animate() {
 		verlet.frame(animate,option.bg || null);

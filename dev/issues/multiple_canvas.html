@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../src/verlet.js"></script>
+</head>
+<body>
+
+<script>
+window.onload = function() {
+
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.box({},dots,cons);
+  }, {
+    initStudio : true
+  });
+  
+  Verlet().quickSetup(function(dots,cons) {
+    this.Poly.triangle({},dots,cons);
+  }, {
+    initStudio : true
+  })
+
+}
+</script>
+</body>
+</html>
