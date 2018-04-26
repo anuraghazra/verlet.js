@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.2.3
+ *  @version 1.2.4
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
