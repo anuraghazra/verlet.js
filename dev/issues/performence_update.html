@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="../../src/verlet.js"></script>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(700,800,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.cloth({
+    y : 100,
+    x : 50,
+    gapX : 15,
+    gapY : 15,
+    segs : 40
+  },dots, cons);
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    // debugger;
+    verlet.superUpdate(dots,cons,10);
+    // verlet.renderLines(cons,0.1,'black');
+    // verlet.renderDotsAsBox(dots,1,'black');
+    verlet.superRender(dots,cons,{  });
+    
+    verlet.showFps();
+
+    verlet.ctx.fillText('Dots : ' + dots.length + ', Cons : ' + cons.length, 110,20)
+  }
+  
+  animate();
+}
+</script>
+</body>
+</html>

@@ -640,6 +640,7 @@ this.Interact = {
 	draw : function(color) {
 		if(this.hoverPoint) {
 			self.ctx.beginPath();
+			self.ctx.lineWidth = 2;
 			self.ctx.strokeStyle = color || 'white';
 			self.ctx.arc(this.hoverPoint.x,this.hoverPoint.y,8,0,Math.PI*2);
 			self.ctx.stroke();
@@ -1229,14 +1230,15 @@ this.Engine = {
 		*	@param {array} dots
 	*/
 	constrain : function constrainPoints(dots) {
+		let width = self.canvas.width,
+				height = self.canvas.height;
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
 			if(!p.pinned) {
 				let vx = (p.x - p.oldx) * 0.99,
-					vy = (p.y - p.oldy) * 0.99;
+						vy = (p.y - p.oldy) * 0.99;
+
 				//Boundry
-				let width = self.canvas.width,
-					height = self.canvas.height;
 				if(p.x > width) {
 					p.x = width;
 					p.oldx = p.x + vx * self.bounce;
@@ -1713,8 +1715,9 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 		shadowPink 	: [5, 'hotpink',	0.5, 'mediumpurple', '10px Century Gothic', 'slategray',	0.5, 'green'],
 		shadowGreen : [5, '#8acf00',	0.5, 'green',				 '10px Century Gothic', 'slategray',	0.5, 'green']
 	}
-	setPreset.apply(null,load[preset]);
-	if(!preset) {
+	if(preset) {
+		setPreset.apply(null,load[preset]);
+	} else {
 		setPreset.apply(null,load['default']);
 	}
 
@@ -2002,9 +2005,10 @@ Verlet.prototype.showFps = function(option) {
 
 		//bounds
 		ctx.strokeStyle = 'black';
+		ctx.lineWidth = 0.5;
 		ctx.strokeRect(x-5,y-5,100,60);
 		ctx.stroke();
-	
+		
 		//fps
 		ctx.fillStyle = '#555';
 		ctx.font = option.font || '10px Arial';
@@ -2026,7 +2030,7 @@ Verlet.prototype.showFps = function(option) {
 		ctx.lineTo(x+90,y+20);
 		ctx.lineWidth = 1;
 		ctx.stroke();
-	
+		
 		ctx.closePath();
 	}
 	drawFpsMeter.call(this, null);
