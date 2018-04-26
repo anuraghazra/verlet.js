@@ -21,6 +21,7 @@ window.onload = function() {
   },dots, cons);
 
 
+  //only adds motion to these dots
   let motionIndex = [];
   for (let i = 308; i < 399; i+=5) {
     motionIndex.push(i);
@@ -33,6 +34,7 @@ window.onload = function() {
     verlet.superUpdate(dots,cons,10);
     verlet.superRender(dots,cons,{renderDotsAsBox : true});
 
+    //Verlet.Motion.wind(Array[index],Array[dots],Object{speed,size})
     verlet.Motion.wind(motionIndex,dots,{
       speed : 100,
       size : 5,

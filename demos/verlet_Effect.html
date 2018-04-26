@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    body { font-family: 'Century Gothic' }
+  </style>
+</head>
+<body>
+
+  <h3>Click And Hold To Make It Black Hole</h3>
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.cloth({
+    y : 25,
+    x : 100,
+    gapY : 8,
+    gapX : 12,
+    segs : 35
+  },dots, cons);
+
+
+  //Specify A Circle
+  let circle = {
+    x : 10, y : 10,
+    radius : 70,
+    type : 'blow'
+  }
+
+
+  //Just Basic Event hadling
+  document.body.addEventListener('mousemove',(e) => { circle.x = e.offsetX; circle.y = e.offsetY; })
+  document.body.addEventListener('mousedown', (e) => circle.type = 'suck' )
+  document.body.addEventListener('mouseup',   (e) => circle.type = 'blow' )
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,25);
+    verlet.superRender(dots,cons,{ renderDots : false });
+
+    // verlet.Effect.hole(Array[],Object{});
+    // Higher The Simulation Step Lower The Chance
+    // The Circle Goes Inside The Cloth
+    verlet.Effect.hole(dots,circle);
+
+    //lets Draw the invisible circle too
+    verlet.Draw.arc(circle.x,circle.y,circle.radius)
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

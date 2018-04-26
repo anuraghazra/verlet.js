@@ -25,6 +25,9 @@
   - StudioAPI + quickSetupAPI (Thats Awesome)
   - Motion
   - showFps
+- v1.2.3 Update
+  - Effect
+  - Verlet.renderCoords()
 - Browser Support
 
 ---------------------------------------
@@ -496,7 +499,8 @@ window.onload = function() {
 ```
 
 ------------------------------------------------------------------------
-### v1.2.0 Update
+
+# v1.2.0 Update
 ## StudioAPI + quickSetupAPI (Thats Awesome)
 
 Yes!. Another Magic!
@@ -586,6 +590,49 @@ window.onload = function() {
 }
 ```
 
+## Motion.wind()
+
+Adds Wind Motion To Dots ( Add It To Cloth )
+
+check out the demo [here](./demos/verlet_Motion_wind.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(700,600,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.cloth({
+    segs : 20
+  },dots, cons);
+
+
+  //only adds motion to these dots
+  let motionIndex = [];
+  for (let i = 308; i < 399; i+=5) {
+    motionIndex.push(i);
+  }
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{renderDotsAsBox : true});
+
+    //Verlet.Motion.wind(Array[index],Array[dots],Object{speed,size})
+    verlet.Motion.wind(motionIndex,dots,{
+      speed : 100,
+      size : 5,
+    })
+
+  }
+  animate();
+}
+```
+
 ------------------------------------------------------------------------
 
 ## showFps
@@ -618,6 +665,103 @@ function animate() {
 ```
 
 --------------------------------------------------------
+
+# v1.2.3 Update
+
+## Effect
+
+Here We Go With A New Feature!!!;
+
+`Verlet.Effect` Lets You Add Intresting Effects Like **BLACK HOLE!!!**,
+Yes You Read It Right, You Can Add Two Type Of Effect `Black Hole` and `Blow Hole`
+
+check out the demo [here](./demos/verlet_Effect.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.cloth({
+    y : 25,
+    x : 100,
+    gapY : 8,
+    gapX : 12,
+    segs : 35
+  },dots, cons);
+
+
+  //Specify A Circle
+  let circle = {
+    x : 10, y : 10,
+    radius : 70,
+    type : 'blow'
+  }
+
+
+  //Just Basic Event hadling
+  document.body.addEventListener('mousemove',(e) => { circle.x = e.offsetX; circle.y = e.offsetY; })
+  document.body.addEventListener('mousedown', (e) => circle.type = 'suck' )
+  document.body.addEventListener('mouseup',   (e) => circle.type = 'blow' )
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,25);
+    verlet.superRender(dots,cons,{ renderDots : false });
+
+    // verlet.Effect.hole(Array[],Object{});
+    // Higher The Simulation Step Lower The Chance
+    // The Circle Goes Inside The Cloth
+    verlet.Effect.hole(dots,circle);
+
+    //lets Draw the invisible circle too
+    verlet.Draw.arc(circle.x,circle.y,circle.radius)
+
+  }
+  animate();
+}
+
+```
+
+----------------------------------
+
+## Verlet.renderCoords();
+
+Verlet.renderCoords() renders the X,Y coordinates of a specific dot or all of the dots in realtime. Its makes debugging easy and created custom model more accurate by showing coords.
+
+check out the demo [here](./demos/verlet_renderCoords.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(500,500,'#c',0,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.box({},dots,cons);
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons);
+    
+    //Verlet.renderCoords(Array[],Array[optional])
+    // if you dont specify last array it will show all the dots cooords
+    // and if you specify any it will only shows that dot's coord like [0,3]
+    verlet.renderCoords(dots/*[0,1]*/);
+
+  }
+  animate();
+}
+```
 
 ## Browser Support
 
