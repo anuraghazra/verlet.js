@@ -8,20 +8,20 @@
   <div id="ui">
     <canvas id="c"></canvas>  
   </div>
+  <div id="ui2"> </div>
 <script>
 /*
   BUG : Render Settings is not modular in Verlet.Studio.update
 */
 window.onload = function() {
   let verlet = new Verlet();
-  verlet.init(640,500,'#c',1,1,1);
+  verlet.init(500,500,'#c',1,1,1);
 
   let dots = [];
   let cons = []
 
-  verlet.Poly.cloth({},dots,cons);
-  // verlet.Poly.box({},dots,cons);
-  dots[0].pinned = true;
+  verlet.Poly.box({},dots,cons);
+
 
   verlet.Studio.init('#ui');
   verlet.Interact.move(dots);
@@ -32,24 +32,24 @@ window.onload = function() {
       dots : dots,
       cons : cons,
       renderSettings : {
-        // lineWidth : 7,
-        // pointRadius : 5,
-        // lineColor : 'deepskyblue',
-        // pointColor : 'royalblue'
-        // renderDotsAsBox : false,
-        // renderDots : true,
-        // renderLines : false
-        // renderStress : true,
-        // renderHiddenLines : true
-        // renderPointIndex: true
+        showFps : true
       }
     })
-
-    verlet.showFps();
 
   }
   animate();
 }
+// quickSetup test
+// Verlet().quickSetup(function(dots,cons) {
+//   this.Poly.box({},dots,cons);
+// },{
+//   append : '#ui2',
+//   renderSettings : {
+//     showFps : true,
+//     renderCoords : true,
+//   },
+//   initStudio : true,
+// })
 
 </script>
 </body>

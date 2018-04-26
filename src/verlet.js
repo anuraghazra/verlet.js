@@ -807,7 +807,7 @@ this.Studio = {
 		<h2>Verlet Studio</h2>
 		<hr><p>Physics Options</p>
 		<div class="ui_settings_labels">
-			<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span> <span>Stiffness</span>
+			<span>Physics Accuracy</span> <span>Gravity</span> <span>Friction</span>
 		</div>
 		<div class="ui_settings">
 			<input step="1" placeholder="Physics Acuuracy" value="20" title="Physics Acuuracy" type="number" id="vls-Iterrations">
@@ -913,7 +913,7 @@ margin-bottom: 10px;
 		} else {
 			studioStyle.cssText = style;
 		}
-		div.appendChild(newdiv);		
+		div.appendChild(newdiv);
 	},
 
 	/**
@@ -926,15 +926,10 @@ margin-bottom: 10px;
 	 * @param {object} option {options : {}}
 	 */
 	update : function(opt) {
-		let option;
-		
-		if( opt.renderSettings === undefined 
-				&& typeof opt.renderSettings !== 'object' ) {	
-			option = {};
-		} else {
-			option = opt.renderSettings;
+		if(opt.renderSettings === undefined) {
+			opt.renderSettings = {};
 		}
-		
+
 		const PhysicsAccuracy = document.getElementById('vls-Iterrations'),
 					dotOpt 					= document.getElementById('vls-dots'),
 					LineOpt 				= document.getElementById('vls-lines'),
@@ -946,54 +941,37 @@ margin-bottom: 10px;
 					vlsPreset 			= document.getElementById('vls-preset'),
 					stressOpt 			= document.getElementById('vls-stressOpt');
 		
-		let dotsRadius 			= option.pointRadius,
-				dotsColor 			= option.pointColor,
-				lineWidth 			= option.lineWidth,
-				lineColor 			= option.lineColor,
-				fontColor 			= option.fontColor,
-				hiddenLineWidth = option.hiddenLineWidth,
-				hiddenLineColor = option.hiddenLineColor,
-				font 						= option.font,
-				renderBox				= option.renderDotsAsBox,
-				preset 					= option.preset || vlsPreset.value || 'default';
 
-		self.gravity = parseInt(gravity.value);
-		self.friction = parseInt(friction.value);
+		self.gravity = parseFloat(gravity.value || 0);
+		self.friction = parseFloat(friction.value || 1);
 
 		
-		let isRenderDots 				= (dotOpt.checked === true) ? option.renderDots : false;
-		let isRenderLines 			= (LineOpt.checked === true) ? option.renderLines : false;
-		let isRenderHiddenLines = hiddenLineOpt.checked || option.renderHiddenLines;
-		let isRenderIndex 			= IndexOpt.checked 			|| option.renderPointIndex;
-		let isRenderStress 			= stressOpt.checked 		|| option.renderStress;
-		
-		if(opt.forms) {
-			(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
-		}
+		let isRenderDots 				= dotOpt.checked;
+		let isRenderLines 			= LineOpt.checked;
+		let isRenderHiddenLines = hiddenLineOpt.checked;
+		let isRenderIndex 			= IndexOpt.checked;
+		let isRenderStress 			= stressOpt.checked;
+		let preset 							= vlsPreset.value;
 
-		let renderOptions = {			
-			renderDots 				: isRenderDots,
-			renderLines 			: isRenderLines,
-			renderStress 			: isRenderStress,
-			renderPointIndex 	: option.renderPointIndex || isRenderIndex,
-			renderHiddenLines : isRenderHiddenLines,
-			pointRadius 			: dotsRadius,
-			pointColor				: dotsColor,
-			lineWidth 				: lineWidth,
-			lineColor 				: lineColor,
-			hiddenLineColor 	: hiddenLineColor,
-			hiddenLineWidth 	: hiddenLineWidth,
-			font 							: font,
-			renderDotsAsBox 	: renderBox,
-			preset 						: preset
-		}
 
-		self.superRender(opt.dots,opt.cons,renderOptions);
+		//console handling
+		opt.renderSettings.renderDots 				= isRenderDots;
+		opt.renderSettings.renderLines 				= isRenderLines;
+		opt.renderSettings.renderHiddenLines 	= isRenderHiddenLines;
+		opt.renderSettings.renderPointIndex 	= isRenderIndex;
+		opt.renderSettings.renderStress 			= isRenderStress;
+		opt.renderSettings.preset 						= preset;
+
 		self.superUpdate(	opt.dots,
 											opt.cons,
 											PhysicsAccuracy.value,
-											{ hoverColor : option.hoverColor }
+											{ hoverColor : opt.hoverColor }
 										);
+		self.superRender(opt.dots,opt.cons,opt.renderSettings);
+				
+		if(opt.forms) {
+			(shapeOpt.checked === true) ? self.renderShapes(opt.forms) : false;
+		}								
 	}
 };
 
@@ -1693,10 +1671,13 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	let renderShapes 			= option.renderShapes 			|| false;
 	let renderStress 			= option.renderStress 			|| false;
 	let renderImages 			= option.renderImages 			|| false;
+	let renderCoords 			= option.renderCoords 			|| false;
+	let showFps 					= option.showFps 						|| false;
 
 	if(renderDots === undefined) {renderDots = true};
 	if(renderLines === undefined) {renderLines = true};
-
+	
+	//Setup and load presets
 	function setPreset(pr,pcol,lw,lc,f,fc,hlw,hlc) {
 		dotsRadius = option.pointRadius || pr;
 		dotsColor = option.pointColor || pcol;
@@ -1707,7 +1688,6 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 		hiddenLineWidth = option.hiddenLineWidth || hlw;
 		hiddenLineColor = option.hiddenLineColor || hlc;
 	}
-	//Setup and load presets
 	const load = {
 		default 		:	[5, 'black',		0.5, 'black',				 '10px Arial',					'black',			0.5, 'red'],
 		shadowBlue 	:	[5, 'white',		0.5, 'deepskyblue',	 '10px Century Gothic', 'limegreen',	0.5, 'oragered'],
@@ -1761,6 +1741,17 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 	//renderImages
 	if(option.images) { 
 		if(renderImages) { this.renderImages(option.images); }
+	}
+	
+	//renderCoords
+	if(renderCoords) {
+		let specific = (renderCoords === true) ? undefined : renderCoords;
+		this.renderCoords(dots,specific);
+	}
+
+	//showFps
+	if(showFps) { 
+		this.showFps(showFps); 
 	}	
 };
 
@@ -1782,7 +1773,6 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	let append 	=	 option.append || document.body;
 	let id 			=	 option.id;
 	let studio 	=	 option.initStudio || false;
-	let showFps 	=	 option.showFps || false;
 	
 	if(id === undefined) id = 'quicksetup';
 	if(typeof append === 'string') {append = document.querySelector(append)}
@@ -1804,7 +1794,7 @@ Verlet.prototype.quickSetup = function(callback,option) {
 	callback.call(verlet,dots,cons);
 	
 	//studio
-	if(studio) { verlet.Studio.init('#ui'); };
+	if(studio) { verlet.Studio.init(option.append); };
 	verlet.Interact.move(dots);
 	function animate() {
 		verlet.frame(animate,option.bg || null);
@@ -1820,11 +1810,6 @@ Verlet.prototype.quickSetup = function(callback,option) {
 			verlet.superUpdate(dots,cons,option.physicsAccuracy || 10);
 			verlet.superRender(dots,cons,option.renderSettings || {preset : option.preset} || {});
 		}
-
-		if(showFps) {
-			verlet.showFps(showFps);
-		}
-
 		
 		if(option.animateScope) {
 			option.animateScope.call(verlet,dots,cons);

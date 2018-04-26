@@ -22,20 +22,23 @@ window.onload = function() {
     x : 50,
     gapX : 15,
     gapY : 15,
-    segs : 40
+    segs : 30,
+    pinRatio : 2
   },dots, cons);
+  
 
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
     
-    // debugger;
     verlet.superUpdate(dots,cons,10);
-    // verlet.renderLines(cons,0.1,'black');
-    // verlet.renderDotsAsBox(dots,1,'black');
-    verlet.superRender(dots,cons,{  });
-    
-    verlet.showFps();
+
+    verlet.superRender(dots,cons,{
+      showFps : true,
+      renderCoords : [verlet.handleIndex],
+      renderDotsAsBox : true
+    });
+
 
     verlet.ctx.fillText('Dots : ' + dots.length + ', Cons : ' + cons.length, 110,20)
   }
