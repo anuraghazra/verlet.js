@@ -4,15 +4,32 @@
   <title>Main Verlet.js API</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="../../src/verlet.js"></script>
+  <style>
+    .canvasContainer {
+      position: relative;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    #c {
+      z-index: 1;
+    }
+  </style>
 </head>
 <body>
 
-  <canvas id="c"></canvas>
+  <div class="canvasContainer">
+    <canvas id="c"></canvas>
+  </div>
 
 <script>
 window.onload = function() {
   const verlet = new Verlet();
   verlet.init(700,800,'#c',1,1,1);
+
+  // document.querySelector('.canvasContainer').appendChild(verlet.osCanvas)
 
   let dots = [];
   let cons = [];
@@ -22,7 +39,7 @@ window.onload = function() {
     x : 50,
     gapX : 15,
     gapY : 15,
-    segs : 30,
+    segs : 40,
     pinRatio : 2
   },dots, cons);
   
@@ -31,12 +48,13 @@ window.onload = function() {
   function animate() {
     verlet.frame(animate);
     
-    verlet.superUpdate(dots,cons,10);
+    verlet.superUpdate(dots,cons,5);
 
     verlet.superRender(dots,cons,{
       showFps : true,
-      renderCoords : [verlet.handleIndex],
-      renderDotsAsBox : true
+      renderDotsAsBox : true,
+      // renderPointIndex : true,
+      // renderStress : true,
     });
 
 

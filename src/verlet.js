@@ -172,9 +172,9 @@ this.Poly = {
 					[1+pls,2+pls],
 					[2+pls,3+pls],
 					[3+pls,0+pls],
-					[0+pls,2+pls,true],
-					[1+pls,3+pls,true],
-				],cons,dots);
+					[0+pls,2+pls,{hidden : true}],
+					[1+pls,3+pls,{hidden : true}],
+				],dots,cons);
 			}
 		}
 	},
@@ -212,7 +212,7 @@ this.Poly = {
 					[0+pls,1+pls],
 					[1+pls,2+pls],
 					[0+pls,2+pls]
-				],cons,dots)
+				],dots,cons)
 			}
 		}
 	},
@@ -279,7 +279,7 @@ this.Poly = {
 					}
 				}
 				self.create(tmpDots,dots);
-				self.clamp(tmpCons,cons,dots);
+				self.clamp(tmpCons,dots,cons);
 				tmpDots = [];
 				tmpCons = [];
 			}
@@ -369,7 +369,7 @@ this.Poly = {
 				}
 		
 				self.create(beamDots,dots);
-				self.clamp(beamCons,cons,dots);
+				self.clamp(beamCons,dots,cons);
 			}
 		}
 	},
@@ -420,7 +420,7 @@ this.Poly = {
 				}
 				ropeClamp.pop();
 				self.create(rope,dots);
-				self.clamp(ropeClamp,cons,dots);
+				self.clamp(ropeClamp,dots,cons);
 				rope = [];
 				ropeClamp = [];
 			}
@@ -543,7 +543,7 @@ this.Poly = {
 				
 				
 				self.create(tmpDots,dots);
-				self.clamp(tmpCons,cons,dots);
+				self.clamp(tmpCons,dots,cons);
 
 				let tearIndex = [
 					(dots.length-tmpDots.length)+2,
@@ -621,7 +621,7 @@ this.Poly = {
 			]);
 		}
 		
-    self.clamp(joinArr,cons,dots);
+    self.clamp(joinArr,dots,cons);
     joinArr = null;
     i = null;
   }
@@ -1276,8 +1276,8 @@ this.Engine = {
 						dist = Math.sqrt(dx*dx + dy*dy);
 						
 			const diffrence = (dist - p.len) / dist;
-			const adjustX =  (dx * 0.5 * diffrence) * self.stiffness;
-			const adjustY =  (dy * 0.5 * diffrence) * self.stiffness;
+			const adjustX =  (dx * 0.5 * diffrence) * (p.stiffness || self.stiffness);
+			const adjustY =  (dy * 0.5 * diffrence) * (p.stiffness || self.stiffness);
 
 			if(!p.p0.pinned) {
 				p.p0.x += adjustX;
@@ -1342,14 +1342,22 @@ Verlet.prototype.create = function (newD,dots) {
  *	@param {array} joints
  *	@param {array} dots
  */
-Verlet.prototype.clamp = function(newJ,joints,dots) {
+Verlet.prototype.clamp = function(newJ,dots,cons) {
 	for(let j = 0; j < newJ.length; j++) {
-		joints.push({
+		let stfns = undefined;
+		let hidden = false;
+		if (newJ[j].length > 2) {
+			stfns = newJ[j][2].stiffness;
+			hidden = newJ[j][2].hidden;
+			// console.log('changing')
+		}
+		cons.push({
 			p0 : dots[newJ[j][0]],
 			p1 : dots[newJ[j][1]],
 			len : this._distance(dots[newJ[j][0]],dots[newJ[j][1]]),
-			hidden : newJ[j][2] || false,
-			id : [newJ[j][0],newJ[j][1]]
+			hidden : hidden,
+			stiffness : stfns,
+			id : [newJ[j][0],newJ[j][1]],
 		});
 	}
 };
@@ -1388,7 +1396,7 @@ Verlet.prototype.shape = function(arr,forms,dots) {
  */
 Verlet.prototype.bake = function(newd,newc,dots,cons) {
 	this.create(newd,dots);
-	this.clamp(newc,cons,dots);
+	this.clamp(newc,dots,cons);
 }
 
 
@@ -1475,7 +1483,7 @@ Verlet.prototype.renderPointIndex = function(dots,font,color) {
 	osctx.fillStyle = color || 'black';
 	for (let i = 0; i < dots.length; i++) {
 		let p = dots[i];
-		osctx.fillText(i,(p.x-10).toFixed(1),(p.y-10).toFixed(1));
+		osctx.fillText(i,(p.x-10),(p.y-10));
 	}
 	osctx.fill();
 	this.ctx.drawImage(this.osCanvas,0,0);
@@ -1532,26 +1540,28 @@ Verlet.prototype.renderLines = function(cons,linewidth,color,showHidden) {
 *	@param {array} cons
 */
 Verlet.prototype.renderStress = function(cons) {
+	let osctx = this.osCanvas.getContext('2d');
+	osctx.clearRect(0,0,this.osCanvas.width,this.osCanvas.height)
 	for(let i = 0; i < cons.length; i++) {
 		let p = cons[i];
 		let diff = p.len - this._distance(p.p1,p.p0);
 		let color_diff = Math.round( diff*diff*384 );
 		let color = 'rgba(' + (128+color_diff) + ', ' + (128-color_diff) + ', ' + (128-color_diff) + ', 1)';
 		
-		this.ctx.beginPath();
-		this.ctx.lineWidth = 1;
+		osctx.lineWidth = 1;
 
 		if(color_diff <= 1) {
-			this.ctx.strokeStyle = 'limegreen';
+			osctx.strokeStyle = 'limegreen';
 		} else {
-			this.ctx.strokeStyle = color;
+			osctx.strokeStyle = color;
 		}
-
-		this.ctx.moveTo((cons[i].p0.x).toFixed(1),(cons[i].p0.y).toFixed(1));
-		this.ctx.lineTo((cons[i].p1.x).toFixed(1),(cons[i].p1.y).toFixed(1));
-		this.ctx.stroke();
-		this.ctx.closePath();
+		osctx.beginPath();
+		osctx.moveTo((cons[i].p0.x).toFixed(1),(cons[i].p0.y).toFixed(1));
+		osctx.lineTo((cons[i].p1.x).toFixed(1),(cons[i].p1.y).toFixed(1));
+		osctx.stroke();
+		osctx.closePath();
 	}
+	this.ctx.drawImage(this.osCanvas,0,0);	
 }
 
 /** 	
