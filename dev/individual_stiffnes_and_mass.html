@@ -23,17 +23,18 @@ window.onload = function() {
     [200,200],
     [100,200],
   ],dots,cons);
+
+  verlet.Poly.rope({},dots,cons);
  
   verlet.clamp([
     [0,1],
     [1,2],
     [2,3],
-    [3,0, { hidden : true }],
-    [3,1, { stiffness : 0.1 }],
-    [0,2, { stiffness : 0.1 }],
+    [3,0,   { hidden : true }],
+    [3,1,   { stiffness : 0.05 }],
+    [0,2,   { stiffness : 0.05 }],
+    [18,0,  { length : 15 }],
   ],dots,cons);
-
-  
 
   verlet.Interact.move(dots);
   function animate() {

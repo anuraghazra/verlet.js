@@ -1346,15 +1346,16 @@ Verlet.prototype.clamp = function(newJ,dots,cons) {
 	for(let j = 0; j < newJ.length; j++) {
 		let stfns = undefined;
 		let hidden = false;
+		let len = this._distance(dots[newJ[j][0]],dots[newJ[j][1]]);
 		if (newJ[j].length > 2) {
 			stfns = newJ[j][2].stiffness;
 			hidden = newJ[j][2].hidden;
-			// console.log('changing')
+			len = newJ[j][2].length || len;
 		}
 		cons.push({
 			p0 : dots[newJ[j][0]],
 			p1 : dots[newJ[j][1]],
-			len : this._distance(dots[newJ[j][0]],dots[newJ[j][1]]),
+			len : len,
 			hidden : hidden,
 			stiffness : stfns,
 			id : [newJ[j][0],newJ[j][1]],
