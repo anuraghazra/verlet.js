@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../../src/verlet.js"></script>
+  <style>
+    body,html {
+      padding: 0;
+      margin: 0;
+    }
+    * {
+      font-family: 'Century Gothic';
+      box-sizing : border-box;
+      color : white !important;
+    }
+    .items {
+      text-align: center;
+      color : white;
+      padding: 10px;
+      background-color: #181818;
+      border-right: 1px solid white;
+      border-left: 1px solid white;
+    }
+    .items select {
+      width: 100%;
+      padding: 5px;
+    } 
+    .verlet-ui {
+      display: flex;
+    }
+    .verlet-ui > div, canvas {
+      flex : 1
+    }
+    #Verlet-Studio {
+      background-color: #181818
+    }
+    .ui_panel {     
+      box-shadow: none !important;
+      border-radius: none !important;
+    }
+    .ui_panel input,select,option {
+      color : black !important;
+    }
+    .ui_panel .ui_checkboxes {
+      box-shadow : 0 0 1px white !important;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="verlet-ui">
+    <canvas id="c"></canvas>
+    
+  <div class="items">
+      <h3>Select A Demo</h3>
+  
+      <select id="demo-name">
+        <option value="Box">Box</option>
+        <option value="Triangle">Triangle</option>
+        <option value="Rope">Rope</option>
+        <option value="Beam">Beam</option>
+        <option value="Hexagon">Hexagon</option>
+        <option value="Cloth">Cloth</option>
+        <option value="Custom-Shapes" selected>Custom-Objects</option>
+      </select>
+  
+    </div>
+  </div>
+  
+
+
+<script>
+window.onload = function() {
+  let w = window.innerWidth;
+  let h = window.innerHeight;
+
+  const verlet = new Verlet();
+  verlet.init(640,h,'#c',0,1,1);
+
+  let dots = [];
+  let cons = [];
+  let forms = [];
+
+  //loadDemos
+  let demoName = document.getElementById('demo-name');
+  function loadDemo() {
+    dots = [];
+    cons = [];
+    // forms = [];
+    switch(demoName.value) {
+      case 'Box' :
+        verlet.Poly.box({
+          width : 100,
+          height : 100,
+        },dots, cons);
+      break;  
+      case 'Triangle' :
+        verlet.Poly.triangle({
+          width : 100,
+          height : 500,
+          x : 350, y : 350
+        },dots, cons);
+      break;  
+      case 'Rope' :
+        verlet.Poly.rope({
+          segs : 50,
+          x : 50,
+          y : 300,
+          gap : 10
+        },dots, cons);
+        dots[dots.length-2].pinned = true;
+      break;
+      case 'Beam' :
+        verlet.Poly.beam({
+          width : 50,
+          height : 50,
+          segs : 8,
+          x : 150, y : 150
+        },dots, cons);
+        dots[0].pinned = true;
+        dots[8].pinned = true;
+      break;
+      case 'Hexagon' :
+        verlet.Poly.hexagon({
+          sides : 12,
+          radius : 50,
+          slice : 0,
+          slice2 : 8,
+          center : true,
+          x : 150, y : 150
+        },dots, cons);
+      break;  
+      case 'Cloth' :
+        verlet.Poly.cloth({
+          x : 15,
+          y : 50,
+          gapX : 20,
+          gapY : 20,
+          segs : 20,
+          x : 150, y : 150
+        },dots, cons);
+      break;
+      case 'Custom-Shapes' :
+        let dots_c = [
+          [100,100],
+          [200,100],
+          [200,200],
+          [100,200],
+          [150,250],
+          [150,50],
+        ]
+        let cons_c = [
+          [0,1],
+          [1,2],
+          [2,3],
+          [0,3],
+          [0,2, {stiffness : 0.05}],
+          [3,4, {stiffness : 0.5}],
+          [4,2, {stiffness : 0.5}],
+          [5,1, {stiffness : 0.5}],
+          [5,0, {stiffness : 0.5}],
+        ] 
+        verlet.bake(dots_c,cons_c,dots,cons)
+      break;
+    }
+
+    
+    verlet.Interact.move(dots);
+  }
+  // loadDemo();
+  demoName.addEventListener('change', loadDemo);
+
+  console.log(forms)
+
+  verlet.Studio.init('.verlet-ui');
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate, '#181818');
+
+    verlet.Studio.update({
+      dots : dots,
+      cons : cons,
+      forms : forms,
+      hoverColor : 'white',
+      renderSettings : {
+        preset : 'shadowBlue',
+        renderShapes : true
+      }
+    });
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

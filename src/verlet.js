@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.3.0
+ *  @version 1.4.0
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -1178,6 +1178,34 @@ this.Effect = {
 	}
 };
 
+/** 	
+ *	Simple Collision Detection
+	*	@method Verlet.Collision.Collision
+*/
+this.Collision = {
+	/** 	
+	 *	Prevent The Verlet Points From Going Inside A Circle
+		*	@method Verlet.Collision.pointToCircle()
+		*	@param {array} dot
+		*	@param {object} c
+	*/
+	pointToCircle : function(dots,c) {
+		for (let i = 0; i < dots.length; i++) {
+			let p = dots[i];
+			let radius = 20;
+			let cdx = p.x - c.x,
+				cdy = p.y - c.y;
+			let Diff = cdx*cdx + cdy*cdy;
+			if(Diff < radius*radius) {
+				let depth = Math.sqrt(radius*radius / Diff);
+				cdx *= depth;
+				cdy *= depth;
+				p.x = cdx + c.x;
+				p.y = cdy + c.y;
+			}
+		}
+	}
+},
 
 /** 	
  *	Update Simulations

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    .container {
+      width : 500px;
+      height : 350px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <canvas id="c"></canvas>
+  </div>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(630,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.rope({
+    segs : 50,
+    x : 50,
+    y : 300,
+    gap : 10
+  },dots, cons);
+  dots[dots.length-2].pinned = true;
+
+  verlet.create([
+    [150,250],
+    [150,15]
+  ],dots);
+
+
+  function resolve(dot,cir,rad) {
+    let p = dot;
+    let radius = rad;
+    let x = cir.x;
+    let y = cir.y;
+    let cdx = p.x - x,
+        cdy = p.y - y;
+    let Diff = cdx*cdx + cdy*cdy;
+    if(Diff < radius*radius) {
+      let depth = Math.sqrt(radius*radius / Diff);
+      cdx *= depth;
+      cdy *= depth;
+      p.x = cdx + x;
+      p.y = cdy + y;
+    }
+  }
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{  });
+
+    for (let i = 0; i < dots.length-2; i++) {
+      resolve(dots[dots.length-1],dots[i],50);
+      resolve(dots[dots.length-2],dots[i],50);
+    }
+    resolve(dots[dots.length-1],dots[dots.length-2],100);
+    resolve(dots[dots.length-2],dots[dots.length-1],100);
+   
+    
+    verlet.Draw.arc(dots[dots.length-1].x,dots[dots.length-1].y,50)
+    verlet.Draw.arc(dots[dots.length-2].x,dots[dots.length-2].y,50)
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

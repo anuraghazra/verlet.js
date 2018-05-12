@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../../src/verlet.js"></script>
+  <script src="../../src/dev/poly.js"></script>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+
+/**
+ * Poly.js Dev Testing 
+ */
+
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(500,500,'#c',1,1,1);
+  let ctx = verlet.ctx;
+
+  let dots = [];
+  let cons = [];
+  verlet.Poly.box({x : 200, width : 150},dots, cons);
+  verlet.Poly.hexagon({sides : 5, center : true},dots, cons);
+
+  let poly1 = new Poly([dots[0],dots[1],dots[2],dots[3]],ctx);
+  let poly2 = new Poly([dots[4],dots[5],dots[6],dots[7],dots[8]],ctx);
+  console.log(poly2)
+
+  verlet.Interact.move(dots);
+  function animate() {
+    let color = 'black';
+    verlet.frame(animate);
+    
+    if(poly1.isColliding(poly2) === true) {
+      color = 'red';
+      dots[0].oldx = dots[0].x;
+      // dots[5].oldx = dots[5].x+10;
+      dots[9].oldy = dots[9].y+25;
+      // dots[1].oldy = dots[2].y
+      // console.log(dots[0])
+
+    }
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{debug : true, renderDots : false, lineColor : color});
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>
