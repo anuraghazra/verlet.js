@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+  <style>
+    canvas {
+      border: 1px solid black;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(630,570,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.box({width : 150}, dots, cons)
+  verlet.Poly.triangle({width : 150}, dots, cons)
+  verlet.Poly.hexagon({radius : 80}, dots, cons)
+
+  
+  let sets = [
+    [0,1,2,3],
+    [4,5,6],
+    [7,8,9,10,11,12,13,14]
+  ]
+  verlet.Interact.move(dots);
+  verlet.Interact.drag(dots, sets);
+  function animate() {
+    
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{debug : true});
+  
+  }
+  animate();
+}
+</script>
+</body>
+</html>

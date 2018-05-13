@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.4.0
+ *  @version 1.5.0
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -629,11 +629,8 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.7.3
+ *  @version v1.8.0
  *	@method Interact
- *	@param {array} dots
- *	@param {array} cons
- *	@param {number} detect
  */
 this.Interact = {
 	hoverPoint : undefined,
@@ -647,6 +644,12 @@ this.Interact = {
 			self.ctx.closePath();
 		}
 	},
+	/**
+	 * Move dots individualy by dragging them
+	 * @method Verlet.Interact.move()
+	 * @param {array} dots
+	 * @param {string} color
+	 */
 	move : function(dots,color) {
 		let isDown = false;
 		let parent = this;
@@ -755,6 +758,95 @@ this.Interact = {
 			const dy = y - circle.y;
 			return Math.sqrt(dx*dx + dy*dy);
 		}
+	},
+
+	/**
+	 * Move objects by dragging them
+	 * @method Verlet.Interact.drag()
+	 * @version 1.0.1
+	 * @param {array} dots
+	 * @param {array} sets
+	 */
+	drag : function(dots, sets) {
+		// variables
+		let isDown = false;
+		let track = {
+			obj : [] //{inside}, dot
+		};
+		let mouse = [0,0,0,0]; //x,y,oldx,oldy
+
+		// event handlers
+		window.onmousemove = function(e) {
+			mouse[0] = e.offsetX;
+			mouse[1] = e.offsetY;
+			for (let n = 0; n < track.obj.length; n++) {
+				if(track.obj[n][0].inside === true) {
+					movePoly(track.obj[n][1], mouse)
+				}
+			}
+		}
+
+		window.onmousedown = function(e) {
+			isDown = true;
+			for (let i = 0; i < sets.length; i++) {
+				if(self.handleIndex == null) {
+					if(dragPoly(sets[i], mouse, dots)[0].inside) {
+						track.obj.push(dragPoly(sets[i], mouse, dots))
+					}
+				}
+				if(track.obj.length > sets.length-1) {
+					track.obj.shift()
+				}
+			}
+			mouse[2] = e.offsetX;
+			mouse[3] = e.offsetY;
+		}
+
+		window.onmouseup = function () {
+			isDown = false;
+
+			// TODO :
+			// Change pinning with color 'crimson' condition
+			for (let n = 0; n < track.obj.length; n++) {
+				track.obj[n][0].inside = false
+				for (let i = 0; i < track.obj[n][1].length; i++) {
+					if (dots[track.obj[n][1][i]].color != 'crimson') {
+						dots[track.obj[n][1][i]].pinned = false
+					}
+				}
+			}
+		}
+
+		//test if mouse is inside the polygon
+		function dragPoly(points, coords, dots) {
+			let arr = []
+			for (let i = 0; i < points.length; i++) {
+				arr.push(
+					[Math.floor(dots[points[i]].x), Math.floor(dots[points[i]].y)]
+				)
+			}
+			arr.length = points.length
+			let isInside = self.Collision.pointInPoly(coords, arr)
+
+			arr = [];
+			return [{ inside: isInside }, points]
+		}
+
+		//move points relative to mouse position
+		function movePoly(points, coords) {
+			let diffX = (coords[0] - coords[2])
+			let diffY = (coords[1] - coords[3])
+			for (let i = 0; i < points.length; i++) {
+				dots[points[i]].pinned = true
+				dots[points[i]].x = dots[points[i]].x + diffX
+				dots[points[i]].y = dots[points[i]].y + diffY
+				dots[points[i]].oldx = dots[points[i]].x
+				dots[points[i]].oldy = dots[points[i]].y
+			}
+			coords[2] = coords[0]
+			coords[3] = coords[1]
+		}
+
 	}
 } 
 
@@ -1204,6 +1296,26 @@ this.Collision = {
 				p.y = cdy + c.y;
 			}
 		}
+	},
+	/** 	
+		*	Prevent The Verlet Points From Going Inside A Circle
+		* @source http://www.ecse.rpi.edu/Homepages/wrf/Research/Short_Notes/pnpoly.html
+	  *	@method Verlet.Collision.pointInPoly()
+	  *	@param {array} point
+		*	@param {array} vs
+	  */
+	pointInPoly : function(point, vs) {
+		var x = point[0], y = point[1];
+		var inside = false;
+		for (var i = 0, j = vs.length - 1; i < vs.length; j = i++) {
+			var xi = vs[i][0], yi = vs[i][1];
+			var xj = vs[j][0], yj = vs[j][1];
+
+			var intersect = ((yi > y) != (yj > y))
+				&& (x < (xj - xi) * (y - yi) / (yj - yi) + xi);
+			if (intersect) inside = !inside;
+		}
+		return inside;
 	}
 },
 
