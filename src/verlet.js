@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.5.0
+ *  @version 1.6.0
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -45,6 +45,14 @@ this.throttle = function throttle(func,time) {
 			},time);
 		}
 	}
+}
+/**
+ * @method private:Verlet.addToGroup()
+ * adds point's ids to PolyGroups variable for tracking
+ * groups of polygon
+ */
+this.addToGroup = function(name, data) {
+	this.PolyGroups[name] = data
 }
 
 /* Variables */
@@ -101,6 +109,7 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 	this.ctx.imageSmoothingQuality = imageSmoothingQuality;
 	this.osCanvas.getContext('2d').imageSmoothingEnabled = false;
 	this.osCanvas.getContext('2d').imageSmoothingQuality = imageSmoothingQuality;
+	this.PolyGroups = {} /*{ box : [0,1,2,3], triangle : [4,5,6] }*/
 
 	const dataToReturn = {
 		canvas : this.canvas,
@@ -175,6 +184,7 @@ this.Poly = {
 					[0+pls,2+pls,{hidden : true}],
 					[1+pls,3+pls,{hidden : true}],
 				],dots,cons);
+				self.addToGroup('box_'+pls, [0+pls,1+pls,2+pls,3+pls])
 			}
 		}
 	},
@@ -213,6 +223,7 @@ this.Poly = {
 					[1+pls,2+pls],
 					[0+pls,2+pls]
 				],dots,cons)
+				self.addToGroup('triangle_'+pls, [0+pls,1+pls,2+pls])
 			}
 		}
 	},
@@ -280,6 +291,13 @@ this.Poly = {
 				}
 				self.create(tmpDots,dots);
 				self.clamp(tmpCons,dots,cons);
+
+				let ids = []
+				for (let id = 0; id < tmpCons.length; id+=2) {
+					ids.push(tmpCons[id][0])
+				}
+				self.addToGroup('hexa_'+pls, ids)
+				ids = [];
 				tmpDots = [];
 				tmpCons = [];
 			}
@@ -359,17 +377,35 @@ this.Poly = {
 						])
 					}
 				}
+
+				//for grouping
+				let idsR = [];
+				let idsC = [];
 				for (let j = 0; j < rows; j++) {
+					idsR.push((j)+pls)
+					idsC.push((rows+j)+pls)
+
 					beamCons.push([
 						(j)+pls,(j+rows)+pls
-					]);
+					]);						
 				}
 				for (let k = 0; k < rows-1; k++) {
 					beamCons.push([(rows+k)+pls,(rows+k+1)+pls]);
 				}
-		
+
+				
 				self.create(beamDots,dots);
 				self.clamp(beamCons,dots,cons);
+
+				idsC.reverse();
+				let ids = idsR.concat(idsC);
+				self.addToGroup('beam_'+pls, ids)
+
+				ids = [];
+				idsC = [];
+				idsR = [];
+				beamDots = [];
+				beamCons = [];
 			}
 		}
 	},
@@ -400,6 +436,7 @@ this.Poly = {
 				let ropeClamp = [];
 				let cIndex = 0;
 				let attr;
+				let pls = dots.length
 				let y = opt.y,
 					x = opt.x,
 					vy = opt.vy || opt.y,
@@ -413,11 +450,16 @@ this.Poly = {
 					]);
 					cIndex = (cIndex + 1) % opt.segs;
 					ropeClamp.push([
-						(i + dots.length), (cIndex + dots.length),
-						false,
-						[(i + dots.length),(cIndex + dots.length)]
+						(i + pls), (cIndex + pls)
 					]);
 				}
+
+				let ids = []
+				for (let i = 0; i < ropeClamp.length; i++) {
+					ids.push(ropeClamp[i][0]);
+				}
+				self.addToGroup('rope_'+pls, ids)
+
 				ropeClamp.pop();
 				self.create(rope,dots);
 				self.clamp(ropeClamp,dots,cons);
@@ -590,13 +632,11 @@ this.Poly = {
 		let dots = dot || this.dots;
 		let cons = con || this.cons;
 
-		console.log(opt.constructor)
 		if (opt.constructor.toString().match('Array')) {
 			opt = {
 				data : opt
 			};
 		}
-		console.log(opt)
 
     if(!opt.data) {
       opt.data = [
@@ -629,7 +669,7 @@ this.Poly = {
 
 /** 	
  *	Interact With Points In Real-Time
- *  @version v1.8.0
+ *  @version v1.8.1
  *	@method Interact
  */
 this.Interact = {
@@ -767,7 +807,13 @@ this.Interact = {
 	 * @param {array} dots
 	 * @param {array} sets
 	 */
-	drag : function(dots, sets) {
+	drag : function(dots) {
+		let sets = []
+		for(let groups in self.PolyGroups) {
+			if(!groups.match('rope')) {
+				sets.push(self.PolyGroups[groups])
+			}
+		}
 		// variables
 		let isDown = false;
 		let track = {
@@ -794,7 +840,7 @@ this.Interact = {
 						track.obj.push(dragPoly(sets[i], mouse, dots))
 					}
 				}
-				if(track.obj.length > sets.length-1) {
+				if(track.obj.length > sets.length) {
 					track.obj.shift()
 				}
 			}
@@ -846,7 +892,6 @@ this.Interact = {
 			coords[2] = coords[0]
 			coords[3] = coords[1]
 		}
-
 	}
 } 
 

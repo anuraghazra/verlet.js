@@ -21,18 +21,24 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
+  verlet.Poly.line({
+    data : [
+      [100,100],
+      [100,200],
+      [200,200],
+    ],
+    joinEnd : true
+  }, dots, cons)
+  verlet.Poly.hexagon({}, dots, cons)
+  verlet.Poly.beam({width : 50}, dots, cons)
   verlet.Poly.box({width : 150}, dots, cons)
-  verlet.Poly.triangle({width : 150}, dots, cons)
-  verlet.Poly.hexagon({radius : 80}, dots, cons)
 
+  verlet.PolyGroups['cst'] = [0,1,2]
+
+  console.log(verlet.PolyGroups)
   
-  let sets = [
-    [0,1,2,3],
-    [4,5,6],
-    [7,8,9,10,11,12,13,14]
-  ]
-  verlet.Interact.move(dots);
-  verlet.Interact.drag(dots, sets);
+  // verlet.Interact.move(dots);
+  verlet.Interact.drag(dots);
   function animate() {
     
     verlet.frame(animate);
