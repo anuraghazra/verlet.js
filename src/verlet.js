@@ -1325,22 +1325,23 @@ this.Collision = {
 		*	@method Verlet.Collision.pointToCircle()
 		*	@param {array} dot
 		*	@param {object} c
+		*	@param {number} rad
 	*/
-	pointToCircle : function(dots,c) {
-		for (let i = 0; i < dots.length; i++) {
-			let p = dots[i];
-			let radius = 20;
-			let cdx = p.x - c.x,
-				cdy = p.y - c.y;
-			let Diff = cdx*cdx + cdy*cdy;
-			if(Diff < radius*radius) {
-				let depth = Math.sqrt(radius*radius / Diff);
-				cdx *= depth;
-				cdy *= depth;
-				p.x = cdx + c.x;
-				p.y = cdy + c.y;
-			}
-		}
+	pointToCircle : function(dot,c, rad) {
+    let p = dot;
+    let radius = rad;
+    let x = c.x;
+    let y = c.y;
+    let cdx = p.x - x,
+        cdy = p.y - y;
+    let Diff = cdx*cdx + cdy*cdy;
+    if(Diff < radius*radius) {
+      let depth = Math.sqrt(radius*radius / Diff);
+      cdx *= depth;
+      cdy *= depth;
+      p.x = cdx + x;
+      p.y = cdy + y;
+    }
 	},
 	/** 	
 		*	Prevent The Verlet Points From Going Inside A Circle

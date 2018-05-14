@@ -28,6 +28,10 @@
 - v1.2.3 Update
   - Effect
   - Verlet.renderCoords()
+- v1.6.0 Update
+  - Seperate stiffness and hidden Options
+  - New Poly Dragging Interactions
+  - Very Basic Collisions
 - Browser Support
 
 ---------------------------------------
@@ -762,6 +766,124 @@ window.onload = function() {
   animate();
 }
 ```
+
+--------------------------------------------------------
+
+# v1.6.0 Update
+
+## Seperate Stiffness And Hidden Properties
+
+Now You Can Seperatly Specify Constrains (cons/lines) Stiffness And It Also Takes The Hidden Attribute With It.
+This Feature Adds More Control Over Constrains And You can Make More Complex Models
+
+
+check out the demo [here](./demos/blob_box.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(500,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  //Create A Custom Box
+  verlet.create([
+    [100,100],
+    [200,100],
+    [200,200],
+    [100,200],
+  ],dots,cons);
+ 
+  verlet.clamp([
+    [0,1],
+    [1,2],
+    [2,3],
+    [3,0,   { hidden    : true }], //hidden flag
+    [3,1,   { stiffness : 0.05 }], //stiffness 0-1
+    [0,2,   { stiffness : 0.05 }],
+  ],dots,cons);
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,5);
+    verlet.superRender(dots,cons,{ debug : true });
+
+  }
+  animate();
+}
+```
+
+------------------------
+
+## Verlet.Interact.drag()
+
+`Verlet.Interact.drag()` allow you to drag Poly Objects from middle of the poly so you dont have to drag it with the dots, Its makes dragging easy. its hard to explain so jump over to the demo
+
+check out the demo [here](./demos/verlet_interact_drag.html)
+
+```javascript
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(630,570,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  // Custom Object dragging
+  verlet.create([
+    [100,100],
+    [100,200],
+    [200,100]
+  ], dots, cons)
+  verlet.clamp([
+    [0,1],
+    [1,2],
+    [0,2]
+  ], dots, cons)
+
+  // Register Custom Poly IDs for dragging
+  verlet.PolyGroups['custom'] = [0,1,2]
+  
+  //Poly Objects Will Automatically Register
+  verlet.Poly.box({width : 150}, dots, cons)
+
+
+  verlet.Interact.move(dots);
+  // Verlet.Interact.drag(array[])
+  verlet.Interact.drag(dots);
+  function animate() {
+    
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons);
+  
+  }
+  animate();
+}
+```
+
+
+------------------------
+
+## Verlet.Collision
+
+`Verlet.Collision` Adds Some Very Basic Collision Detection And Hit Region Detection System
+
+### Collision.pointToCircle()
+Checks Collision Between Two Circle Or Point And Circle
+
+check out the demo [here](./demos/verlet_collision_pointtocircle.html)
+
+
+### Collision.pointInPoly()
+Checks Collision Between Point And Polygon
+
+check out the demo [here](./demos/verlet_collision_pointinpoly.html)
+
 
 ## Browser Support
 
