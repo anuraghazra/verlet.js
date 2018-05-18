@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.6.0
+ *  @version 1.6.2
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -9,9 +9,15 @@
  */
 function Verlet() {
 
+// Ref To arguments for constructor init
+const params = arguments;
+
+// new Keyword can be omited
 if(!(this instanceof Verlet)) {
 	return new Verlet();
 };
+
+
 
 /* _PRIVATE_FUNCTIONS */
 /** 	
@@ -122,7 +128,10 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 
 	return dataToReturn;
 };
-
+// constructor init
+if(params.length > 0) {
+	this.init.apply(this, params)
+}
 
 /**
  *  predifined methods for creating models 
