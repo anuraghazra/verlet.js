@@ -83,6 +83,7 @@ Poly.prototype.isColliding = function (poly2) {
 
   let normals = p2normals.concat(p1normals);
 
+  let mtv = {x : 0, y : 0}
   //if every element is staisfy the condition the return true
   let detected = true;
   for (let i = 0; i < normals.length; i++) {
@@ -94,7 +95,14 @@ Poly.prototype.isColliding = function (poly2) {
     if(p2.min > p1.max || p2.max < p1.min) {
       detected = false
     }
+
+    let overlap = p1.max > p2.max && -(p2.max - p1.min) || (p1.max - p2.min)
+    // console.log(overlap)
+    if(Math.abs(overlap) < 100) {
+      mtv.x = n.x * overlap
+      mtv.y = n.y * overlap
+    }
   }
-  return detected
+  return {detected, mtv}
 }
 

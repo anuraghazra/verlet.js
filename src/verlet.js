@@ -160,6 +160,9 @@ this.Poly = {
 		if ( opt.y 			=== undefined ) { opt.y 			= 100 };
 		if ( opt.width 	=== undefined ) { opt.width 	= 100 };
 		if ( opt.height === undefined ) { opt.height 	= 100 };
+		if ( opt.supportingStiffness === undefined ) { 
+			opt.supportingStiffness = 1;
+		};
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -181,8 +184,8 @@ this.Poly = {
 					[1+pls,2+pls],
 					[2+pls,3+pls],
 					[3+pls,0+pls],
-					[0+pls,2+pls,{hidden : true}],
-					[1+pls,3+pls,{hidden : true}],
+					[0+pls,2+pls,{hidden : true, stiffness : opt.supportingStiffness}],
+					[1+pls,3+pls,{hidden : true, stiffness : opt.supportingStiffness}],
 				],dots,cons);
 				self.addToGroup('box_'+pls, [0+pls,1+pls,2+pls,3+pls])
 			}
@@ -246,6 +249,9 @@ this.Poly = {
 		if ( opt.slice1 === undefined ) { opt.slice1 	= 1 	};
 		if ( opt.slice2 === undefined ) { opt.slice2 	= 6 	};
 		if ( opt.sides 	=== undefined ) { opt.sides 	= 8 	};
+		if ( opt.supportingStiffness 	=== undefined ) {
+			opt.supportingStiffness = 1
+		};
 
 		if(clone !== undefined) {
 			for(let i = 0; i < clone; i++) {
@@ -273,9 +279,11 @@ this.Poly = {
 					])
 					tmpCons.push([
 						(i + dots.length),((i + slice1) % n) + dots.length,
+						{stiffness : opt.supportingStiffness}
 					]);
 					tmpCons.push([
-						(i + dots.length),((i + slice2) % n) + dots.length
+						(i + dots.length),((i + slice2) % n) + dots.length,
+						{stiffness : opt.supportingStiffness}
 					]);
 				}
 				if(opt.center) {
@@ -285,7 +293,8 @@ this.Poly = {
 					for(let j = 0; j < tmpDots.length-1; j++) {
 						tmpCons.push([
 							(tmpDots.length-1)+dots.length,
-							((j+1)%tmpDots.length-1) + dots.length
+							((j+1)%tmpDots.length-1) + dots.length,
+							{stiffness : opt.supportingStiffness}							
 						])
 					}
 				}

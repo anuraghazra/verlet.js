@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="../src/verlet.js"></script>
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(window.innerWidth,500,'#c',-1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  
+  let x = 100;
+  let gap = 5;
+  let vx = 100;
+  for (let i = 0; i < 100; i++) {
+    x+=2;
+    gap = Math.floor(10+Math.random()*10)
+    if (Math.random() > 0.2) {
+      gap = Math.floor(10+Math.random()*10)
+    }
+    vx = Math.floor(100+Math.random()*20)
+    verlet.Poly.rope({
+      x : x,
+      vx : vx,
+      y : 300,
+      segs : 3,
+      gap : gap
+    }, dots, cons);
+  }
+
+  function grass(dots, cons, opt) {
+    let len = opt.len;
+    let tmpDots = [];
+    let tmpCons = [];
+
+    let x = 100;
+    let y = 200;
+    for (let i = 0; i < dots.length; i++) {
+      
+    }
+  }
+
+  verlet.Interact.move(dots);
+  let dd = [];
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots, cons, { renderDots : false, lineWidth : 2 });
+
+    for (let i = 0; i < dots.length; i++) {
+      if(dots[i].pinned === false) {
+        dd.push(i)
+      }
+    }
+    // verlet.Motion.occilate(dd,dots, {
+    //   axis : 'x',
+    //   speed : 500,
+    //   size : 1500
+    // })
+  }
+  animate();
+}
+</script>
+</body>
+</html>
