@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Boilerplate</title>
+  <script src="/src/verlet.js"></script>
+</head>
+<body>
+  <div id="container">
+    <canvas id="c" style="border: 1px solid black"></canvas>
+    
+    <input type="text" id="mo_index">
+    <input type="text" id="motion_name" value="occilate">
+  </div>
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,1,1);
+  
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.cloth({ x : 150 }, dots, cons);
+
+  let motion_index = [0,7,14,19];
+  let index_input = document.getElementById('mo_index');
+  let motion_name = document.getElementById('motion_name');
+
+  index_input.onkeyup = function() {
+    motion_index = JSON.parse('['+this.value+']')
+  }
+
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots, cons, 10)
+    verlet.superRender(dots, cons, {})
+
+    try {
+      verlet.Motion[motion_name.value](motion_index, dots, {
+        speed : 100,
+        size : 10,
+        axis : 'x'
+      });
+    } catch (err) {
+      console.log(err)
+    }
+  }
+  animate();
+}
+</script>
+</body>
+</html>

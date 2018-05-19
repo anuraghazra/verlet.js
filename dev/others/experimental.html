@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Canvas Boilerplate</title>
+  <script src="/src/verlet.js"></script>
+</head>
+<body>
+  <div id="container">
+    <canvas id="c" style="border: 1px solid black"></canvas>
+  </div>
+<script>
+window.onload = function() {
+  const verlet = new Verlet();
+  verlet.init(600,500,'#c',1,0.99,1);
+  
+  let dots = [];
+  let cons = [];
+
+  verlet.Poly.hexagon({ x : 150 }, dots, cons);
+  dots[0].pinned = true
+
+
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.superUpdate(dots, cons, 10)
+    verlet.superRender(dots, cons, {})
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

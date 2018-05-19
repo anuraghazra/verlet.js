@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.6.2
+ *  @version 1.6.5
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -90,9 +90,9 @@ this.osCanvas.id = "osCanvas";
 */ 
 this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 	let appendStr = canvas;
-	let grvty = this.gravity;
-	let frctn = this.friction;
-	let stnfs = this.stiffness;
+	let grvty = gravity;
+	let frctn = friction;
+	let stnfs = stiffness;
 	if(typeof cw === 'string') { 
 		appendStr = cw;
 	};
@@ -107,21 +107,27 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 		stnfs = arguments[3];
 	}
 
+	// Init Rendering Canvas
 	this.canvas.width = width || cw;
 	this.canvas.height = height || ch;
 	this.ctx = this.canvas.getContext('2d');
-	this.gravity = grvty;
-	this.friction = frctn;
-	this.stiffness = stnfs || 1;
-	//obj.canvas.style.border = '1px solid gray';
-	this.osCanvas.width = this.canvas.width;
-	this.osCanvas.height = this.canvas.height;
-
 	this.ctx.imageSmoothingEnabled = imageSmoothing;
 	this.ctx.imageSmoothingQuality = imageSmoothingQuality;
-	this.osCanvas.getContext('2d').imageSmoothingEnabled = false;
-	this.osCanvas.getContext('2d').imageSmoothingQuality = imageSmoothingQuality;
-	this.PolyGroups = {} /*{ box : [0,1,2,3], triangle : [4,5,6] }*/
+	
+	// Init OS Canvas
+	this.osCanvas.width = this.canvas.width;
+	this.osCanvas.height = this.canvas.height;
+	this.osCtx = this.osCanvas.getContext('2d')
+	this.osCtx.imageSmoothingEnabled = false;
+	this.osCtx.imageSmoothingQuality = imageSmoothingQuality;
+	
+	// PhysicsEngine Variables
+	this.gravity = grvty;
+	this.friction = frctn;
+	this.stiffness = stnfs;
+
+	/*{ box : [0,1,2,3], triangle : [4,5,6] }*/
+	this.PolyGroups = {} 
 
 	const dataToReturn = {
 		canvas : this.canvas,
@@ -176,7 +182,7 @@ this.Poly = {
 		if ( opt.width 	=== undefined ) { opt.width 	= 100 };
 		if ( opt.height === undefined ) { opt.height 	= 100 };
 		if ( opt.supportingStiffness === undefined ) { 
-			opt.supportingStiffness = 1;
+			opt.supportingStiffness = self.stiffness;
 		};
 
 		if(clone !== undefined) {
@@ -265,7 +271,7 @@ this.Poly = {
 		if ( opt.slice2 === undefined ) { opt.slice2 	= 6 	};
 		if ( opt.sides 	=== undefined ) { opt.sides 	= 8 	};
 		if ( opt.supportingStiffness 	=== undefined ) {
-			opt.supportingStiffness = 1
+			opt.supportingStiffness = self.stiffness
 		};
 
 		if(clone !== undefined) {
@@ -1426,8 +1432,8 @@ this.Engine = {
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
 			if(!p.pinned) {
-				let vx = (p.x - p.oldx) * 0.99,
-						vy = (p.y - p.oldy) * 0.99;
+				let vx = (p.x - p.oldx) * self.friction,
+						vy = (p.y - p.oldy) * self.friction;
 
 				//Boundry
 				if(p.x > width) {
