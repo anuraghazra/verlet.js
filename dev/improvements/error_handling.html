@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="/src/verlet.js"></script>
+
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet(window.innerWidth,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+  // verlet.Poly.cloth({segs : 50},dots,cons)
+  verlet.create([
+    [100,150],
+    [100,200],
+    [200,150],
+    [200,200],
+  ],dots)
+  verlet.clamp([
+    [0,1],
+    [1,2],
+    [1,635],
+    [2,3],
+    [1,152],
+  ],dots,cons)
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+    
+    verlet.Engine.correctPositionErrors(dots)
+    verlet.superUpdate(dots,cons,100);
+    verlet.superRender(dots,cons, {debug : false});
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

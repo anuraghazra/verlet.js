@@ -1,7 +1,7 @@
 "use strict";
 /**
  *  @name Verlet.js
- *  @version 1.6.5
+ *  @version 1.6.6
  *  @author Anurag Hazra (hazru.anurag&commat;gmail.com)
  *  @copyright BasicHTMLPro © 2018
  *  @constructor Verlet()
@@ -833,7 +833,7 @@ this.Interact = {
 	/**
 	 * Move objects by dragging them
 	 * @method Verlet.Interact.drag()
-	 * @version 1.0.1
+	 * @version 1.0.2
 	 * @param {array} dots
 	 * @param {array} sets
 	 */
@@ -851,18 +851,25 @@ this.Interact = {
 		};
 		let mouse = [0,0,0,0]; //x,y,oldx,oldy
 
+		let canvasDim = [self.canvas.width,self.canvas.height]
 		// event handlers
-		window.onmousemove = function(e) {
-			mouse[0] = e.offsetX;
-			mouse[1] = e.offsetY;
+		function getCoordsAndMovePoly(e) {
+			if(e.touches === undefined) {
+				// return;
+			}
+			mouse[0] = e.offsetX || (e.touches[0].clientX);
+			mouse[1] = e.offsetY || (e.touches[0].clientY);
+			console.log(mouse)
 			for (let n = 0; n < track.obj.length; n++) {
 				if(track.obj[n][0].inside === true) {
 					movePoly(track.obj[n][1], mouse)
 				}
 			}
 		}
+		window.onmousemove = getCoordsAndMovePoly;
+		window.ontouchmove = getCoordsAndMovePoly;
 
-		window.onmousedown = function(e) {
+		function getDownCoords(e) {
 			isDown = true;
 			for (let i = 0; i < sets.length; i++) {
 				if(self.handleIndex == null) {
@@ -874,11 +881,13 @@ this.Interact = {
 					track.obj.shift()
 				}
 			}
-			mouse[2] = e.offsetX;
-			mouse[3] = e.offsetY;
+			mouse[2] = e.offsetX || (e.touches[0].clientX);
+			mouse[3] = e.offsetY || (e.touches[0].clientY);
 		}
+		window.onmousedown = getDownCoords
+		window.ontouchstart = getDownCoords
 
-		window.onmouseup = function () {
+		function mouseEnd(e) {
 			isDown = false;
 
 			// TODO :
@@ -892,6 +901,8 @@ this.Interact = {
 				}
 			}
 		}
+		window.onmouseup = mouseEnd
+		window.ontouchend = mouseEnd
 
 		//test if mouse is inside the polygon
 		function dragPoly(points, coords, dots) {
@@ -1504,6 +1515,19 @@ this.Engine = {
 				p.p1.y -= adjustY;
 			}
 		}
+	},
+	/**
+	  * Reloads the page if any dots appears
+			to be have invalid position coords  	
+	  *	@method Verlet.Engine.correctPositionErrors()
+	  *	@param {array} dots
+	  */
+	correctPositionErrors : function(dots) {
+    for (let i = 0; i < dots.length; i++) {
+      if(isNaN(dots[i].x) || isNaN(dots[i].y)) {
+        window.location.reload()
+      }
+    }
 	}
 }
 };//Verlet
@@ -1560,6 +1584,14 @@ Verlet.prototype.create = function (newD,dots) {
  */
 Verlet.prototype.clamp = function(newJ,dots,cons) {
 	for(let j = 0; j < newJ.length; j++) {
+		// check for invalid dots
+		if(!dots[newJ[j][0]] || !dots[newJ[j][1]]) {
+			console.warn(
+				'Undefined dots index at verlet.clamp : [' + 
+				newJ[j][0] + ', ' + newJ[j][1] + ']'
+			)
+			continue;
+		}
 		let stfns = undefined;
 		let hidden = false;
 		let len = this._distance(dots[newJ[j][0]],dots[newJ[j][1]]);
