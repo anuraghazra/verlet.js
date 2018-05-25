@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Main Verlet.js API</title>
+  <script src="/src/verlet.js"></script>
+
+</head>
+<body>
+
+  <canvas id="c"></canvas>
+
+<script>
+window.onload = function() {
+  const verlet = new Verlet(500,500,'#c',1,1,1);
+
+  let dots = [];
+  let cons = [];
+
+
+  verlet.create([
+    [100,100],
+    [100,200],
+    [200,200],
+  ],dots)
+  verlet.clamp([
+    [0,1],
+    [1,2],
+  ],dots,cons)
+  dots[1].pinned = true;
+
+  function dist(p1,p2) {
+    return {
+      x : p2.x - p1.x,
+      y : p2.y - p1.y
+    }
+  }
+
+  function dot(p1,p2,p3) {
+    let v1 = dist(p1,p2)
+    let v2 = dist(p2,p3)
+    let p1dist = Math.sqrt(v1.x * v1.x);
+    let p2dist = Math.sqrt(v2.y * v2.y);
+    console.log(p1dist)
+    return {dp : v1.x * v2.x + v1.y * v2.y, dist1 : p1dist, dist2 : p2dist}
+  }
+  function resolve_angle(dot0,dot1,dot2) {
+    let angle = 90;
+    let dp = dot(dot0,dot1,dot2);
+    let dpangle = dp.dp / dp.dist1 / dp.dist2;
+    let a = dpangle / Math.PI*180
+    if(a < 0) {
+      dots[0].x = dots[0].oldx;
+      dots[0].y = dots[0].oldy;
+      dots[2].x = dots[2].oldx;
+      dots[2].y = dots[2].oldy;
+    } 
+  }
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    resolve_angle(dots[0],dots[1],dots[2])
+    verlet.superUpdate(dots,cons,100);
+    verlet.superRender(dots,cons, {debug : true});
+
+  }
+  animate();
+}
+</script>
+</body>
+</html>

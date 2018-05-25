@@ -1856,11 +1856,11 @@ Verlet.prototype.renderShapes = function(shape) {
 };
 
 /** 	
- *	Render Coordinates of points
-*	@method renderCoords
-*	@param {array} dots
-*	@param {array} cons
-*/
+	*	Render Coordinates of points
+	*	@method renderCoords
+	*	@param {array} dots
+	*	@param {array} cons
+	*/
 Verlet.prototype.renderCoords = function(dots, specific) {
 	let osctx = this.osCanvas.getContext('2d');
 	osctx.clearRect(0,0,this.canvas.width,this.canvas.height);
@@ -1889,6 +1889,32 @@ Verlet.prototype.renderCoords = function(dots, specific) {
 	osctx.fill();
 	this.ctx.drawImage(this.osCanvas,0,0);
 }
+
+/** 	
+	*	Render Coordinates of points
+	*	@method renderRelativeLines
+	*	@param {array} dots
+	*	@param {array} cons
+	*/
+	Verlet.prototype.renderRelativeLines = function(dots, cons, specific) {
+		if(this.handleIndex !== null) {
+			for (let i = 0; i < cons.length; i++) {
+				this.ctx.beginPath();
+				this.ctx.lineWidth = 1;
+				let c = cons[i];
+				this.ctx.strokeStyle = 'red';
+				if(cons[i].id.indexOf(this.handleIndex) !== -1) {
+					
+					this.ctx.moveTo(c.p0.x,c.p0.y);
+					this.ctx.lineTo(c.p1.x,c.p1.y);
+					// break;
+				}
+				this.ctx.stroke();
+				this.ctx.closePath();
+			}
+		}
+		
+	}
 
 
 /**
