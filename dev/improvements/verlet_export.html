@@ -24,32 +24,24 @@ window.onload = function() {
   let cons = [];
   let forms = [];
 
-// <!-- 
-//   let sample = [
-//     {
-//       "file": "box", "type": "text/json", "hierarchy": "[ {info}, points[[]], constrains[[]], forms[[]] ]", "pointsCount": 4, "constrainsCount": 6, "formsCount": 0, "dateCreated": "6/6/2018, 1:10:37 AM", "generator": "VerletDrawing", "author": "Anurag Hazra", "email": "hazru.anurag@gmail.com", "poweredBy": "Verlet.js", "repo": "wwww.github.com/anuraghazra/verlet.js", "license": "MIT"
-//     },
-//     [
-//       [150, 150, 150, 150, false, null],
-//       [200, 150, 200, 150, false, null],
-//       [200, 200, 200, 200, false, null],
-//       [150, 200, 150, 200, false, null]
-//     ],
-//     [
-//       [0, 1, null],
-//       [1, 2, null],
-//       [2, 3, null],
-//       [3, 0, null],
-//       [0, 2, { "hidden": true, "stiffness": 1 }],
-//       [1, 3, { "hidden": true, "stiffness": 1 }]
-//     ],
-//       []
-//   ] -->
+  verlet.Poly.box({},dots,cons);
+  verlet.Poly.cloth({},dots,cons);
+  // verlet.shape([0,1,2,3,'crimson'],forms,dots);
 
-  verlet.Poly.box({vx : 4},dots,cons);
-  // verlet.Poly.triangle({},dots,cons);
-  verlet.shape([0,1,2,3,'crimson'],forms,dots);
-  // verlet.shape([4,5,6,'yellowgreen'],forms,dots);
+  // verlet.create([
+  //   [100,100],
+  //   [100,200],
+  //   [200,200],
+  //   [200,100],
+  // ],dots,cons);
+
+  // verlet.clamp([
+  //   [0,1],
+  //   [1,2 ,{ length : 150 }],
+  //   [2,3, {hidden : true, stiffness : 0.5}],
+  //   [3,0, {hidden : true} ],
+  //   [1,3, {stiffness : 0.01}],
+  // ], dots, cons)
 
   verlet.Interact.move(dots);
   function animate() {
@@ -58,6 +50,7 @@ window.onload = function() {
     verlet.superUpdate(dots,cons,10);
     verlet.superRender(dots,cons,{
       debug : true,
+      // renderStress : true,
       forms : forms,
       renderShapes : true
     });
@@ -65,8 +58,11 @@ window.onload = function() {
   }
 
   animate();
-  // verlet.export(dots,cons,forms,'importtest');
-  document.getElementById('mfile').onchange = function() {
+
+
+  // verlet.export('verlet_export_test_2',dots,cons);
+  let file = document.getElementById('mfile');
+  file.onchange = function() {
     verlet.import('#mfile',dots,cons,forms)
   }
 

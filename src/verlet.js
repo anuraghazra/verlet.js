@@ -2318,6 +2318,11 @@ Verlet.prototype.showFps = function(option) {
  * @module fs 
  */
 Verlet.prototype.fs = {
+	/**
+	 * reads a file as text
+	 * @method Verlet.fs.read()
+	 * @param {string} fid
+	 */
 	read : function read(fid) {
 		const input = document.querySelector(fid);
 		const f = input.files[0];
@@ -2328,6 +2333,11 @@ Verlet.prototype.fs = {
 		};
 		return [fsys,f];
 	},
+	 /**
+	 * downloads a blob content as text
+	 * @method Verlet.fs.create()
+	 * @param {object} opt
+	 */
 	create : function create(opt) {
 		let content = opt.content || '',
 			type = opt.type || 'text/plain',
@@ -2348,9 +2358,12 @@ Verlet.prototype.fs = {
 /**
  * exports models as json (VerletDrawing) file
  * @method export
- * @param {object} option 
+ * @param {array} dots 
+ * @param {array} cons 
+ * @param {array} shapes 
+ * @param {string} name 
  */
-Verlet.prototype.export = function exportModel(dots,cons,shapes,unnamed) {
+Verlet.prototype.export = function(unnamed,dots,cons,shapes) {
 	let tmpdots = [];
 	let tmpcons = [];
 	let tmpshapes = [];
@@ -2373,11 +2386,13 @@ Verlet.prototype.export = function exportModel(dots,cons,shapes,unnamed) {
 	
 	//forms
 	// [4,5,6,7,'yellowgreen']
-	for (let k = 0; k < shapes.length; k++) {
-		// console.log(shapes)
-		tmpshapes.push([
-			...shapes[k].id, shapes[k].color
-		])
+	if(shapes) {
+		for (let k = 0; k < shapes.length; k++) {
+			// console.log(shapes)
+			tmpshapes.push([
+				...shapes[k].id, shapes[k].color
+			])
+		}
 	}
 
 	//time
@@ -2413,13 +2428,18 @@ Verlet.prototype.export = function exportModel(dots,cons,shapes,unnamed) {
 /**
  * imports json files as verlet model file
  * @method import
- * @param {object} option 
+ * @param {string} fid domString 
+ * @param {array} dots 
+ * @param {array} cons 
+ * @param {array} shapes 
  */
-Verlet.prototype.import = function (fid,dots,cons,shapes) {
+Verlet.prototype.import = function(fid,dots,cons,shapes) {
 	let data = this.fs.read(fid);
 	dots.length = 0;
 	cons.length = 0;
-	shapes.length = 0;
+	if(shapes) {
+		shapes.length = 0;
+	}
 
 	let self = this;
 	data[0].onload = function() {
@@ -2428,15 +2448,14 @@ Verlet.prototype.import = function (fid,dots,cons,shapes) {
 		let arrDots = result[1]; //Points
 		let arrCons = result[2]; //Constrains
 
-		console.log(arrDots,arrCons)
-
 		self.create(arrDots,dots); //create
-		console.log(dots)
 		self.clamp(arrCons,dots,cons); //clamp
 
 		let arrForms = result[3];
-		for (let i = 0; i < arrForms.length; i++) {
-			self.shape(arrForms[i],shapes,dots);
+		if (shapes) {
+			for (let i = 0; i < arrForms.length; i++) {
+				self.shape(arrForms[i],shapes,dots);
+			}
 		}
 	};
 	// reinit Interaction and physics
