@@ -828,6 +828,8 @@ this.Interact = {
 			const dy = y - circle.y;
 			return Math.sqrt(dx*dx + dy*dy);
 		}
+
+		return this
 	},
 
 	/**
@@ -1841,7 +1843,7 @@ Verlet.prototype.renderHiddenLines = function(cons,linewidth,color) {
 *	@param {array} shape
 */
 Verlet.prototype.renderShapes = function(shape) {
-	if(shape.length > 2) {
+	// if(shape.length > 2) {
 		for (let i = 0; i < shape.length; i++) {
 			this.ctx.beginPath();
 			this.ctx.fillStyle = shape[i].color;
@@ -1852,7 +1854,7 @@ Verlet.prototype.renderShapes = function(shape) {
 			this.ctx.fill();
 			this.ctx.closePath();
 		}
-	}
+	// }
 };
 
 /** 	
@@ -2309,4 +2311,135 @@ Verlet.prototype.showFps = function(option) {
 	drawFpsMeter.call(this, null);
 	
 	return this.fpsScope.fps;
+}
+
+/**
+ * filesystem api for export import
+ * @module fs 
+ */
+Verlet.prototype.fs = {
+	read : function read(fid) {
+		const input = document.querySelector(fid);
+		const f = input.files[0];
+		const fsys = new FileReader();
+		fsys.readAsText(f);
+		fsys.onerror = function(err) {
+			console.log("fs.read =>> ERROR :" + err);
+		};
+		return [fsys,f];
+	},
+	create : function create(opt) {
+		let content = opt.content || '',
+			type = opt.type || 'text/plain',
+			name = opt.name || 'unnamed',
+			blob = new Blob([content],{type : type}),
+			url = window.URL.createObjectURL(blob),
+			lnk = document.createElement('a');
+		lnk.download = name;
+		lnk.href = url;
+		lnk.innerHTML = "fs.create";
+		lnk.style.display = 'none';
+		document.body.appendChild(lnk);
+		lnk.click();
+		document.body.removeChild(lnk);
+	}
+}
+
+/**
+ * exports models as json (VerletDrawing) file
+ * @method export
+ * @param {object} option 
+ */
+Verlet.prototype.export = function exportModel(dots,cons,shapes,unnamed) {
+	let tmpdots = [];
+	let tmpcons = [];
+	let tmpshapes = [];
+
+	//dots
+	for (let i = 0; i < dots.length; i++) {
+		const p = dots[i];
+		tmpdots.push([p.x,p.y,p.oldx,p.oldy,p.pinned, p.color]);
+	}
+
+	//cons
+	// [0, 2, { "hidden": true, "stiffness": 1 }]
+	for (let j = 0; j < cons.length; j++) {
+		const c = cons[j];
+		tmpcons.push([
+			c.id[0],c.id[1],
+			{'hidden' : c.hidden, 'stiffness' : c.stiffness}
+		]);
+	}
+	
+	//forms
+	// [4,5,6,7,'yellowgreen']
+	for (let k = 0; k < shapes.length; k++) {
+		// console.log(shapes)
+		tmpshapes.push([
+			...shapes[k].id, shapes[k].color
+		])
+	}
+
+	//time
+	let time = new Date().toLocaleString();
+	let name = unnamed;
+
+	//file info
+	let info = {
+		file : unnamed,
+		type : 'text/json',
+		count : {dots : tmpdots.length, cons : tmpcons.length, forms : tmpshapes.length},
+		dateCreated : time,
+		optimizedFor : 'VerletDrawing (wwww.github.com/anuraghazra/verletDrawing)',
+		author : 'Anurag Hazra',
+		email : 'hazru.anurag@gmail.com',
+		poweredBy : 'Verlet.js',
+		repo : 'wwww.github.com/anuraghazra/verlet.js',
+		license : 'MIT'
+	}
+
+	let compiled = JSON.stringify([info,tmpdots,tmpcons,tmpshapes]);
+	// regExp for triming floating integers for 
+	// low file size
+	compiled = compiled.replace(/\.\d{5,}\,/img,',');
+
+	this.fs.create({
+		type : 'application/json',
+		name : name || time, content : compiled, 
+	})
+	return compiled;
+}
+
+/**
+ * imports json files as verlet model file
+ * @method import
+ * @param {object} option 
+ */
+Verlet.prototype.import = function (fid,dots,cons,shapes) {
+	let data = this.fs.read(fid);
+	dots.length = 0;
+	cons.length = 0;
+	shapes.length = 0;
+
+	let self = this;
+	data[0].onload = function() {
+		let result = JSON.parse(data[0].result);
+		
+		let arrDots = result[1]; //Points
+		let arrCons = result[2]; //Constrains
+
+		console.log(arrDots,arrCons)
+
+		self.create(arrDots,dots); //create
+		console.log(dots)
+		self.clamp(arrCons,dots,cons); //clamp
+
+		let arrForms = result[3];
+		for (let i = 0; i < arrForms.length; i++) {
+			self.shape(arrForms[i],shapes,dots);
+		}
+	};
+	// reinit Interaction and physics
+	this.Interact.move(dots,cons,'white');
+	this.superUpdate(dots,cons,10);
 }
