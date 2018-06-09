@@ -9,10 +9,7 @@
  */
 function Verlet() {
 
-// Ref To arguments for constructor init
-const params = arguments;
-
-// new Keyword can be omited
+// bypass new Keyword can be omited
 if(!(this instanceof Verlet)) {
 	return new Verlet();
 };
@@ -62,7 +59,7 @@ this.addToGroup = function(name, data) {
 }
 
 /* Variables */
-const imageSmoothing = false;
+const imageSmoothing = true;
 const imageSmoothingQuality = 'low';
 
 /* Constructor */
@@ -77,6 +74,11 @@ this.handle = undefined;
 this.handleIndex = null;
 this.osCanvas = document.createElement('canvas');
 this.osCanvas.id = "osCanvas";
+
+// constructor init
+if(arguments.length > 0) {
+	this.init.apply(this, arguments)
+}
 
 /** 
 *	@method init
@@ -113,13 +115,15 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 	this.ctx = this.canvas.getContext('2d');
 	this.ctx.imageSmoothingEnabled = imageSmoothing;
 	this.ctx.imageSmoothingQuality = imageSmoothingQuality;
+
+	console.log(this.ctx)
 	
 	// Init OS Canvas
 	this.osCanvas.width = this.canvas.width;
 	this.osCanvas.height = this.canvas.height;
 	this.osCtx = this.osCanvas.getContext('2d')
 	this.osCtx.imageSmoothingEnabled = false;
-	this.osCtx.imageSmoothingQuality = imageSmoothingQuality;
+	this.osCtx.imageSmoothingQuality = 'low';
 	
 	// PhysicsEngine Variables
 	this.gravity = grvty;
@@ -140,10 +144,7 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 
 	return dataToReturn;
 };
-// constructor init
-if(params.length > 0) {
-	this.init.apply(this, params)
-}
+
 
 /**
  *  predifined methods for creating models 
@@ -570,7 +571,7 @@ this.Poly = {
 		if ( opt.segs 		=== undefined ) { opt.segs 			= 20	};
 		if ( opt.gapX 		=== undefined ) { opt.gapX 			= 15	};
 		if ( opt.gapY 		=== undefined ) { opt.gapY 			= 15	};
-		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 7		};
+		if ( opt.pinRatio === undefined ) { opt.pinRatio 	= 5		};
 		if ( opt.tear		  === undefined ) { opt.tear 		  = false };
 
 		if(clone !== undefined) {
@@ -1442,11 +1443,13 @@ this.Engine = {
 	constrain : function constrainPoints(dots) {
 		let width = self.canvas.width,
 				height = self.canvas.height;
+
+		let jaggyCorrection = 0.7;
 		for (let i = 0; i < dots.length; i++) {
 			let p = dots[i];
 			if(!p.pinned) {
-				let vx = (p.x - p.oldx) * self.friction,
-						vy = (p.y - p.oldy) * self.friction;
+				let vx = (p.x - p.oldx) * jaggyCorrection,
+						vy = (p.y - p.oldy) * jaggyCorrection;
 
 				//Boundry
 				if(p.x > width) {
@@ -2380,7 +2383,7 @@ Verlet.prototype.export = function(unnamed,dots,cons,shapes) {
 		const c = cons[j];
 		tmpcons.push([
 			c.id[0],c.id[1],
-			{'hidden' : c.hidden, 'stiffness' : c.stiffness}
+			{'hidden' : c.hidden, 'stiffness' : c.stiffness, 'length' : c.len}
 		]);
 	}
 	
@@ -2428,22 +2431,40 @@ Verlet.prototype.export = function(unnamed,dots,cons,shapes) {
 /**
  * imports json files as verlet model file
  * @method import
- * @param {string} fid domString 
+ * @param {string} fid domString || url
  * @param {array} dots 
  * @param {array} cons 
  * @param {array} shapes 
  */
 Verlet.prototype.import = function(fid,dots,cons,shapes) {
-	let data = this.fs.read(fid);
+	if (fid.startsWith('#',0)) {
+		console.log('Loading Model From Input File');
+		let data = this.fs.read(fid);
+		data[0].onload = function() {
+			loadWhenReady(data[0].result)
+		};
+	} else {
+		console.log('Loading Model From Url');
+		let xhr = new XMLHttpRequest();
+		xhr.open('GET',fid,true);
+		xhr.onreadystatechange = function() {
+			if(xhr.status === 200 && xhr.readyState === 4) {
+				loadWhenReady(xhr.responseText);
+			}
+		}
+		xhr.send();
+	}
+	
+
 	dots.length = 0;
 	cons.length = 0;
 	if(shapes) {
 		shapes.length = 0;
 	}
-
 	let self = this;
-	data[0].onload = function() {
-		let result = JSON.parse(data[0].result);
+	
+	function loadWhenReady(data) {
+		let result = JSON.parse(data);
 		
 		let arrDots = result[1]; //Points
 		let arrCons = result[2]; //Constrains
@@ -2457,7 +2478,7 @@ Verlet.prototype.import = function(fid,dots,cons,shapes) {
 				self.shape(arrForms[i],shapes,dots);
 			}
 		}
-	};
+	}
 	// reinit Interaction and physics
 	this.Interact.move(dots,cons,'white');
 	this.superUpdate(dots,cons,10);

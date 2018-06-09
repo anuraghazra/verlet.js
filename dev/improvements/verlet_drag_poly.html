@@ -21,19 +21,20 @@ window.onload = function() {
   let dots = [];
   let cons = [];
 
-  verlet.Poly.line({
-    data : [
-      [100,100],
-      [100,200],
-      [200,200],
-    ],
-    joinEnd : true
-  }, dots, cons)
+  verlet.create([
+    [100,100],
+    [100,150],
+    [200,200],
+  ],dots,cons);
+  verlet.clamp([
+    [0,1],
+    [1,2],
+    [0,2],
+  ],dots,cons);
+
   verlet.Poly.hexagon({}, dots, cons)
   verlet.Poly.beam({width : 50}, dots, cons)
   verlet.Poly.box({width : 150}, dots, cons)
-
-  verlet.PolyGroups['cst'] = [0,1,2]
 
   console.log(verlet.PolyGroups)
   

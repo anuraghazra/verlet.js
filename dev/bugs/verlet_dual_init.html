@@ -3,36 +3,35 @@
 <head>
   <title>Main Verlet.js API</title>
   <script src="../../src/verlet.js"></script>
-
 </head>
 <body>
 
   <canvas id="c"></canvas>
 
 <script>
+/*
+  BUG : Verlet.init() is firing two times
+  //HOW:
+
+*/
 window.onload = function() {
-  const verlet = new Verlet(500,500,'#c',0,1,1);
+  const verlet = new Verlet();
+  verlet.init(500,window.innerHeight,'#c',1,1,1);
 
   let dots = [];
   let cons = [];
 
-  verlet.Poly.hexagon({
-    center : true,
-    sides : 13,
-    slice1 : 10,
-    slice2 : 5,
-    radius : 75
-  },dots, cons)
+  verlet.Poly.box({
+    y : 10,
+    x : 10
+  },dots, cons);
 
   verlet.Interact.move(dots);
   function animate() {
     verlet.frame(animate);
-
-    verlet.renderRelativeLines(dots, cons);
-
-    verlet.superUpdate(dots,cons,100);
-    verlet.superRender(dots,cons, {debug : false});
-
+    
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons);
   }
   animate();
 }

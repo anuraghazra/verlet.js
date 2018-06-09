@@ -18,7 +18,7 @@
 <script>
 window.onload = function() {
   const verlet = new Verlet();
-  verlet.init(630,570,'#c',1,1,1);
+  verlet.init(800,570,'#c',1,1,1);
 
   let dots = [];
   let cons = [];
@@ -64,8 +64,10 @@ window.onload = function() {
   let file = document.getElementById('mfile');
   file.onchange = function() {
     verlet.import('#mfile',dots,cons,forms)
+    
   }
-
+  verlet.import('./cubes.json',dots,cons,forms)
+  
 }
 </script>
 </body>
