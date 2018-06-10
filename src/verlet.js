@@ -75,11 +75,6 @@ this.handleIndex = null;
 this.osCanvas = document.createElement('canvas');
 this.osCanvas.id = "osCanvas";
 
-// constructor init
-if(arguments.length > 0) {
-	this.init.apply(this, arguments)
-}
-
 /** 
 *	@method init
 *	@param {number} cw canvasWidth
@@ -144,6 +139,11 @@ this.init = function(cw,ch,canvas,gravity,friction,stiffness) {
 
 	return dataToReturn;
 };
+
+// constructor init
+if(arguments.length > 0) {
+	this.init.apply(this, arguments)
+}
 
 
 /**
