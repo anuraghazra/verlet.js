@@ -21,8 +21,8 @@ window.onload = function() {
     supportingStiffness : 0.07
   },dots, cons);
 
-  dots[0].pinned = true;
-  dots[8].pinned = true;
+  // dots[0].pinned = true;
+  // dots[8].pinned = true;
 
   verlet.Interact.move(dots);
   function animate() {
@@ -33,8 +33,8 @@ window.onload = function() {
     verlet.superRender(dots, cons, {
       debug : true,
       preset : 'shadowBlue',
-      pointColor : 'orange',
-      lineColor : 'yellow'
+      // pointColor : 'orange',
+      // lineColor : 'yellow'
     });
   }
   animate();

@@ -19,7 +19,7 @@
 <script>
 window.onload = function() {
   const verlet = new Verlet();
-  verlet.init(500,500,'#c',1,1,1);
+  verlet.init(800,800,'#c',1,1,1);
 
   let dots = [];
   let cons = [];
@@ -32,6 +32,9 @@ window.onload = function() {
   ]
   verlet.Poly.line(lineData,dots,cons)
 
+  verlet.Poly.cloth({
+    tear : true
+  }, dots, cons)
 
   verlet.Interact.move(dots);
   function animate() {

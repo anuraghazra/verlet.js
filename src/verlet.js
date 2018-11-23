@@ -67,7 +67,7 @@ const self = this;
 this.gravity = 0.8;
 this.friction = 1;
 this.stiffness = 1;
-this.bounce = 0.90;
+this.bounce = 1;
 this.canvas = undefined;
 this.ctx = undefined;
 this.handle = undefined;
@@ -632,9 +632,11 @@ this.Poly = {
 				if(opt.tear === true) {
 					function tear() {
 						for (let i = tearIndex[0]; i < tearIndex[1]; i++) {
-							if(cons[i].p1.x - cons[i].p0.x > 30 ||
-								cons[i].p1.y - cons[i].p0.y > 60) {
+							if(cons[i].p1.x - cons[i].p0.x > 50 ||
+								cons[i].p1.y - cons[i].p0.y > 50) {
+									cons.splice((i+2)%dots.length, 1);
 									cons.splice(i, 1);
+									// cons.splice((i+1)%dots.length, 1);
 							}
 						}
 					}

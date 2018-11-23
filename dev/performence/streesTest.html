@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Verlet.js</title>
+  <script src="../../src/verlet.js"></script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+<script>
+window.onload = function() {
+  let verlet = new Verlet();
+  verlet.init(window.innerWidth-50,window.innerHeight-10,'#c',0,1,1);
+
+  let dots = [];
+  let cons = []
+
+
+  for (let i = 0; i < 1500; i++) {
+    console.log(i+verlet.canvas.width)
+    verlet.Poly.box({
+      width : 20, height : 20,
+      x : verlet.canvas.width-i,
+      y : verlet.canvas.height-i+2
+    },dots,cons);
+  }
+
+  verlet.Interact.move(dots);
+  function animate() {
+    verlet.frame(animate);
+
+    verlet.superUpdate(dots,cons,10);
+    verlet.superRender(dots,cons,{
+      preset : 'default',
+      debug : false,
+      renderDots : true,
+      showFps : true
+    });
+
+  }
+  animate();
+}
+
+</script>
+</body>
+</html>

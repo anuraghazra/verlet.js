@@ -4,6 +4,11 @@
 
 *Verlet.js* is a javascript library for creating rapid and fast **verlet physics** based models and structures.. Its API Is Amazing....check this out..
 
+<!-- <a href="http://www.youtube.com/watch?feature=player_embedded&v=sA6BI2Euy-8
+" target="_blank"><img src="http://img.youtube.com/vi/sA6BI2Euy-8/0.jpg" 
+alt="IMAGE ALT TEXT HERE" width="600" height="400" border="1" /></a> -->
+[![IMAGE ALT TEXT HERE](http://img.youtube.com/vi/sA6BI2Euy-8/0.jpg)](http://www.youtube.com/watch?v=sA6BI2Euy-8)
+
 > **``The Super Simple API``**
 
 > **``You can create a cloth in just 3 lines of javascript``**
