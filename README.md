@@ -2,6 +2,11 @@
 
 ![Verlet.js Logo](./assets/images/logo.png)
 
+
+[![License](https://img.shields.io/github/license/anuraghazra/verlet.js.svg)](https://mit-license.org/)
+![stargazers](https://img.shields.io/github/stars/anuraghazra/verlet.js.svg?style=social)
+
+
 *Verlet.js* is a javascript library for creating rapid and fast **verlet physics** based models and structures.. Its API Is Amazing....check this out..
 
 > **``The Super Simple API``**

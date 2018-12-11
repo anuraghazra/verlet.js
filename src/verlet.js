@@ -2060,14 +2060,14 @@ Verlet.prototype.superRender = function (dots,cons,opt) {
 Verlet.prototype.quickSetup = function(callback,option) {
 	if(option === undefined) {option = {}};
 
-	let width 	=  option.width 	|| document.body.offsetWidth;
-	let height 	=  option.height || window.innerHeight - 20;
-	let grav 		=	(option.gravity 	=== undefined) ? 1 : option.gravity;
-	let fri 		=	(option.friction 	=== undefined) ? 1 : option.friction;
-	let stiff   =	(option.stiffness === undefined) ? 1 : option.stiffness;
-	let append 	=	 option.append || document.body;
-	let id 			=	 option.id;
-	let studio 	=	 option.initStudio || false;
+	let width = option.width || document.body.offsetWidth;
+	let height = option.height || window.innerHeight - 20;
+	let grav = (option.gravity === undefined) ? 1 : option.gravity;
+	let fri = (option.friction === undefined) ? 1 : option.friction;
+	let stiff = (option.stiffness === undefined) ? 1 : option.stiffness;
+	let append = option.append || document.body;
+	let id = option.id;
+	let studio = option.initStudio || false;
 	
 	if(id === undefined) id = 'quicksetup-'+Math.floor(Math.random()*500);
 	if(typeof append === 'string') {append = document.querySelector(append)}
